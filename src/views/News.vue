@@ -1,12 +1,12 @@
 <template>
-  <h1>Ths is the home page</h1>
+  <h1>Ths is the News page</h1>
 </template>
 
 <script>
 import { ref, onBeforeMount } from "vue";
 import firebase from "firebase";
 export default {
-  name: "Home",
+  name: "News",
   setup() {
     const user = firebase.auth().currentUser;
     const name = ref("");
@@ -14,10 +14,12 @@ export default {
       if (user) {
         name.value = "ivan";
       }
-})}
-}
+    });
+  },
+};
 </script>
 
 
 <style>
+
 </style>

@@ -4,7 +4,7 @@
     <div class="form-group">
       <input
         type="text"
-        v-model="name"
+        v-model="signupForm.name"
         placeholder="Your Full Name"
         class="form-control form-control-lg"
       />
@@ -13,7 +13,7 @@
     <div class="form-group">
       <input
         type="email"
-        v-model="email"
+        v-model="signupForm.email"
         placeholder="Your Email"
         class="form-control form-control-lg"
       />
@@ -22,14 +22,14 @@
     <div class="form-group">
       <input
         type="password"
-        v-model="password"
+        v-model="signupForm.password"
         placeholder="Password"
         class="form-control form-control-lg"
       />
     </div>
     <br />
     <button type="submit" class="btn btn-dark btn-lg btn-block">Sign Up</button>
-    <p class="forgot-password text-right mt-2 mb-4">
+    <p class="text-right mt-2 mb-4">
       Already have an account? <router-link to="/login">Log In</router-link>
     </p>
   </form>
@@ -37,26 +37,21 @@
 
 <script>
 import { ref } from "vue";
-import firebase from "firebase";
+import { useStore } from "vuex";
+
 export default {
   name: "Signup",
   setup() {
-    const email = ref("");
-    const password = ref("");
+    const signupForm = ref({});
+    const store = useStore();
 
     const signup = () => {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email.value, password.value)
-        .then((data) => console.log(data))
-        .catch((err) => alert(err.message));
+      store.dispatch("signup", signupForm.value);
     };
 
     return {
+      signupForm,
       signup,
-      name,
-      email,
-      password,
     };
   },
 };
