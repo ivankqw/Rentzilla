@@ -1,9 +1,4 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import "bootstrap/dist/css/bootstrap.min.css"
-import "bootstrap"
-import router from './router/index.js'
-import firebase from 'firebase'
+import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
     apiKey: "AIzaSyD2848pREvxcAcLDFPSIfVC1qiCN-cU9FI",
@@ -15,6 +10,6 @@ const firebaseConfig = {
     measurementId: "G-KEG6245ZMT"
   };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-createApp(App).use(router).mount('#app')
+export default app
