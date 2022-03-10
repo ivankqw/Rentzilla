@@ -3,7 +3,7 @@ import App from './App.vue'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import router from './router/index.js'
-import firebase from 'firebase'
+import { initializeApp } from 'firebase/app'
 import store from './store/index.js'
 
 
@@ -17,6 +17,6 @@ const firebaseConfig = {
     measurementId: "G-KEG6245ZMT"
   };
 
-firebase.initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 createApp(App).use(store).use(router).mount('#app')
