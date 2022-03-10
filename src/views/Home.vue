@@ -1,6 +1,7 @@
 <template>
   <h1>Ths is the home page</h1>
   <h3> hello world </h3> 
+  <h3> hello world 2 </h3>
 </template>
 
 <script>
