@@ -3,18 +3,8 @@
 </template>
 
 <script>
-import { ref, onBeforeMount } from "vue";
-import firebase from "firebase";
 export default {
   name: "Home",
-  setup() {
-    const user = firebase.auth().currentUser;
-    const name = ref("");
-    onBeforeMount(() => {
-      if (user) {
-        name.value = "ivan";
-      }
-})}
 }
 </script>
 

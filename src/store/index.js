@@ -42,6 +42,7 @@ export default createStore({
       }
 
       commit("SET_USER", auth.currentUser);
+      console.log(auth.currentUser.email)
 
       router.push("/");
     },
@@ -81,7 +82,7 @@ export default createStore({
       }
 
       commit("SET_USER", auth.currentUser);
-
+      console.log(auth.currentUser)
       router.push("/");
     },
 
