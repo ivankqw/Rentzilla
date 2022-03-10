@@ -1,26 +1,36 @@
 import { createStore } from "vuex";
 import router from "../router";
-import { auth } from "../firebase.js";
+import { auth, db } from "../firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import { setDoc, doc, onSnapshot } from "firebase/firestore"; 
 
 export default createStore({
   state: {
-    user: null
+    email: null,
+    name: null
   },
   mutations: {
-    SET_USER(state, user) {
-      state.user = user;
+    SET_USER(state, userObj) {
+      state.email = userObj.email;
+      state.name = userObj.name; 
     },  
 
     CLEAR_USER(state) {
-      state.user = null;
+      state.email = null;
+      state.name = null
     },
   },
   actions: {
+    async addNewFirebaseUser(name, email) {
+      await setDoc(doc(db, "Users", email), {
+        email: name
+      })
+    },
+
     async login({ commit }, details) {
       const { email, password } = details;
 
@@ -30,7 +40,7 @@ export default createStore({
         switch (error.code) {
           case "auth/user-not-found":
             alert("User not found in system");
-            break;
+            break;  
           case "auth/wrong-password":
             alert("Wrong password provided");
             break;
@@ -41,7 +51,14 @@ export default createStore({
         return;
       }
 
-      commit("SET_USER", auth.currentUser);
+      //get from firebase
+      const docRef = doc(db, "Users", auth.currentUser.email)
+      let name = null;
+      onSnapshot(docRef, (doc) => {
+        name = doc.data().name
+        commit("SET_USER", {email: email, name: name});
+      })
+      
       router.push("/");
     },
 
@@ -54,7 +71,7 @@ export default createStore({
     },
 
     async signup({ commit }, details) {
-      const { email, password } = details;
+      const { name, email, password } = details;
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
@@ -75,11 +92,23 @@ export default createStore({
           default:
             alert("Something went wrong!");
         }
-
         return;
       }
 
-      commit("SET_USER", auth.currentUser);
+      try {
+        await setDoc(doc(db, "Users", email), {
+          name: name
+        })
+      } catch (error) {
+        console.log(error)
+      }
+
+      const userObj = {
+        email: auth.currentUser.email,
+        name: name
+      }
+
+      commit("SET_USER", userObj);
       console.log(auth.currentUser)
       router.push("/");
     },

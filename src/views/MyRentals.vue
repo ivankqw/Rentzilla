@@ -1,5 +1,7 @@
 <template>
-  <h1 class="header">My Rental Properties</h1>
+  <h1 class="header">Ths is the My Rental Properties Page</h1>
+  <h3> Welcome back, {{$store.state.name}} </h3>
+  <h3> Your email is {{$store.state.email}} </h3>
 
   <button
     type="button"
@@ -177,7 +179,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "MyRentals"
+};
 </script>
 
 
