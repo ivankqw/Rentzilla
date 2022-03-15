@@ -140,12 +140,14 @@
                 class="form-control"
                 id="firstName2"
                 placeholder="First Name"
+                v-model="firstName2"
               />
               <input
                 type="text"
                 class="form-control"
                 id="lastName2"
                 placeholder="Last Name"
+                v-model="lastName2"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -154,16 +156,18 @@
                 type="date"
                 id="contractStartDate2"
                 name="contractStartDate"
+                v-model="contractStartDate2"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate2" name="contractEndDate" />
+              <input type="date" id="contractEndDate2" name="contractEndDate" v-model="contractEndDate2" />
               <input
                 type="number"
                 class="form-control"
                 id="monthlyRent2"
                 placeholder="Monthly Rent"
+                v-model="monthlyRent2"
               />
             </div>
 
@@ -174,12 +178,14 @@
                 class="form-control"
                 id="firstName3"
                 placeholder="First Name"
+                v-model="firstName3"
               />
               <input
                 type="text"
                 class="form-control"
                 id="lastName3"
                 placeholder="Last Name"
+                v-model="lastName3"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -188,16 +194,18 @@
                 type="date"
                 id="contractStartDate3"
                 name="contractStartDate"
+                v-model="contractStartDate3"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate3" name="contractEndDate" />
+              <input type="date" id="contractEndDate3" name="contractEndDate" v-model="contractEndDate3"/>
               <input
                 type="number"
                 class="form-control"
                 id="monthlyRent3"
                 placeholder="Monthly Rent"
+                v-model="monthlyRent3"
               />
             </div>
 
@@ -208,12 +216,14 @@
                 class="form-control"
                 id="firstName4"
                 placeholder="First Name"
+                v-model="firstName4"
               />
               <input
                 type="text"
                 class="form-control"
                 id="lastName4"
                 placeholder="Last Name"
+                v-model="lastName4"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -222,16 +232,18 @@
                 type="date"
                 id="contractStartDate4"
                 name="contractStartDate"
+                v-model="contractStartDate4"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate4" name="contractEndDate" />
+              <input type="date" id="contractEndDate4" name="contractEndDate" v-model="contractEndDate4" />
               <input
                 type="number"
                 class="form-control"
                 id="monthlyRent4"
                 placeholder="Monthly Rent"
+                v-model="monthlyRent4"
               />
             </div>
 
@@ -242,12 +254,14 @@
                 class="form-control"
                 id="firstName5"
                 placeholder="First Name"
+                v-model="firstName5"
               />
               <input
                 type="text"
                 class="form-control"
                 id="lastName5"
                 placeholder="Last Name"
+                v-model="lastName5"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -256,16 +270,18 @@
                 type="date"
                 id="contractStartDate5"
                 name="contractStartDate"
+                v-model="contractStartDate5"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate5" name="contractEndDate" />
+              <input type="date" id="contractEndDate5" name="contractEndDate" v-model="contractEndDate5"/>
               <input
                 type="number"
                 class="form-control"
                 id="monthlyRent5"
                 placeholder="Monthly Rent"
+                v-model="monthlyRent5"
               />
             </div>
 
@@ -283,6 +299,7 @@
                 class="btn btn-success"
                 v-on:click="saveRental()"
                 data-bs-dismiss="modal"
+                
               >
                 + Add Rental
               </button>
@@ -300,6 +317,7 @@ import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import moment from "moment";
 
+
 export default {
   name: "MyRentals",
   computed: {},
@@ -315,6 +333,30 @@ export default {
       contractStartDate1: "",
       contractEndDate1: "",
       monthlyRent1: "",
+
+      firstName2: "",
+      lastName2: "",
+      contractStartDate2: "",
+      contractEndDate2: "",
+      monthlyRent2: "",
+
+      firstName3: "",
+      lastName3: "",
+      contractStartDate3: "",
+      contractEndDate3: "",
+      monthlyRent3: "",
+
+      firstName4: "",
+      lastName4: "",
+      contractStartDate4: "",
+      contractEndDate4: "",
+      monthlyRent4: "",
+
+      firstName5: "",
+      lastName5: "",
+      contractStartDate5: "",
+      contractEndDate5: "",
+      monthlyRent5: "",
     };
   },
   async mounted() {
@@ -334,11 +376,11 @@ export default {
       const rentals = docSnap.data().rentals;
 
       for (let rental of rentals) {
-        console.log(rental);
+        // console.log(rental);
         for (let tenant of rental.tenants) {
-          console.log(tenant);
+          // console.log(tenant);
           while (moment(tenant.nextPaymentDate).isBefore(moment())) {
-            console.log("owe money");
+            // console.log("owe money");
             tenant.numberOfMonthsRentalUnpaid += 1;
             tenant.nextPaymentDate = this.addMonths(tenant.nextPaymentDate, 1);
           }
@@ -350,6 +392,23 @@ export default {
     },
 
     async saveRental() {
+      // Validation of inputs property details
+      console.log(String(this.postalCode).length)
+      if (String(this.postalCode).length !== 6) {
+        alert("Please enter a valid postal code")
+        return;
+      } else if (!this.address ) {
+        alert("Please enter a valid address")
+        return;
+      } else if (!this.unitNumber) {
+        alert("Please enter a valid unit number")
+        return;
+      } else if (!this.purchasePrice) {
+        alert("Please enter a valid purchase price")
+        return;
+      }
+
+
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Rentals", userEmail);
@@ -369,6 +428,7 @@ export default {
       long = result.LONGITUDE;
 
       // const docSnap = await getDoc(ref);
+      
 
       const docData = {
         // rentalId: docSnap.data().rentals.length,
@@ -389,6 +449,42 @@ export default {
             nextPaymentDate: this.addMonths(this.contractStartDate1, 1),
             numberOfMonthsRentalUnpaid: 0,
           },
+          {
+            firstName: this.firstName2,
+            lastName: this.lastName2,
+            contractStartDate: this.contractStartDate2,
+            contractEndDate: this.contractEndDate2,
+            monthlyRent: this.monthlyRent2,
+            nextPaymentDate: this.addMonths(this.contractStartDate2, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
+          {
+            firstName: this.firstName3,
+            lastName: this.lastName3,
+            contractStartDate: this.contractStartDate3,
+            contractEndDate: this.contractEndDate3,
+            monthlyRent: this.monthlyRent3,
+            nextPaymentDate: this.addMonths(this.contractStartDate3, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
+          {
+            firstName: this.firstName4,
+            lastName: this.lastName4,
+            contractStartDate: this.contractStartDate4,
+            contractEndDate: this.contractEndDate4,
+            monthlyRent: this.monthlyRent4,
+            nextPaymentDate: this.addMonths(this.contractStartDate4, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
+          {
+            firstName: this.firstName5,
+            lastName: this.lastName5,
+            contractStartDate: this.contractStartDate5,
+            contractEndDate: this.contractEndDate5,
+            monthlyRent: this.monthlyRent5,
+            nextPaymentDate: this.addMonths(this.contractStartDate5, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
         ],
       };
 
@@ -402,6 +498,7 @@ export default {
         });
       }
 
+      
       document.getElementById("addRentalForm").reset();
       this.updateUnpaid();
     },
