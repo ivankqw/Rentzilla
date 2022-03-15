@@ -302,9 +302,7 @@ import moment from "moment";
 
 export default {
   name: "MyRentals",
-  computed:{
-    
-  },
+  computed: {},
   data() {
     return {
       postalCode: "",
@@ -319,48 +317,55 @@ export default {
       monthlyRent1: "",
     };
   },
-  async mounted(){
+  async mounted() {
     const auth = getAuth();
     const userEmail = auth.currentUser.email;
     const ref = doc(db, "Rentals", userEmail);
     const docSnap = await getDoc(ref);
     const rentals = docSnap.data().rentals;
-    
+
     for (let rental of rentals) {
       console.log(rental);
       for (let tenant of rental.tenants) {
-        console.log(tenant)
+        console.log(tenant);
         var nextPaymentDate = moment(tenant.nextPaymentDate);
-        
+
         if (nextPaymentDate.isBefore(moment())) {
           console.log("owe money");
           tenant.numberOfMonthsRentalUnpaid += 1;
-          tenant.nextPaymentDate = this.addMonths(nextPaymentDate,1);
-          
+          tenant.nextPaymentDate = this.addMonths(nextPaymentDate, 1);
         }
       }
     }
-    console.log(rentals)
-    await updateDoc(ref, {rentals: rentals});
-    
-    
-
+    console.log(rentals);
+    await updateDoc(ref, { rentals: rentals });
   },
 
   methods: {
     addMonths(date, m) {
-        return moment(date).add(m, 'months').format('YYYY-MM-DD');
-      },
+      return moment(date).add(m, "months").format("YYYY-MM-DD");
+    },
 
     async saveRental() {
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
-
       const ref = doc(db, "Rentals", userEmail);
+      var long;
+      var lat;
+
+      let result = await fetch(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${this.postalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
+      )
+        .then((response) => response.text())
+        .then((result) => {
+          console.log(result);
+          return JSON.parse(result).results[0];
+        })
+        .catch((error) => console.log("error", error));
+      lat = result.LATITUDE;
+      long = result.LONGITUDE;
 
       // const docSnap = await getDoc(ref);
-      
-      
 
       const docData = {
         // rentalId: docSnap.data().rentals.length,
@@ -368,6 +373,8 @@ export default {
         address: this.address,
         unitNumber: this.unitNumber,
         purchasePrice: this.purchasePrice,
+        longtitude: long,
+        latitude: lat, 
 
         tenants: [
           {
@@ -376,25 +383,21 @@ export default {
             contractStartDate: this.contractStartDate1,
             contractEndDate: this.contractEndDate1,
             monthlyRent: this.monthlyRent1,
-            nextPaymentDate: this.addMonths(this.contractStartDate1,1),
+            nextPaymentDate: this.addMonths(this.contractStartDate1, 1),
             numberOfMonthsRentalUnpaid: 0,
-            
           },
-        ]
-          
-        
+        ],
       };
 
       try {
         await updateDoc(ref, {
-        rentals: arrayUnion(docData),
-      });
+          rentals: arrayUnion(docData),
+        });
       } catch (error) {
         await setDoc(ref, {
-        rentals: arrayUnion(docData),
-      });
+          rentals: arrayUnion(docData),
+        });
       }
-      
 
       document.getElementById("addRentalForm").reset();
     },

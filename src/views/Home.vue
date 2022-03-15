@@ -21,7 +21,10 @@ async function getCoordinates(postalCode) {
       console.log(result);
       return JSON.parse(result).results[0];
     })
-    .catch((error) => console.log("error", error));
+    .catch((error) => {
+      console.log("error", error);
+      alert("This postal code could not be found. Try another");
+    });
   items.lat = result.LATITUDE;
   items.long = result.LONGITUDE;
   console.log(items);
