@@ -22,6 +22,8 @@
       <th>Address</th>
       <th>Unit Number</th>
       <th>Purchase Price</th>
+      <th>View Tenant Details</th>
+      <th>Edit Rental Details</th>
     </tr>
   </table>
 
@@ -391,6 +393,8 @@ export default {
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
         
         cell1.innerHTML = ind;
         cell2.innerHTML = postalCode;
@@ -398,16 +402,34 @@ export default {
         cell4.innerHTML = unitNumber;
         cell5.innerHTML = purchasePrice;
         
+        var viewTenantDetailsButton = document.createElement("button");
+        viewTenantDetailsButton.className = "bwt";
+        viewTenantDetailsButton.id = ind;
+        viewTenantDetailsButton.innerHTML = "View Tenant Details";
+        viewTenantDetailsButton.onclick = function () {
+          showTenantDetails();
+        };
+        cell6.appendChild(viewTenantDetailsButton);
+
+        var editRentalDetailsButton = document.createElement("button");
+        editRentalDetailsButton.className = "bwt";
+        editRentalDetailsButton.id = ind;
+        editRentalDetailsButton.innerHTML = "View Tenant Details";
+        editRentalDetailsButton.onclick = function () {
+          editRentalDetails();
+        };
+        cell7.appendChild(editRentalDetailsButton);
+        
         ind +=1;
       }
 
-      // let z = await getDocs(collection(db, user.email));
-      // let ind = 1;
-      // var tp = 0;
-      // var table = document.getElementById("portfolioTable");
-      // while (table.rows.length > 1) {
-      //   table.deleteRow(1);
-      // }
+    function showTenantDetails(){
+
+    }
+
+    function editRentalDetails(){
+      
+    }
       // // For each data row (coin) in portfolio
       // z.forEach((docs) => {
       //   let data = docs.data();
