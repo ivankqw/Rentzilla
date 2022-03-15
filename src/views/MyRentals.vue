@@ -295,13 +295,16 @@
 </template>
 
 <script>
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, setDoc, arrayUnion, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import moment from "moment";
 
 export default {
   name: "MyRentals",
+  computed:{
+    
+  },
   data() {
     return {
       postalCode: "",
@@ -316,7 +319,39 @@ export default {
       monthlyRent1: "",
     };
   },
+  async mounted(){
+    const auth = getAuth();
+    const userEmail = auth.currentUser.email;
+    const ref = doc(db, "Rentals", userEmail);
+    const docSnap = await getDoc(ref);
+    const rentals = docSnap.data().rentals;
+    
+    for (let rental of rentals) {
+      console.log(rental);
+      for (let tenant of rental.tenants) {
+        console.log(tenant)
+        var nextPaymentDate = moment(tenant.nextPaymentDate);
+        
+        if (nextPaymentDate.isBefore(moment())) {
+          console.log("owe money");
+          tenant.numberOfMonthsRentalUnpaid += 1;
+          tenant.nextPaymentDate = this.addMonths(nextPaymentDate,1);
+          
+        }
+      }
+    }
+    console.log(rentals)
+    await updateDoc(ref, {rentals: rentals});
+    
+    
+
+  },
+
   methods: {
+    addMonths(date, m) {
+        return moment(date).add(m, 'months').format('YYYY-MM-DD');
+      },
+
     async saveRental() {
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
@@ -325,9 +360,7 @@ export default {
 
       // const docSnap = await getDoc(ref);
       
-      function addMonths(date, m) {
-        return moment(date).add(m, 'months').format('YYYY-MM-DD');
-      }
+      
 
       const docData = {
         // rentalId: docSnap.data().rentals.length,
@@ -336,23 +369,32 @@ export default {
         unitNumber: this.unitNumber,
         purchasePrice: this.purchasePrice,
 
-        tenant1: 
+        tenants: [
           {
             firstName: this.firstName1,
             lastName: this.lastName1,
             contractStartDate: this.contractStartDate1,
             contractEndDate: this.contractEndDate1,
             monthlyRent: this.monthlyRent1,
-            nextPaymentDate: addMonths(this.contractStartDate1,1),
-            numberOfMonthsRentalUnpaid: 0
+            nextPaymentDate: this.addMonths(this.contractStartDate1,1),
+            numberOfMonthsRentalUnpaid: 0,
             
           },
+        ]
+          
         
       };
 
-      await updateDoc(ref, {
+      try {
+        await updateDoc(ref, {
         rentals: arrayUnion(docData),
       });
+      } catch (error) {
+        await setDoc(ref, {
+        rentals: arrayUnion(docData),
+      });
+      }
+      
 
       document.getElementById("addRentalForm").reset();
     },
