@@ -14,6 +14,7 @@
   </button>
   <br />
 
+  <!---
   <h1 class="header">My Rental Properties</h1>
   <table id="rentalTable" class="auto-index">
     <tr id="rentalTableHeader">
@@ -26,6 +27,34 @@
       <th>Edit Rental Details</th>
     </tr>
   </table>
+  -->
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+        <th>#</th>
+      <th>Postal Code</th>
+      <th>Address</th>
+      <th>Unit Number</th>
+      <th>Purchase Price</th>
+      <th>View Tenant Details</th>
+      <th>Edit Rental Details</th>
+        </tr>
+        </thead>
+        <tbody> 
+          <tr v-for="(rental, i) in rentals" :key="i">
+            <td> {{i + 1}} </td>
+            <td> {{rental.postalCode}} </td>
+            <td> {{rental.address}} </td>
+            <td> {{rental.unitNumber}} </td>
+            <td> {{rental.purchasePrice}} </td>
+            <td> <button type="button" class="btn btn-primary" @click="this.showTenantDetails(i)">View</button> </td>
+            <td> <button type="button" class="btn btn-primary" @click="this.editRentalDetails(i)">Edit</button> </td>
+          </tr>
+        </tbody>
+    </table>
+  </div>
 
   <h1 class="header">Rent</h1>
   <table id="outstandingRentTable" class="auto-index">
@@ -163,7 +192,12 @@
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate2" name="contractEndDate" v-model="contractEndDate2" />
+              <input
+                type="date"
+                id="contractEndDate2"
+                name="contractEndDate"
+                v-model="contractEndDate2"
+              />
               <input
                 type="number"
                 class="form-control"
@@ -201,7 +235,12 @@
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate3" name="contractEndDate" v-model="contractEndDate3"/>
+              <input
+                type="date"
+                id="contractEndDate3"
+                name="contractEndDate"
+                v-model="contractEndDate3"
+              />
               <input
                 type="number"
                 class="form-control"
@@ -239,7 +278,12 @@
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate4" name="contractEndDate" v-model="contractEndDate4" />
+              <input
+                type="date"
+                id="contractEndDate4"
+                name="contractEndDate"
+                v-model="contractEndDate4"
+              />
               <input
                 type="number"
                 class="form-control"
@@ -277,7 +321,12 @@
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate5" name="contractEndDate" v-model="contractEndDate5"/>
+              <input
+                type="date"
+                id="contractEndDate5"
+                name="contractEndDate"
+                v-model="contractEndDate5"
+              />
               <input
                 type="number"
                 class="form-control"
@@ -301,7 +350,6 @@
                 class="btn btn-success"
                 v-on:click="saveRental()"
                 data-bs-dismiss="modal"
-                
               >
                 + Add Rental
               </button>
@@ -318,7 +366,6 @@ import { doc, setDoc, arrayUnion, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import moment from "moment";
-
 
 export default {
   name: "MyRentals",
@@ -359,24 +406,42 @@ export default {
       contractStartDate5: "",
       contractEndDate5: "",
       monthlyRent5: "",
+
+      rentals: {},
     };
   },
   async mounted() {
     await this.updateUnpaid();
-    await this.displayRentals();
+    //await this.displayRentals();
+    const auth = getAuth();
+    const userEmail = auth.currentUser.email;
+    const ref = doc(db, "Rentals", userEmail);
+    const docSnap = await getDoc(ref);
+    const rentals = docSnap.data().rentals;
+    console.log(rentals);
+    this.rentals = rentals;
   },
 
   methods: {
+
+    showTenantDetails(id) {
+        alert(id)
+      },
+
+    editRentalDetails(id) {
+        alert(id);
+      },
+
     async displayRentals() {
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Rentals", userEmail);
       const docSnap = await getDoc(ref);
       const rentals = docSnap.data().rentals;
-      console.log(rentals);
+      //console.log(rentals);
 
       let ind = 1;
-      var table = document.getElementById('rentalTable');
+      var table = document.getElementById("rentalTable");
       while (table.rows.length > 1) {
         table.deleteRow(1);
       }
@@ -395,16 +460,16 @@ export default {
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
         var cell7 = row.insertCell(6);
-        
+
         cell1.innerHTML = ind;
         cell2.innerHTML = postalCode;
         cell3.innerHTML = address;
         cell4.innerHTML = unitNumber;
         cell5.innerHTML = purchasePrice;
-        
+
         var viewTenantDetailsButton = document.createElement("button");
         viewTenantDetailsButton.className = "btn btn-primary";
-        
+
         viewTenantDetailsButton.id = ind;
         viewTenantDetailsButton.innerHTML = "View Tenant Details";
         viewTenantDetailsButton.onclick = function () {
@@ -417,21 +482,20 @@ export default {
         editRentalDetailsButton.id = ind;
         editRentalDetailsButton.innerHTML = "Edit Rental Details";
         editRentalDetailsButton.onclick = function () {
-          editRentalDetails();
+          editRentalDetails(ind - 1);
         };
         cell7.appendChild(editRentalDetailsButton);
-        
-        ind +=1;
+
+        ind += 1;
       }
 
-    function showTenantDetails(){
+      function showTenantDetails(id) {
+        alert(id)
+      }
 
-    }
-
-    function editRentalDetails(){
-
-    }
-      
+      function editRentalDetails(id) {
+        alert(id);
+      }
     },
     addMonths(date, m) {
       return moment(date).add(m, "months").format("YYYY-MM-DD");
@@ -457,26 +521,25 @@ export default {
       }
       // console.log(rentals);
       await updateDoc(ref, { rentals: rentals });
-      console.log("updated number of months rental unpaid!")
+      console.log("updated number of months rental unpaid!");
     },
 
     async saveRental() {
       // Validation of inputs property details
-      console.log(String(this.postalCode).length)
+      console.log(String(this.postalCode).length);
       if (String(this.postalCode).length !== 6) {
-        alert("Please enter a valid postal code")
+        alert("Please enter a valid postal code");
         return;
-      } else if (!this.address ) {
-        alert("Please enter a valid address")
+      } else if (!this.address) {
+        alert("Please enter a valid address");
         return;
       } else if (!this.unitNumber) {
-        alert("Please enter a valid unit number")
+        alert("Please enter a valid unit number");
         return;
       } else if (!this.purchasePrice) {
-        alert("Please enter a valid purchase price")
+        alert("Please enter a valid purchase price");
         return;
       }
-
 
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
@@ -497,7 +560,6 @@ export default {
       long = result.LONGITUDE;
 
       // const docSnap = await getDoc(ref);
-      
 
       const docData = {
         // rentalId: docSnap.data().rentals.length,
@@ -567,7 +629,6 @@ export default {
         });
       }
 
-      
       document.getElementById("addRentalForm").reset();
       this.updateUnpaid();
       await this.displayRentals();
@@ -578,7 +639,6 @@ export default {
 
 
 <style scoped>
-
 #newRentalBtn {
   display: flex;
   flex-direction: row;
