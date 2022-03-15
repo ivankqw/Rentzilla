@@ -25,8 +25,6 @@
     </tr>
   </table>
 
-
-
   <h1 class="header">Rent</h1>
   <table id="outstandingRentTable" class="auto-index">
     <tr id="outstandingRentTableHeader">
@@ -37,7 +35,6 @@
     </tr>
   </table>
 
-  
   <!-- Modal -->
   <div class="modal" id="newRentalModal" aria-hidden="true">
     <div class="modal-dialog modal-xl" data-bs-backdrop="static">
@@ -100,12 +97,14 @@
                 class="form-control"
                 id="firstName1"
                 placeholder="First Name"
+                v-model="firstName1"
               />
               <input
                 type="text"
                 class="form-control"
                 id="lastName1"
                 placeholder="Last Name"
+                v-model="lastName1"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -114,16 +113,23 @@
                 type="date"
                 id="contractStartDate1"
                 name="contractStartDate"
+                v-model="contractStartDate1"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
-              <input type="date" id="contractEndDate1" name="contractEndDate" />
+              <input
+                type="date"
+                id="contractEndDate1"
+                name="contractEndDate"
+                v-model="contractEndDate1"
+              />
               <input
                 type="number"
                 class="form-control"
                 id="monthlyRent1"
                 placeholder="Monthly Rent"
+                v-model="monthlyRent1"
               />
             </div>
 
@@ -272,7 +278,12 @@
               >
                 Cancel
               </button>
-              <button type="button" class="btn btn-success" v-on:click="saveRental()" data-bs-dismiss="modal">
+              <button
+                type="button"
+                class="btn btn-success"
+                v-on:click="saveRental()"
+                data-bs-dismiss="modal"
+              >
                 + Add Rental
               </button>
             </div>
@@ -285,47 +296,68 @@
 
 <script>
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { db } from '../firebase.js'
-import { getAuth } from "firebase/auth"
+import { db } from "../firebase.js";
+import { getAuth } from "firebase/auth";
+import moment from "moment";
 
 export default {
-  
   name: "MyRentals",
   data() {
     return {
       postalCode: "",
-      address: '',
-      unitNumber: '',
-      purchasePrice: ""
-    }
+      address: "",
+      unitNumber: "",
+      purchasePrice: "",
+
+      firstName1: "",
+      lastName1: "",
+      contractStartDate1: "",
+      contractEndDate1: "",
+      monthlyRent1: "",
+    };
   },
   methods: {
-    async saveRental(){
+    async saveRental() {
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
 
       const ref = doc(db, "Rentals", userEmail);
 
       // const docSnap = await getDoc(ref);
+      
+      function addMonths(date, m) {
+        return moment(date).add(m, 'months').format('YYYY-MM-DD');
+      }
 
       const docData = {
         // rentalId: docSnap.data().rentals.length,
         postalCode: this.postalCode,
         address: this.address,
         unitNumber: this.unitNumber,
-        purchasePrice: this.purchasePrice
-      }
+        purchasePrice: this.purchasePrice,
+
+        tenant1: 
+          {
+            firstName: this.firstName1,
+            lastName: this.lastName1,
+            contractStartDate: this.contractStartDate1,
+            contractEndDate: this.contractEndDate1,
+            monthlyRent: this.monthlyRent1,
+            nextPaymentDate: addMonths(this.contractStartDate1,1),
+            numberOfMonthsRentalUnpaid: 0
+            
+          },
         
+      };
+
       await updateDoc(ref, {
-        rentals: arrayUnion(docData)
-      })
+        rentals: arrayUnion(docData),
+      });
 
       document.getElementById("addRentalForm").reset();
-    }
-  }
-
+    },
+  },
 };
-
 </script>
 
 
@@ -346,7 +378,8 @@ export default {
   border-radius: 42px;
 }
 
-#rentalTable,#outstandingRentTable {
+#rentalTable,
+#outstandingRentTable {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
@@ -355,7 +388,8 @@ export default {
   top: 170px;
 }
 
-#rentalTableHeader,#outstandingRentTableHeader {
+#rentalTableHeader,
+#outstandingRentTableHeader {
   background: #e9ecef;
 }
 h1 {
@@ -384,8 +418,7 @@ label {
   float: left;
 }
 
-.form-control{
+.form-control {
   margin-bottom: 5px;
-  
 }
 </style>
