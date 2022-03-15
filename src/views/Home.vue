@@ -11,30 +11,6 @@ import { onMounted } from "vue";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
-var items = {};
-
-async function getCoordinates(postalCode) {
-  let result = await fetch(
-    `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      console.log(result);
-      return JSON.parse(result).results[0];
-    })
-    .catch((error) => {
-      console.log("error", error);
-      alert("This postal code could not be found. Try another");
-    });
-  items.lat = result.LATITUDE;
-  items.long = result.LONGITUDE;
-  console.log(items);
-
-  //this.currLatLong.long = result.LONGITUDE
-  return "hello world";
-}
-
-getCoordinates(119278);
 
 export default {
   name: "Home",
@@ -61,10 +37,10 @@ export default {
             doc(db, "Rentals", auth.currentUser.email)
           );
           rentals = rentals.data().rentals
-          console.log(rentals);
+          //console.log(rentals);
           //put all markers into the map
           for (let rental of rentals) {
-            console.log(rental);
+            //console.log(rental);
             let currLat = parseFloat(rental.latitude);
             let currLong = parseFloat(rental.longtitude);
             let currMarker = leaflet

@@ -6,29 +6,29 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { setDoc, doc, onSnapshot } from "firebase/firestore"; 
+import { setDoc, doc, onSnapshot } from "firebase/firestore";
 
 export default createStore({
   state: {
     email: null,
-    name: null
+    name: null,
   },
   mutations: {
     SET_USER(state, userObj) {
       state.email = userObj.email;
-      state.name = userObj.name; 
-    },  
+      state.name = userObj.name;
+    },
 
     CLEAR_USER(state) {
       state.email = null;
-      state.name = null
+      state.name = null;
     },
   },
   actions: {
     async addNewFirebaseUser(name, email) {
       await setDoc(doc(db, "Users", email), {
-        email: name
-      })
+        email: name,
+      });
     },
 
     async login({ commit }, details) {
@@ -40,7 +40,7 @@ export default createStore({
         switch (error.code) {
           case "auth/user-not-found":
             alert("User not found in system");
-            break;  
+            break;
           case "auth/wrong-password":
             alert("Wrong password provided");
             break;
@@ -52,13 +52,13 @@ export default createStore({
       }
 
       //get from firebase
-      const docRef = doc(db, "Users", auth.currentUser.email)
+      const docRef = doc(db, "Users", auth.currentUser.email);
       let name = null;
       onSnapshot(docRef, (doc) => {
-        name = doc.data().name
-        commit("SET_USER", {email: email, name: name});
-      })
-      
+        name = doc.data().name;
+        commit("SET_USER", { email: email, name: name });
+      });
+
       router.push("/");
     },
 
@@ -78,7 +78,9 @@ export default createStore({
       } catch (error) {
         switch (error.code) {
           case "auth/weak-password":
-            alert("Please provide a stronger password with at least 6 characters");
+            alert(
+              "Please provide a stronger password with at least 6 characters"
+            );
             break;
           case "auth/invalid-email":
             alert("Invalid email format");
@@ -97,19 +99,19 @@ export default createStore({
 
       try {
         await setDoc(doc(db, "Users", email), {
-          name: name
-        })
+          name: name,
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
 
       const userObj = {
         email: auth.currentUser.email,
-        name: name
-      }
+        name: name,
+      };
 
       commit("SET_USER", userObj);
-      console.log(auth.currentUser)
+      console.log(auth.currentUser);
       router.push("/");
     },
 
@@ -118,7 +120,14 @@ export default createStore({
         if (user === null) {
           commit("CLEAR_USER");
         } else {
-          commit("SET_USER", user);
+          //commit("SET_USER", user);
+          //get from firebase
+          const docRef = doc(db, "Users", auth.currentUser.email);
+          let name = null;
+          onSnapshot(docRef, (doc) => {
+            name = doc.data().name;
+            commit("SET_USER", { email: auth.currentUser.email, name: name });
+          });
 
           if (router.isReady() && router.currentRoute.value.path === "/login") {
             router.push("/");
