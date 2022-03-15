@@ -403,7 +403,8 @@ export default {
         cell5.innerHTML = purchasePrice;
         
         var viewTenantDetailsButton = document.createElement("button");
-        viewTenantDetailsButton.className = "bwt";
+        viewTenantDetailsButton.className = "btn btn-primary";
+        
         viewTenantDetailsButton.id = ind;
         viewTenantDetailsButton.innerHTML = "View Tenant Details";
         viewTenantDetailsButton.onclick = function () {
@@ -412,9 +413,9 @@ export default {
         cell6.appendChild(viewTenantDetailsButton);
 
         var editRentalDetailsButton = document.createElement("button");
-        editRentalDetailsButton.className = "bwt";
+        editRentalDetailsButton.className = "btn btn-warning";
         editRentalDetailsButton.id = ind;
-        editRentalDetailsButton.innerHTML = "View Tenant Details";
+        editRentalDetailsButton.innerHTML = "Edit Rental Details";
         editRentalDetailsButton.onclick = function () {
           editRentalDetails();
         };
@@ -428,48 +429,8 @@ export default {
     }
 
     function editRentalDetails(){
-      
+
     }
-      // // For each data row (coin) in portfolio
-      // z.forEach((docs) => {
-      //   let data = docs.data();
-      //   var row = table.insertRow(ind);
-
-      //   var coin = data.Coin;
-      //   var price = parseFloat(data.Buy_Price);
-      //   var quantity = data.Buy_Quantity;
-      //   var ticker = data.Ticker;
-
-      //   var cell1 = row.insertCell(0);
-      //   var cell2 = row.insertCell(1);
-      //   var cell3 = row.insertCell(2);
-      //   var cell4 = row.insertCell(3);
-      //   var cell5 = row.insertCell(4);
-      //   var cell6 = row.insertCell(5);
-      //   var cell7 = row.insertCell(6);
-      //   var cell8 = row.insertCell(7);
-
-      //   cell1.innerHTML = ind;
-      //   cell2.innerHTML = coin;
-      //   cell3.innerHTML = ticker;
-      //   cell4.innerHTML = price;
-      //   cell5.innerHTML = quantity;
-      //   cell6.innerHTML = 0;
-      //   cell7.innerHTML = 0;
-
-      //   cell7.className = "profits";
-
-      //   var bu = document.createElement("button");
-      //   bu.className = "bwt";
-      //   bu.id = String(coin);
-      //   bu.innerHTML = "Delete";
-      //   bu.onclick = function () {
-      //     deletinstrument2(user, coin);
-      //   };
-      //   cell8.appendChild(bu);
-
-      //   val(ticker);
-      //   ind += 1;
       
     },
     addMonths(date, m) {
@@ -617,6 +578,7 @@ export default {
 
 
 <style scoped>
+
 #newRentalBtn {
   display: flex;
   flex-direction: row;
