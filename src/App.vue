@@ -53,6 +53,7 @@
           </li>
           <li class="nav-item d-lg-none d-xl-none" v-if=$store.state.email>
             <button
+            
               class="btn btn-outline-dark"
               style="color: white"
               @click="$store.dispatch('logout')"
@@ -72,6 +73,7 @@
         <li class="nav-item px-2" v-if=$store.state.email>
           <button
             class="btn btn-outline-dark"
+  
             style="color: white"
             @click="$store.dispatch('logout')"
           >
@@ -146,6 +148,7 @@ export default {
   color: #2c3e50;
   margin-top: 0px;
 }
+
 
 .carousel .carousel-item {
   height: 500px;

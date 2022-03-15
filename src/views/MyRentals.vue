@@ -1,61 +1,45 @@
 <template>
   <h1 class="header">Ths is the My Rental Properties Page</h1>
-  <h3> Welcome back, {{$store.state.name}} </h3>
-  <h3> Your email is {{$store.state.email}} </h3>
+  <h3>Welcome back, {{ $store.state.name }}</h3>
+  <h3>Your email is {{ $store.state.email }}</h3>
 
   <button
     type="button"
+    id="newRentalBtn"
     class="btn btn-warning"
     data-bs-toggle="modal"
-    data-bs-target="#exampleModal"
+    data-bs-target="#newRentalModal"
   >
     + New Rental
   </button>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Postal Code</th>
-        <th scope="col">Address</th>
-        <th scope="col">Unit Number</th>
-        <th scope="col">Purchase Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>123456</td>
-        <td>Blk 123 Road A</td>
-        <td>12-23</td>
-        <td>850000</td>
-      </tr>
-    </tbody>
+  <br />
+
+  <h1 class="header">My Rental Properties</h1>
+  <table id="rentalTable" class="auto-index">
+    <tr id="rentalTableHeader">
+      <th>#</th>
+      <th>Postal Code</th>
+      <th>Address</th>
+      <th>Unit Number</th>
+      <th>Purchase Price</th>
+    </tr>
   </table>
+
+
+
   <h1 class="header">Rent</h1>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Tenant</th>
-        <th scope="col">Monthly Rent</th>
-        <th scope="col">Months Overdue</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Aditya</td>
-        <td>2000</td>
-        <td>2</td>
-      </tr>
-    </tbody>
+  <table id="outstandingRentTable" class="auto-index">
+    <tr id="outstandingRentTableHeader">
+      <th>#</th>
+      <th>Tenant Name</th>
+      <th>Monthly Rent</th>
+      <th>Months Overdue</th>
+    </tr>
   </table>
+
+  
   <!-- Modal -->
-  <div
-    class="modal"
-    id="exampleModal"
-    aria-hidden="true"
-  >
+  <div class="modal" id="newRentalModal" aria-hidden="true">
     <div class="modal-dialog modal-xl" data-bs-backdrop="static">
       <div class="modal-content">
         <div class="modal-header">
@@ -68,36 +52,33 @@
           ></button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id="addRentalForm">
             <div class="mb-3">
-              <label for="postalCode" class="form-label"
-                >Postal Code</label
-              >
+              <label for="postalCode" class="form-label">Postal Code</label>
               <input
                 type="number"
                 class="form-control"
                 id="postalCode"
                 placeholder="e.g. 123456"
+                v-model="postalCode"
               />
 
-              <label for="address" class="form-label"
-                >Address</label
-              >
+              <label for="address" class="form-label">Address</label>
               <input
                 type="text"
                 class="form-control"
                 id="address"
                 placeholder="e.g. Blk 123 Road A"
+                v-model="address"
               />
 
-              <label for="unitNumber" class="form-label"
-                >Unit Number</label
-              >
+              <label for="unitNumber" class="form-label">Unit Number</label>
               <input
                 type="text"
                 class="form-control"
                 id="unitNumber"
                 placeholder="e.g. 01-01"
+                v-model="unitNumber"
               />
 
               <label for="purchasePrice" class="form-label"
@@ -108,69 +89,193 @@
                 class="form-control"
                 id="purchasePrice"
                 placeholder="e.g. 123456"
+                v-model="purchasePrice"
               />
             </div>
 
             <div class="singleTenantDetails">
               <label class="form-label">Tenant 1:</label>
-              <input type="text" class="form-control" id="firstName1" placeholder="First Name"/>
-              <input type="text" class="form-control" id="lastName1" placeholder="Last Name"/>
-              <label for="contractStartDate" class="form-label">Contract Start Date:</label>
-              <input type="date" id="contractStartDate1" name="contractStartDate"><br>
-              <label for="contractEndDate" class="form-label">Contract End Date:</label>
-              <input type="date" id="contractEndDate1" name="contractEndDate">
-              <input type="number" class="form-control" id="monthlyRent1" placeholder="Monthly Rent"/>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName1"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                class="form-control"
+                id="lastName1"
+                placeholder="Last Name"
+              />
+              <label for="contractStartDate" class="form-label"
+                >Contract Start Date:</label
+              >
+              <input
+                type="date"
+                id="contractStartDate1"
+                name="contractStartDate"
+              /><br />
+              <label for="contractEndDate" class="form-label"
+                >Contract End Date:</label
+              >
+              <input type="date" id="contractEndDate1" name="contractEndDate" />
+              <input
+                type="number"
+                class="form-control"
+                id="monthlyRent1"
+                placeholder="Monthly Rent"
+              />
             </div>
 
             <div class="singleTenantDetails">
               <label class="form-label">Tenant 2:</label>
-              <input type="text" class="form-control" id="firstName2" placeholder="First Name"/>
-              <input type="text" class="form-control" id="lastName2" placeholder="Last Name"/>
-              <label for="contractStartDate" class="form-label">Contract Start Date:</label>
-              <input type="date" id="contractStartDate2" name="contractStartDate"><br>
-              <label for="contractEndDate" class="form-label">Contract End Date:</label>
-              <input type="date" id="contractEndDate2" name="contractEndDate">
-              <input type="number" class="form-control" id="monthlyRent2" placeholder="Monthly Rent"/>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName2"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                class="form-control"
+                id="lastName2"
+                placeholder="Last Name"
+              />
+              <label for="contractStartDate" class="form-label"
+                >Contract Start Date:</label
+              >
+              <input
+                type="date"
+                id="contractStartDate2"
+                name="contractStartDate"
+              /><br />
+              <label for="contractEndDate" class="form-label"
+                >Contract End Date:</label
+              >
+              <input type="date" id="contractEndDate2" name="contractEndDate" />
+              <input
+                type="number"
+                class="form-control"
+                id="monthlyRent2"
+                placeholder="Monthly Rent"
+              />
             </div>
 
             <div class="singleTenantDetails">
               <label class="form-label">Tenant 3:</label>
-              <input type="text" class="form-control" id="firstName3" placeholder="First Name"/>
-              <input type="text" class="form-control" id="lastName3" placeholder="Last Name"/>
-              <label for="contractStartDate" class="form-label">Contract Start Date:</label>
-              <input type="date" id="contractStartDate3" name="contractStartDate"><br>
-              <label for="contractEndDate" class="form-label">Contract End Date:</label>
-              <input type="date" id="contractEndDate3" name="contractEndDate">
-              <input type="number" class="form-control" id="monthlyRent3" placeholder="Monthly Rent"/>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName3"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                class="form-control"
+                id="lastName3"
+                placeholder="Last Name"
+              />
+              <label for="contractStartDate" class="form-label"
+                >Contract Start Date:</label
+              >
+              <input
+                type="date"
+                id="contractStartDate3"
+                name="contractStartDate"
+              /><br />
+              <label for="contractEndDate" class="form-label"
+                >Contract End Date:</label
+              >
+              <input type="date" id="contractEndDate3" name="contractEndDate" />
+              <input
+                type="number"
+                class="form-control"
+                id="monthlyRent3"
+                placeholder="Monthly Rent"
+              />
             </div>
 
             <div class="singleTenantDetails">
               <label class="form-label">Tenant 4:</label>
-              <input type="text" class="form-control" id="firstName4" placeholder="First Name"/>
-              <input type="text" class="form-control" id="lastName4" placeholder="Last Name"/>
-              <label for="contractStartDate" class="form-label">Contract Start Date:</label>
-              <input type="date" id="contractStartDate4" name="contractStartDate"><br>
-              <label for="contractEndDate" class="form-label">Contract End Date:</label>
-              <input type="date" id="contractEndDate4" name="contractEndDate">
-              <input type="number" class="form-control" id="monthlyRent4" placeholder="Monthly Rent"/>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName4"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                class="form-control"
+                id="lastName4"
+                placeholder="Last Name"
+              />
+              <label for="contractStartDate" class="form-label"
+                >Contract Start Date:</label
+              >
+              <input
+                type="date"
+                id="contractStartDate4"
+                name="contractStartDate"
+              /><br />
+              <label for="contractEndDate" class="form-label"
+                >Contract End Date:</label
+              >
+              <input type="date" id="contractEndDate4" name="contractEndDate" />
+              <input
+                type="number"
+                class="form-control"
+                id="monthlyRent4"
+                placeholder="Monthly Rent"
+              />
             </div>
 
             <div class="singleTenantDetails">
               <label class="form-label">Tenant 5:</label>
-              <input type="text" class="form-control" id="firstName5" placeholder="First Name"/>
-              <input type="text" class="form-control" id="lastName5" placeholder="Last Name"/>
-              <label for="contractStartDate" class="form-label">Contract Start Date:</label>
-              <input type="date" id="contractStartDate5" name="contractStartDate"><br>
-              <label for="contractEndDate" class="form-label">Contract End Date:</label>
-              <input type="date" id="contractEndDate5" name="contractEndDate">
-              <input type="number" class="form-control" id="monthlyRent5" placeholder="Monthly Rent"/>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName5"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                class="form-control"
+                id="lastName5"
+                placeholder="Last Name"
+              />
+              <label for="contractStartDate" class="form-label"
+                >Contract Start Date:</label
+              >
+              <input
+                type="date"
+                id="contractStartDate5"
+                name="contractStartDate"
+              /><br />
+              <label for="contractEndDate" class="form-label"
+                >Contract End Date:</label
+              >
+              <input type="date" id="contractEndDate5" name="contractEndDate" />
+              <input
+                type="number"
+                class="form-control"
+                id="monthlyRent5"
+                placeholder="Monthly Rent"
+              />
             </div>
 
             <div class="footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 10px">Cancel</button>
-              <button type="submit" class="btn btn-success">+ Add Rental</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                style="margin-right: 10px"
+              >
+                Cancel
+              </button>
+              <button type="button" class="btn btn-success" v-on:click="saveRental()" data-bs-dismiss="modal">
+                + Add Rental
+              </button>
             </div>
-            
           </form>
         </div>
       </div>
@@ -179,13 +284,80 @@
 </template>
 
 <script>
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from '../firebase.js'
+import { getAuth } from "firebase/auth"
+
 export default {
-  name: "MyRentals"
+  
+  name: "MyRentals",
+  data() {
+    return {
+      postalCode: "",
+      address: '',
+      unitNumber: '',
+      purchasePrice: ""
+    }
+  },
+  methods: {
+    async saveRental(){
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+
+      const ref = doc(db, "Rentals", userEmail);
+
+      // const docSnap = await getDoc(ref);
+
+      const docData = {
+        // rentalId: docSnap.data().rentals.length,
+        postalCode: this.postalCode,
+        address: this.address,
+        unitNumber: this.unitNumber,
+        purchasePrice: this.purchasePrice
+      }
+        
+      await updateDoc(ref, {
+        rentals: arrayUnion(docData)
+      })
+
+      document.getElementById("addRentalForm").reset();
+    }
+  }
+
 };
+
 </script>
 
 
 <style scoped>
+#newRentalBtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 12px;
+
+  position: relative;
+  height: 37px;
+  width: 200px;
+  left: 5%;
+
+  background: #ffb300;
+  border-radius: 42px;
+}
+
+#rentalTable,#outstandingRentTable {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+  left: 58px;
+  top: 170px;
+}
+
+#rentalTableHeader,#outstandingRentTableHeader {
+  background: #e9ecef;
+}
 h1 {
   /* My Rental Properties */
 
@@ -197,18 +369,23 @@ h1 {
   color: #000000;
 }
 
-.singleTenantDetails{
+.singleTenantDetails {
   width: 200px;
   float: left;
   margin: 5px;
 }
 
-.footer{
+.footer {
   float: right;
   margin-top: 10px;
 }
 
-label{
-  float: left
+label {
+  float: left;
+}
+
+.form-control{
+  margin-bottom: 5px;
+  
 }
 </style>
