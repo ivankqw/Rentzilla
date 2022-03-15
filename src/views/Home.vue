@@ -10,6 +10,7 @@ import leaflet from "leaflet";
 import { onMounted } from "vue";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.js";
+import { getAuth } from "firebase/auth";
 var items = {};
 
 async function getCoordinates(postalCode) {
@@ -39,34 +40,61 @@ export default {
   name: "Home",
 
   setup() {
+    const auth = getAuth();
     var accessToken;
-    (async() => {
-      try {
-        accessToken = await getDoc(doc(db, "Admin", "MapBoxToken"))
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-    let mymap;
-    onMounted(() => {   
-      // TODO 
-      //loop through current user's rentals and make markers
+    var rentals;
 
-      mymap = leaflet.map("mapid").setView([1.290270, 103.851959], 11.5);
-      var marker = leaflet.marker([1.29985122374074, 103.77375361287]).addTo(mymap);
-      marker.bindPopup("<b>Hello world!</b><br>Welcome to NUS").openPopup();
-      leaflet.tileLayer(
-        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXZhbmtxdyIsImEiOiJjbDBzMDR6MDAwOG5mM2NxYmJyMjQ4OGphIn0.8elCYEW3Ykk4W7oJ4AINbg",
-        {
-          attribution:
-            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-          maxZoom: 18,
-          id: "mapbox/streets-v11",
-          tileSize: 512,
-          zoomOffset: -1,
-          accessToken: accessToken,
+    (async () => {
+      try {
+        accessToken = await getDoc(doc(db, "Admin", "MapBoxToken"));
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+    let mymap;
+    onMounted(() => {
+      // TODO
+      //get all user's rentals
+      (async () => {
+        try {
+          rentals = await getDoc(
+            doc(db, "Rentals", auth.currentUser.email)
+          );
+          rentals = rentals.data().rentals
+          console.log(rentals);
+          //put all markers into the map
+          for (let rental of rentals) {
+            console.log(rental);
+            let currLat = parseFloat(rental.latitude);
+            let currLong = parseFloat(rental.longtitude);
+            let currMarker = leaflet
+          .marker([currLat, currLong])
+          .addTo(mymap);
+          currMarker.bindPopup("<h5>" + rental.address + "</h5>" 
+          +"<br>" + rental.unitNumber + "<br>" 
+          + rental.purchasePrice).openPopup();
+          }
+        } catch (error) {
+          console.log(error);
         }
-      ).addTo(mymap);
+      })();
+
+      //instantiate leaflet map
+      mymap = leaflet.map("mapid").setView([1.29027, 103.851959], 11.5);
+      leaflet
+        .tileLayer(
+          "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXZhbmtxdyIsImEiOiJjbDBzMDR6MDAwOG5mM2NxYmJyMjQ4OGphIn0.8elCYEW3Ykk4W7oJ4AINbg",
+          {
+            attribution:
+              'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: "mapbox/streets-v11",
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: accessToken,
+          }
+        )
+        .addTo(mymap);
     });
   },
 
