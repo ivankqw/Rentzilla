@@ -361,9 +361,95 @@ export default {
   },
   async mounted() {
     await this.updateUnpaid();
+    await this.displayRentals();
   },
 
   methods: {
+    async displayRentals() {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Rentals", userEmail);
+      const docSnap = await getDoc(ref);
+      const rentals = docSnap.data().rentals;
+      console.log(rentals);
+
+      let ind = 1;
+      var table = document.getElementById('rentalTable');
+      while (table.rows.length > 1) {
+        table.deleteRow(1);
+      }
+
+      for (let rental of rentals) {
+        var row = table.insertRow(ind);
+        var postalCode = rental.postalCode;
+        var address = rental.address;
+        var unitNumber = rental.unitNumber;
+        var purchasePrice = rental.purchasePrice;
+
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        
+        cell1.innerHTML = ind;
+        cell2.innerHTML = postalCode;
+        cell3.innerHTML = address;
+        cell4.innerHTML = unitNumber;
+        cell5.innerHTML = purchasePrice;
+        
+        ind +=1;
+      }
+
+      // let z = await getDocs(collection(db, user.email));
+      // let ind = 1;
+      // var tp = 0;
+      // var table = document.getElementById("portfolioTable");
+      // while (table.rows.length > 1) {
+      //   table.deleteRow(1);
+      // }
+      // // For each data row (coin) in portfolio
+      // z.forEach((docs) => {
+      //   let data = docs.data();
+      //   var row = table.insertRow(ind);
+
+      //   var coin = data.Coin;
+      //   var price = parseFloat(data.Buy_Price);
+      //   var quantity = data.Buy_Quantity;
+      //   var ticker = data.Ticker;
+
+      //   var cell1 = row.insertCell(0);
+      //   var cell2 = row.insertCell(1);
+      //   var cell3 = row.insertCell(2);
+      //   var cell4 = row.insertCell(3);
+      //   var cell5 = row.insertCell(4);
+      //   var cell6 = row.insertCell(5);
+      //   var cell7 = row.insertCell(6);
+      //   var cell8 = row.insertCell(7);
+
+      //   cell1.innerHTML = ind;
+      //   cell2.innerHTML = coin;
+      //   cell3.innerHTML = ticker;
+      //   cell4.innerHTML = price;
+      //   cell5.innerHTML = quantity;
+      //   cell6.innerHTML = 0;
+      //   cell7.innerHTML = 0;
+
+      //   cell7.className = "profits";
+
+      //   var bu = document.createElement("button");
+      //   bu.className = "bwt";
+      //   bu.id = String(coin);
+      //   bu.innerHTML = "Delete";
+      //   bu.onclick = function () {
+      //     deletinstrument2(user, coin);
+      //   };
+      //   cell8.appendChild(bu);
+
+      //   val(ticker);
+      //   ind += 1;
+      
+    },
     addMonths(date, m) {
       return moment(date).add(m, "months").format("YYYY-MM-DD");
     },
@@ -386,7 +472,7 @@ export default {
           }
         }
       }
-      console.log(rentals);
+      // console.log(rentals);
       await updateDoc(ref, { rentals: rentals });
       console.log("updated number of months rental unpaid!")
     },
@@ -501,6 +587,7 @@ export default {
       
       document.getElementById("addRentalForm").reset();
       this.updateUnpaid();
+      await this.displayRentals();
     },
   },
 };
