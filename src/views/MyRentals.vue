@@ -90,6 +90,7 @@
     :contractStartDate5="this.contractStartDate5"
     :contractEndDate5="this.contractEndDate5"
     :monthlyRent5="this.monthlyRent5"
+    :index="this.index"
   />
 
   <h1 class="header">Rent</h1>
@@ -104,13 +105,13 @@
 </template>
 
 <script>
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import RentalEditModal from "../components/RentalEditModal.vue";
 import RentalAddModal from "../components/RentalAddModal.vue";
 import { ref } from "vue";
-import rentalMixin from "../mixins/rentalMixin"
+import rentalMixin from "../mixins/rentalMixin";
 
 export default {
   name: "MyRentals",
@@ -135,6 +136,7 @@ export default {
     function editRentalDetails(id) {
       showRentalEditModal();
       var vu = this;
+      vu.index = id;
       var currRental = this.rentals[id];
       vu.address = currRental.address;
       vu.postalCode = currRental.postalCode;
@@ -233,6 +235,8 @@ export default {
 
   data() {
     return {
+      index: "",
+
       postalCode: "",
       address: "",
       unitNumber: "",
@@ -273,22 +277,16 @@ export default {
   },
   async mounted() {
     await this.updateUnpaid();
+  },
+
+  created() {
     const auth = getAuth();
     const userEmail = auth.currentUser.email;
-    
-    const ref = doc(db, "Rentals", userEmail);
-    const docSnap = await getDoc(ref);
-    const rentals = docSnap.data().rentals;
-    console.log(rentals);
-    this.rentals = rentals;
-    
-    onSnapshot(doc(db, "Rentals", userEmail)), (doc) => {
-      console.log('hello')
-      console.log(doc.data())
-      this.rentals = doc.data().rentals;
-      console.log(this.rentals);
-    }
-    
+    onSnapshot(doc(db, "Rentals", userEmail),
+    { includeMetadataChanges: true },
+      (doc) => {
+        this.rentals = doc.data().rentals;
+      });
   },
 
   methods: {
@@ -296,8 +294,7 @@ export default {
       alert(id);
     },
   },
-}
-  
+};
 </script>
 
 

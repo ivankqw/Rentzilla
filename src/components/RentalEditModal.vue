@@ -22,6 +22,7 @@
                 id="postalCode"
                 placeholder="e.g. 123456"
                 :value="postalCode"
+                @input="onPostalCodeChange"
               />
 
               <label for="address" class="form-label">Address</label>
@@ -274,7 +275,7 @@
                 type="button"
                 class="btn btn-danger"
                 data-bs-dismiss="modal"
-                @click="deleteRental(this.id)"
+                @click="deleteRental(this.index)"
                 style="margin-right: 10px"
               >
                 Delete
@@ -290,7 +291,7 @@
               <button
                 type="button"
                 class="btn btn-success"
-                v-on:click="saveRental()"
+                v-on:click="saveRental(this.index)"
                 data-bs-dismiss="modal"
               >
                 Save Rental
@@ -306,10 +307,14 @@
 <script>
 import { ref, onMounted } from "vue";
 import { Modal } from "bootstrap";
+//import {getAuth} from "firebase/auth"
+//import {doc, arrayUnion, updateDoc, setDoc} from "firebase/firestore"
+//import db from "../firebase.js"
 
 export default {
   name: "EditModal",
   props: [
+    "index",
     "postalCode",
     "address",
     "unitNumber",
@@ -346,6 +351,19 @@ export default {
     "monthlyRent5",
   ],
 
+  data() {
+    return {
+      myIndex: this.index,
+      myPostalCode: this.postalCode,
+      myAddress: this.address,
+      myUnitNumber: this.unitNumber,
+      myPurchasePrice: this.purchasePrice,
+
+      myFirstName1: this.firstName1,
+      myLastName1: this.lastName1,
+    }
+  },
+
   setup() {
     let modalEle = ref(null);
     let thisModalObj = null;
@@ -360,6 +378,127 @@ export default {
       modalEle
     }
   },
+
+  methods: {
+    onPostalCodeChange(event) {
+      this.myPostalCode = event.target.value;
+    },
+    async saveRental(index) {
+      alert(index)
+      console.log(this.myIndex);
+      console.log(this.myPostalCode);
+      console.log(this.myAddress);
+      /*
+      // Validation of inputs property details
+      console.log(String(this.postalCode).length);
+      if (String(this.postalCode).length !== 6) {
+        alert("Please enter a valid postal code");
+        return;
+      } else if (!this.address) {
+        alert("Please enter a valid address");
+        return;
+      } else if (!this.unitNumber) {
+        alert("Please enter a valid unit number");
+        return;
+      } else if (!this.purchasePrice) {
+        alert("Please enter a valid purchase price");
+        return;
+      }
+
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Rentals", userEmail);
+      var long;
+      var lat;
+
+      let result = await fetch(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${this.postalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
+      )
+        .then((response) => response.text())
+        .then((result) => {
+          console.log(result);
+          return JSON.parse(result).results[0];
+        })
+        .catch((error) => console.log("error", error));
+      lat = result.LATITUDE;
+      long = result.LONGITUDE;
+
+      const docData = {
+        postalCode: this.postalCode,
+        address: this.address,
+        unitNumber: this.unitNumber,
+        purchasePrice: this.purchasePrice,
+        longtitude: long,
+        latitude: lat,
+
+        tenants: [
+          {
+            firstName: this.firstName1,
+            lastName: this.lastName1,
+            contractStartDate: this.contractStartDate1,
+            contractEndDate: this.contractEndDate1,
+            monthlyRent: this.monthlyRent1,
+            nextPaymentDate: this.addMonths(this.contractStartDate1, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
+          {
+            firstName: this.firstName2,
+            lastName: this.lastName2,
+            contractStartDate: this.contractStartDate2,
+            contractEndDate: this.contractEndDate2,
+            monthlyRent: this.monthlyRent2,
+            nextPaymentDate: this.addMonths(this.contractStartDate2, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
+          {
+            firstName: this.firstName3,
+            lastName: this.lastName3,
+            contractStartDate: this.contractStartDate3,
+            contractEndDate: this.contractEndDate3,
+            monthlyRent: this.monthlyRent3,
+            nextPaymentDate: this.addMonths(this.contractStartDate3, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
+          {
+            firstName: this.firstName4,
+            lastName: this.lastName4,
+            contractStartDate: this.contractStartDate4,
+            contractEndDate: this.contractEndDate4,
+            monthlyRent: this.monthlyRent4,
+            nextPaymentDate: this.addMonths(this.contractStartDate4, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
+          {
+            firstName: this.firstName5,
+            lastName: this.lastName5,
+            contractStartDate: this.contractStartDate5,
+            contractEndDate: this.contractEndDate5,
+            monthlyRent: this.monthlyRent5,
+            nextPaymentDate: this.addMonths(this.contractStartDate5, 1),
+            numberOfMonthsRentalUnpaid: 0,
+          },
+        ],
+      };
+
+      try {
+        await updateDoc(ref, {
+          rentals: arrayUnion(docData),
+        });
+      } catch (error) {
+        await setDoc(ref, {
+          rentals: arrayUnion(docData),
+        });
+      }
+
+      document.getElementById("addRentalForm").reset();
+      this.updateUnpaid();
+      */
+    },
+
+    deleteRental(index) {
+      alert(index)
+    }
+  }
 };
 </script>
 

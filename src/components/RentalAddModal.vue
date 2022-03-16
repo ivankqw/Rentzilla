@@ -464,7 +464,7 @@ export default {
       }
 
       document.getElementById("addRentalForm").reset();
-      //this.updateUnpaid();
+      this.updateUnpaid();
     },
   },
 };
