@@ -14,21 +14,6 @@
   </button>
   <br />
 
-  <!---
-  <h1 class="header">My Rental Properties</h1>
-  <table id="rentalTable" class="auto-index">
-    <tr id="rentalTableHeader">
-      <th>#</th>
-      <th>Postal Code</th>
-      <th>Address</th>
-      <th>Unit Number</th>
-      <th>Purchase Price</th>
-      <th>View Tenant Details</th>
-      <th>Edit Rental Details</th>
-    </tr>
-  </table>
-  -->
-
   <div class="table-responsive">
     <table class="table table-striped table-hover">
       <thead>
@@ -72,42 +57,37 @@
     </table>
   </div>
 
-  <EditModal 
-    showEditRental = showEditRental
-    postalCode = this.postalCode
-    address = this.address
-    unitNumber = this.unitNumber
-    purchasePrice = this.purchasePrice
-
-    firstName1 = this.firstName1
-    lastName1 = this.lastName1
-    contractStartDate1 = this.contractStartDate1
-    contractEndDate1 = this.contractEndDate1
-    monthlyRent1 = this.monthlyRent1
-
-    firstName2 = this.firstName2
-    lastName2 = this.lastName2
-    contractStartDate2 = this.contractStartDate2
-    contractEndDate2 = this.contractEndDate2
-    monthlyRent2 = this.monthlyRent2
-
-    firstName3 = this.firstName3
-    lastName3 = this.lastName3
-    contractStartDate3 = this.contractStartDate3
-    contractEndDate3 = this.contractEndDate3
-    monthlyRent3 = this.monthlyRent3
-
-    firstName4 = this.firstName4
-    lastName4 = this.lastName4
-    contractStartDate4 = this.contractStartDate4
-    contractEndDate4 = this.contractEndDate4
-    monthlyRent4 = this.monthlyRent4
-
-    firstName5 = this.firstName5
-    lastName5 = this.lastName5
-    contractStartDate5 = this.contractStartDate5
-    contractEndDate5 = this.contractEndDate5
-    monthlyRent5 = this.monthlyRent5
+  <RentalEditModal
+    ref="thisModal"
+    :postalCode="this.postalCode"
+    :address="this.address"
+    :unitNumber="this.unitNumber"
+    :purchasePrice="this.purchasePrice"
+    :firstName1="this.firstName1"
+    :lastName1="this.lastName1"
+    :contractStartDate1="this.contractStartDate1"
+    :contractEndDate1="this.contractEndDate1"
+    :monthlyRent1="this.monthlyRent1"
+    :firstName2="this.firstName2"
+    :lastName2="this.lastName2"
+    :contractStartDate2="this.contractStartDate2"
+    :contractEndDate2="this.contractEndDate2"
+    :monthlyRent2="this.monthlyRent2"
+    :firstName3="this.firstName3"
+    :lastName3="this.lastName3"
+    :contractStartDate3="this.contractStartDate3"
+    :contractEndDate3="this.contractEndDate3"
+    :monthlyRent3="this.monthlyRent3"
+    :firstName4="this.firstName4"
+    :lastName4="this.lastName4"
+    :contractStartDate4="this.contractStartDate4"
+    :contractEndDate4="this.contractEndDate4"
+    :monthlyRent4="this.monthlyRent4"
+    :firstName5="this.firstName5"
+    :lastName5="this.lastName5"
+    :contractStartDate5="this.contractStartDate5"
+    :contractEndDate5="this.contractEndDate5"
+    :monthlyRent5="this.monthlyRent5"
   />
 
   <h1 class="header">Rent</h1>
@@ -420,13 +400,117 @@ import { doc, setDoc, arrayUnion, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import moment from "moment";
-import { EditModal } from '../components/EditModal.vue';
+import RentalEditModal from "../components/RentalEditModal.vue";
+import { ref } from "vue";
 
 export default {
   name: "MyRentals",
   computed: {},
   components: {
-    EditModal,
+    RentalEditModal,
+  },
+
+  setup() {
+    let thisModal = ref(null);
+    function showModal() {
+      thisModal.value.show();
+    }
+
+    function editRentalDetails(id) {
+      this.showModal();
+      var vu = this;
+      var currRental = this.rentals[id];
+      vu.address = currRental.address;
+      vu.postalCode = currRental.postalCode;
+      vu.unitNumber = currRental.unitNumber;
+      vu.purchasePrice = currRental.purchasePrice;
+      switch (currRental.tenants.length) {
+        case 1:
+          vu.firstName1 = currRental.tenants[0].firstName;
+          vu.contractStartDate1 = currRental.tenants[0].contractStartDate;
+          vu.contractEndDate1 = currRental.tenants[0].contractEndDate;
+          vu.monthlyRent1 = currRental.tenants[0].monthlyRent;
+          break;
+        case 2:
+          vu.firstName1 = currRental.tenants[0].firstName;
+          vu.firstName2 = currRental.tenants[1].firstName;
+          vu.lastName1 = currRental.tenants[0].lastName;
+          vu.lastName2 = currRental.tenants[1].lastName;
+          vu.contractStartDate1 = currRental.tenants[0].contractStartDate;
+          vu.contractStartDate2 = currRental.tenants[1].contractStartDate;
+          vu.contractEndDate1 = currRental.tenants[0].contractEndDate;
+          vu.contractEndDate2 = currRental.tenants[1].contractEndDate;
+          vu.monthlyRent1 = currRental.tenants[0].monthlyRent;
+          vu.monthlyRent2 = currRental.tenants[1].monthlyRent;
+          break;
+        case 3:
+          vu.firstName1 = currRental.tenants[0].firstName;
+          vu.firstName2 = currRental.tenants[1].firstName;
+          vu.firstName3 = currRental.tenants[2].firstName;
+          vu.lastName1 = currRental.tenants[0].lastName;
+          vu.lastName2 = currRental.tenants[1].lastName;
+          vu.lastName3 = currRental.tenants[2].lastName;
+          vu.contractStartDate1 = currRental.tenants[0].contractStartDate;
+          vu.contractStartDate2 = currRental.tenants[1].contractStartDate;
+          vu.contractStartDate3 = currRental.tenants[2].contractStartDate;
+          break;
+        case 4:
+          vu.firstName1 = currRental.tenants[0].firstName;
+          vu.firstName2 = currRental.tenants[1].firstName;
+          vu.firstName3 = currRental.tenants[2].firstName;
+          vu.firstName4 = currRental.tenants[3].firstName;
+          vu.lastName1 = currRental.tenants[0].lastName;
+          vu.lastName2 = currRental.tenants[1].lastName;
+          vu.lastName3 = currRental.tenants[2].lastName;
+          vu.lastName4 = currRental.tenants[3].lastName;
+          vu.contractStartDate1 = currRental.tenants[0].contractStartDate;
+          vu.contractStartDate2 = currRental.tenants[1].contractStartDate;
+          vu.contractStartDate3 = currRental.tenants[2].contractStartDate;
+          vu.contractStartDate4 = currRental.tenants[3].contractStartDate;
+          vu.contractEndDate1 = currRental.tenants[0].contractEndDate;
+          vu.contractEndDate2 = currRental.tenants[1].contractEndDate;
+          vu.contractEndDate3 = currRental.tenants[2].contractEndDate;
+          vu.contractEndDate4 = currRental.tenants[3].contractEndDate;
+          vu.monthlyRent1 = currRental.tenants[0].monthlyRent;
+          vu.monthlyRent2 = currRental.tenants[1].monthlyRent;
+          vu.monthlyRent3 = currRental.tenants[2].monthlyRent;
+          vu.monthlyRent4 = currRental.tenants[3].monthlyRent;
+          break;
+        case 5:
+          vu.firstName1 = currRental.tenants[0].firstName;
+          vu.firstName2 = currRental.tenants[1].firstName;
+          vu.firstName3 = currRental.tenants[2].firstName;
+          vu.firstName4 = currRental.tenants[3].firstName;
+          vu.firstName5 = currRental.tenants[4].firstName;
+          vu.lastName1 = currRental.tenants[0].lastName;
+          vu.lastName2 = currRental.tenants[1].lastName;
+          vu.lastName3 = currRental.tenants[2].lastName;
+          vu.lastName4 = currRental.tenants[3].lastName;
+          vu.lastName5 = currRental.tenants[4].lastName;
+          vu.contractStartDate1 = currRental.tenants[0].contractStartDate;
+          vu.contractStartDate2 = currRental.tenants[1].contractStartDate;
+          vu.contractStartDate3 = currRental.tenants[2].contractStartDate;
+          vu.contractStartDate4 = currRental.tenants[3].contractStartDate;
+          vu.contractStartDate5 = currRental.tenants[4].contractStartDate;
+          vu.contractEndDate1 = currRental.tenants[0].contractEndDate;
+          vu.contractEndDate2 = currRental.tenants[1].contractEndDate;
+          vu.contractEndDate3 = currRental.tenants[2].contractEndDate;
+          vu.contractEndDate4 = currRental.tenants[3].contractEndDate;
+          vu.contractEndDate5 = currRental.tenants[4].contractEndDate;
+          vu.monthlyRent1 = currRental.tenants[0].monthlyRent;
+          vu.monthlyRent2 = currRental.tenants[1].monthlyRent;
+          vu.monthlyRent3 = currRental.tenants[2].monthlyRent;
+          vu.monthlyRent4 = currRental.tenants[3].monthlyRent;
+          vu.monthlyRent5 = currRental.tenants[4].monthlyRent;
+          break;
+      }
+    }
+
+    return {
+      thisModal,
+      showModal,
+      editRentalDetails,
+    };
   },
 
   data() {
@@ -486,80 +570,6 @@ export default {
       alert(id);
     },
 
-    editRentalDetails(id) {
-      this.showEditRental = true;
-      var vu = this;
-      var currRental = this.rentals[id];
-      vu.address = currRental.address;
-      vu.postalCode = currRental.postalCode;
-      vu.unitNumber = currRental.unitNumber;
-      vu.purchasePrice = currRental.purchasePrice;
-    },
-
-    async displayRentals() {
-      const auth = getAuth();
-      const userEmail = auth.currentUser.email;
-      const ref = doc(db, "Rentals", userEmail);
-      const docSnap = await getDoc(ref);
-      const rentals = docSnap.data().rentals;
-
-      let ind = 1;
-      var table = document.getElementById("rentalTable");
-      while (table.rows.length > 1) {
-        table.deleteRow(1);
-      }
-
-      for (let rental of rentals) {
-        var row = table.insertRow(ind);
-        var postalCode = rental.postalCode;
-        var address = rental.address;
-        var unitNumber = rental.unitNumber;
-        var purchasePrice = rental.purchasePrice;
-
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        var cell6 = row.insertCell(5);
-        var cell7 = row.insertCell(6);
-
-        cell1.innerHTML = ind;
-        cell2.innerHTML = postalCode;
-        cell3.innerHTML = address;
-        cell4.innerHTML = unitNumber;
-        cell5.innerHTML = purchasePrice;
-
-        var viewTenantDetailsButton = document.createElement("button");
-        viewTenantDetailsButton.className = "btn btn-primary";
-
-        viewTenantDetailsButton.id = ind;
-        viewTenantDetailsButton.innerHTML = "View Tenant Details";
-        viewTenantDetailsButton.onclick = function () {
-          showTenantDetails();
-        };
-        cell6.appendChild(viewTenantDetailsButton);
-
-        var editRentalDetailsButton = document.createElement("button");
-        editRentalDetailsButton.className = "btn btn-warning";
-        editRentalDetailsButton.id = ind;
-        editRentalDetailsButton.innerHTML = "Edit Rental Details";
-        editRentalDetailsButton.onclick = function () {
-          editRentalDetails(ind - 1);
-        };
-        cell7.appendChild(editRentalDetailsButton);
-
-        ind += 1;
-      }
-
-      function showTenantDetails(id) {
-        alert(id);
-      }
-
-      function editRentalDetails(id) {
-        alert(id);
-      }
-    },
     addMonths(date, m) {
       return moment(date).add(m, "months").format("YYYY-MM-DD");
     },

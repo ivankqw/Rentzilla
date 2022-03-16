@@ -1,7 +1,7 @@
 <template>
   <!-- Edit Rental Modal -->
-  <div class="modal" id="editRentalModal" aria-hidden="true">
-    <div class="modal-dialog modal-xl" data-bs-backdrop="static">
+  <div class="modal" id="editRentalModal" aria-hidden="true" ref="modalEle">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Edit rental</h5>
@@ -304,6 +304,9 @@
 </template>
 
 <script>
+import { ref, onMounted } from "vue";
+import { Modal } from "bootstrap";
+
 export default {
   name: "EditModal",
   props: [
@@ -342,8 +345,40 @@ export default {
     "contractEndDate5",
     "monthlyRent5",
   ],
+
+  setup() {
+    let modalEle = ref(null);
+    let thisModalObj = null;
+    onMounted(() => {
+      thisModalObj = new Modal(modalEle.value);
+    });
+    function show() {
+      thisModalObj.show();
+    }
+    return {
+      show,
+      modalEle
+    }
+  },
 };
 </script>
 
 <style>
+.singleTenantDetails {
+  width: 200px;
+  float: left;
+  margin: 5px;
+}
+.footer {
+  float: right;
+  margin-top: 10px;
+}
+
+label {
+  float: left;
+}
+
+.form-control {
+  margin-bottom: 5px;
+}
 </style>
