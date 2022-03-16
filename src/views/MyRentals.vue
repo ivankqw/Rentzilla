@@ -33,28 +33,82 @@
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-        <th>#</th>
-      <th>Postal Code</th>
-      <th>Address</th>
-      <th>Unit Number</th>
-      <th>Purchase Price</th>
-      <th>View Tenant Details</th>
-      <th>Edit Rental Details</th>
+          <th>#</th>
+          <th>Postal Code</th>
+          <th>Address</th>
+          <th>Unit Number</th>
+          <th>Purchase Price</th>
+          <th>View Tenant Details</th>
+          <th>Edit Rental Details</th>
         </tr>
-        </thead>
-        <tbody> 
-          <tr v-for="(rental, i) in rentals" :key="i">
-            <td> {{i + 1}} </td>
-            <td> {{rental.postalCode}} </td>
-            <td> {{rental.address}} </td>
-            <td> {{rental.unitNumber}} </td>
-            <td> {{rental.purchasePrice}} </td>
-            <td> <button type="button" class="btn btn-primary" @click="this.showTenantDetails(i)">View</button> </td>
-            <td> <button type="button" class="btn btn-primary" @click="this.editRentalDetails(i)">Edit</button> </td>
-          </tr>
-        </tbody>
+      </thead>
+      <tbody>
+        <tr v-for="(rental, i) in rentals" :key="i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ rental.postalCode }}</td>
+          <td>{{ rental.address }}</td>
+          <td>{{ rental.unitNumber }}</td>
+          <td>{{ rental.purchasePrice }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="this.showTenantDetails(i)"
+            >
+              View
+            </button>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="this.editRentalDetails(i)"
+            >
+              Edit
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
+
+  <EditModal 
+    showEditRental = showEditRental
+    postalCode = this.postalCode
+    address = this.address
+    unitNumber = this.unitNumber
+    purchasePrice = this.purchasePrice
+
+    firstName1 = this.firstName1
+    lastName1 = this.lastName1
+    contractStartDate1 = this.contractStartDate1
+    contractEndDate1 = this.contractEndDate1
+    monthlyRent1 = this.monthlyRent1
+
+    firstName2 = this.firstName2
+    lastName2 = this.lastName2
+    contractStartDate2 = this.contractStartDate2
+    contractEndDate2 = this.contractEndDate2
+    monthlyRent2 = this.monthlyRent2
+
+    firstName3 = this.firstName3
+    lastName3 = this.lastName3
+    contractStartDate3 = this.contractStartDate3
+    contractEndDate3 = this.contractEndDate3
+    monthlyRent3 = this.monthlyRent3
+
+    firstName4 = this.firstName4
+    lastName4 = this.lastName4
+    contractStartDate4 = this.contractStartDate4
+    contractEndDate4 = this.contractEndDate4
+    monthlyRent4 = this.monthlyRent4
+
+    firstName5 = this.firstName5
+    lastName5 = this.lastName5
+    contractStartDate5 = this.contractStartDate5
+    contractEndDate5 = this.contractEndDate5
+    monthlyRent5 = this.monthlyRent5
+  />
 
   <h1 class="header">Rent</h1>
   <table id="outstandingRentTable" class="auto-index">
@@ -366,10 +420,15 @@ import { doc, setDoc, arrayUnion, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import moment from "moment";
+import { EditModal } from '../components/EditModal.vue';
 
 export default {
   name: "MyRentals",
   computed: {},
+  components: {
+    EditModal,
+  },
+
   data() {
     return {
       postalCode: "",
@@ -423,14 +482,19 @@ export default {
   },
 
   methods: {
-
     showTenantDetails(id) {
-        alert(id)
-      },
+      alert(id);
+    },
 
     editRentalDetails(id) {
-        alert(id);
-      },
+      this.showEditRental = true;
+      var vu = this;
+      var currRental = this.rentals[id];
+      vu.address = currRental.address;
+      vu.postalCode = currRental.postalCode;
+      vu.unitNumber = currRental.unitNumber;
+      vu.purchasePrice = currRental.purchasePrice;
+    },
 
     async displayRentals() {
       const auth = getAuth();
@@ -438,7 +502,6 @@ export default {
       const ref = doc(db, "Rentals", userEmail);
       const docSnap = await getDoc(ref);
       const rentals = docSnap.data().rentals;
-      //console.log(rentals);
 
       let ind = 1;
       var table = document.getElementById("rentalTable");
@@ -490,7 +553,7 @@ export default {
       }
 
       function showTenantDetails(id) {
-        alert(id)
+        alert(id);
       }
 
       function editRentalDetails(id) {
@@ -519,7 +582,6 @@ export default {
           }
         }
       }
-      // console.log(rentals);
       await updateDoc(ref, { rentals: rentals });
       console.log("updated number of months rental unpaid!");
     },
@@ -559,10 +621,7 @@ export default {
       lat = result.LATITUDE;
       long = result.LONGITUDE;
 
-      // const docSnap = await getDoc(ref);
-
       const docData = {
-        // rentalId: docSnap.data().rentals.length,
         postalCode: this.postalCode,
         address: this.address,
         unitNumber: this.unitNumber,
