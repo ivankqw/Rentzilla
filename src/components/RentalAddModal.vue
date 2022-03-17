@@ -1,7 +1,11 @@
 <template>
   <!-- Modal -->
   <div class="modal fade" id="newRentalModal" aria-hidden="true" ref="modalEle">
-    <div class="modal-dialog modal-xl" id="newRentalModalDialog" data-bs-backdrop="static">
+    <div
+      class="modal-dialog modal-xl"
+      id="newRentalModalDialog"
+      data-bs-backdrop="static"
+    >
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add new rental</h5>
@@ -20,7 +24,6 @@
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
-          
         </div>
         <div class="modal-body">
           <form id="addRentalForm">
@@ -372,14 +375,58 @@ export default {
     };
   },
   methods: {
-    closeAddRentalModal(){
-      var myModalEl = document.getElementById('newRentalModal');
+    closeAddRentalModal() {
+      this.resetAddRentalForm();
+      var myModalEl = document.getElementById("newRentalModal");
       var modal = Modal.getInstance(myModalEl);
       modal.hide();
     },
+
     resetAddRentalForm() {
-      document.getElementById("addRentalForm").reset();
+      function initialState() {
+        return {
+          postalCode: "",
+          address: "",
+          unitNumber: "",
+          purchasePrice: "",
+
+          firstName1: "",
+          lastName1: "",
+          contractStartDate1: "",
+          contractEndDate1: "",
+          monthlyRent1: "",
+
+          firstName2: "",
+          lastName2: "",
+          contractStartDate2: "",
+          contractEndDate2: "",
+          monthlyRent2: "",
+
+          firstName3: "",
+          lastName3: "",
+          contractStartDate3: "",
+          contractEndDate3: "",
+          monthlyRent3: "",
+
+          firstName4: "",
+          lastName4: "",
+          contractStartDate4: "",
+          contractEndDate4: "",
+          monthlyRent4: "",
+
+          firstName5: "",
+          lastName5: "",
+          contractStartDate5: "",
+          contractEndDate5: "",
+          monthlyRent5: "",
+
+          rentals: {},
+        };
+      }
+
+      Object.assign(this.$data, initialState());
     },
+
     validateRentalForm() {
       // Validation of inputs property details
       console.log(String(this.postalCode).length);
@@ -684,8 +731,9 @@ export default {
           rentals: arrayUnion(docData),
         });
       }
-      this.closeAddRentalModal()
       document.getElementById("addRentalForm").reset();
+      this.closeAddRentalModal();
+
       this.updateUnpaid();
     },
   },
