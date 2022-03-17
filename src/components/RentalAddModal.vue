@@ -1,10 +1,16 @@
 <template>
   <!-- Modal -->
-  <div class="modal" id="newRentalModal" aria-hidden="true" ref="modalEle">
-    <div class="modal-dialog modal-xl" data-bs-backdrop="static">
+  <div class="modal fade" id="newRentalModal" aria-hidden="true" ref="modalEle">
+    <div
+      class="modal-dialog modal-xl"
+      id="newRentalModalDialog"
+      data-bs-backdrop="static"
+    >
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add new rental</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Add New Rental</h5>
+
+          
           <button
             type="button"
             class="btn-close"
@@ -271,6 +277,14 @@
 
             <div class="footer">
               <button
+            @click="resetAddRentalForm()"
+            type="button"
+            class="btn btn-outline-secondary"
+            style="margin-right: 10px"
+          >
+            Clear All
+            </button>
+              <button
                 type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
@@ -282,7 +296,6 @@
                 type="button"
                 class="btn btn-success"
                 v-on:click="saveRental()"
-                data-bs-dismiss="modal"
               >
                 + Add Rental
               </button>
@@ -299,13 +312,15 @@ import { getAuth } from "firebase/auth";
 import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import rentalMixin from "../mixins/rentalMixin";
-import { ref, onMounted } from 'vue';
-import { Modal } from 'bootstrap';
+import { ref, onMounted } from "vue";
+import { Modal } from "bootstrap";
+
+import moment from "moment";
 
 export default {
   name: "RentalAddModal",
   mixins: [rentalMixin],
-   setup() {
+  setup() {
     let modalEle = ref(null);
     let thisModalObj = null;
     onMounted(() => {
@@ -316,8 +331,8 @@ export default {
     }
     return {
       show,
-      modalEle
-    }
+      modalEle,
+    };
   },
 
   data() {
@@ -361,20 +376,275 @@ export default {
     };
   },
   methods: {
-    async saveRental() {
+    closeAddRentalModal() {
+      this.resetAddRentalForm();
+      var myModalEl = document.getElementById("newRentalModal");
+      var modal = Modal.getInstance(myModalEl);
+      modal.hide();
+    },
+
+    resetAddRentalForm() {
+      function initialState() {
+        return {
+          postalCode: "",
+          address: "",
+          unitNumber: "",
+          purchasePrice: "",
+
+          firstName1: "",
+          lastName1: "",
+          contractStartDate1: "",
+          contractEndDate1: "",
+          monthlyRent1: "",
+
+          firstName2: "",
+          lastName2: "",
+          contractStartDate2: "",
+          contractEndDate2: "",
+          monthlyRent2: "",
+
+          firstName3: "",
+          lastName3: "",
+          contractStartDate3: "",
+          contractEndDate3: "",
+          monthlyRent3: "",
+
+          firstName4: "",
+          lastName4: "",
+          contractStartDate4: "",
+          contractEndDate4: "",
+          monthlyRent4: "",
+
+          firstName5: "",
+          lastName5: "",
+          contractStartDate5: "",
+          contractEndDate5: "",
+          monthlyRent5: "",
+
+          rentals: {},
+        };
+      }
+
+      Object.assign(this.$data, initialState());
+    },
+
+    validateRentalForm() {
       // Validation of inputs property details
       console.log(String(this.postalCode).length);
       if (String(this.postalCode).length !== 6) {
         alert("Please enter a valid postal code");
-        return;
-      } else if (!this.address) {
+        return false;
+      }
+      if (!this.address) {
         alert("Please enter a valid address");
-        return;
-      } else if (!this.unitNumber) {
-        alert("Please enter a valid unit number");
-        return;
-      } else if (!this.purchasePrice) {
+        return false;
+      }
+      if (this.unitNumber) {
+        let unit = this.unitNumber;
+        try {
+          if (unit.split("-").length !== 2) {
+            alert("Please enter a valid unit number");
+            return false;
+          } else if (
+            !/^\d+$/.test(unit.split("-")[0]) ||
+            !/^\d+$/.test(unit.split("-")[1])
+          ) {
+            alert("Please enter a valid unit number");
+            return false;
+          }
+        } catch (error) {
+          alert("Please enter a valid unit number");
+          console.log(error);
+          return false;
+        }
+      }
+      if (!this.purchasePrice) {
         alert("Please enter a valid purchase price");
+        return false;
+      }
+
+      // Validation of inputs for tenants
+      let numOfTenants = 0;
+      if (
+        this.firstName1 ||
+        this.lastName1 ||
+        this.contractStartDate1 ||
+        this.contractEndDate1 ||
+        this.monthlyRent1
+      ) {
+        if (
+          !(
+            this.firstName1 &&
+            this.lastName1 &&
+            this.contractStartDate1 &&
+            this.contractEndDate1 &&
+            this.monthlyRent1
+          )
+        ) {
+          alert(
+            "Please ensure that all details for Tenant 1 are correctly filled up"
+          );
+          return false;
+        }
+        if (
+          moment(this.contractStartDate1).isSameOrAfter(
+            moment(this.contractEndDate1)
+          )
+        ) {
+          alert(
+            "Please ensure that contract end date is after contract start date for Tenant 1"
+          );
+          return false;
+        }
+        numOfTenants += 1;
+      }
+
+      if (
+        this.firstName2 ||
+        this.lastName2 ||
+        this.contractStartDate2 ||
+        this.contractEndDate2 ||
+        this.monthlyRent2
+      ) {
+        if (
+          !(
+            this.firstName2 &&
+            this.lastName2 &&
+            this.contractStartDate2 &&
+            this.contractEndDate2 &&
+            this.monthlyRent2
+          )
+        ) {
+          alert(
+            "Please ensure that all details for Tenant 2 are correctly filled up"
+          );
+          return false;
+        }
+        if (
+          moment(this.contractStartDate2).isSameOrAfter(
+            moment(this.contractEndDate2)
+          )
+        ) {
+          alert(
+            "Please ensure that contract end date is after contract start date for Tenant 2"
+          );
+          return false;
+        }
+        numOfTenants += 1;
+      }
+
+      if (
+        this.firstName3 ||
+        this.lastName3 ||
+        this.contractStartDate3 ||
+        this.contractEndDate3 ||
+        this.monthlyRent3
+      ) {
+        if (
+          !(
+            this.firstName3 &&
+            this.lastName3 &&
+            this.contractStartDate3 &&
+            this.contractEndDate3 &&
+            this.monthlyRent3
+          )
+        ) {
+          alert(
+            "Please ensure that all details for Tenant 3 are correctly filled up"
+          );
+          return false;
+        }
+        if (
+          moment(this.contractStartDate3).isSameOrAfter(
+            moment(this.contractEndDate3)
+          )
+        ) {
+          alert(
+            "Please ensure that contract end date is after contract start date for Tenant 3"
+          );
+          return false;
+        }
+        numOfTenants += 1;
+      }
+
+      if (
+        this.firstName4 ||
+        this.lastName4 ||
+        this.contractStartDate4 ||
+        this.contractEndDate4 ||
+        this.monthlyRent4
+      ) {
+        if (
+          !(
+            this.firstName4 &&
+            this.lastName4 &&
+            this.contractStartDate4 &&
+            this.contractEndDate4 &&
+            this.monthlyRent4
+          )
+        ) {
+          alert(
+            "Please ensure that all details for Tenant 4 are correctly filled up"
+          );
+          return false;
+        }
+        if (
+          moment(this.contractStartDate4).isSameOrAfter(
+            moment(this.contractEndDate4)
+          )
+        ) {
+          alert(
+            "Please ensure that contract end date is after contract start date for Tenant 4"
+          );
+          return false;
+        }
+        numOfTenants += 1;
+      }
+
+      if (
+        this.firstName5 ||
+        this.lastName5 ||
+        this.contractStartDate5 ||
+        this.contractEndDate5 ||
+        this.monthlyRent5
+      ) {
+        if (
+          !(
+            this.firstName5 &&
+            this.lastName5 &&
+            this.contractStartDate5 &&
+            this.contractEndDate5 &&
+            this.monthlyRent5
+          )
+        ) {
+          alert(
+            "Please ensure that all details for Tenant 5 are correctly filled up"
+          );
+          return false;
+        }
+        if (
+          moment(this.contractStartDate5).isSameOrAfter(
+            moment(this.contractEndDate5)
+          )
+        ) {
+          alert(
+            "Please ensure that contract end date is after contract start date for Tenant 5"
+          );
+          return false;
+        }
+        numOfTenants += 1;
+      }
+
+      if (numOfTenants === 0) {
+        alert("Please ensure that there is at least one tenant");
+        return false;
+      }
+
+      return true;
+    },
+
+    async saveRental() {
+      if (!this.validateRentalForm()) {
         return;
       }
 
@@ -462,8 +732,9 @@ export default {
           rentals: arrayUnion(docData),
         });
       }
-
       document.getElementById("addRentalForm").reset();
+      this.closeAddRentalModal();
+
       this.updateUnpaid();
     },
   },
@@ -471,4 +742,8 @@ export default {
 </script>
 
 <style>
+.form-control {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 </style>

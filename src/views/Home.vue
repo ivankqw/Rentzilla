@@ -33,22 +33,42 @@ export default {
       //get all user's rentals
       (async () => {
         try {
-          rentals = await getDoc(
-            doc(db, "Rentals", auth.currentUser.email)
-          );
-          rentals = rentals.data().rentals
-          //console.log(rentals);
+          rentals = await getDoc(doc(db, "Rentals", auth.currentUser.email));
+          rentals = rentals.data().rentals;
+
           //put all markers into the map
           for (let rental of rentals) {
+            // Get tenant names
+            let allTenantsNames = "";
+            for (let tenant of rental.tenants) {
+              console.log(tenant);
+              allTenantsNames += tenant.firstName
+                ? tenant.firstName +
+                  " " +
+                  tenant.lastName +
+                  " ($" +
+                  tenant.monthlyRent +
+                  ")" +
+                  ", "
+                : "";
+            }
             //console.log(rental);
             let currLat = parseFloat(rental.latitude);
             let currLong = parseFloat(rental.longtitude);
-            let currMarker = leaflet
-          .marker([currLat, currLong])
-          .addTo(mymap);
-          currMarker.bindPopup("<h5>" + rental.address + "</h5>" 
-          +"<br>" + rental.unitNumber + "<br>" 
-          + rental.purchasePrice).openPopup();
+            let currMarker = leaflet.marker([currLat, currLong]).addTo(mymap);
+            currMarker
+              .bindPopup(
+                "<h5>" +
+                  rental.address +
+                  "</h5>" +
+                  "<br>" +
+                  rental.unitNumber +
+                  "<br>" +
+                  rental.purchasePrice +
+                  "<br> Tenants: " +
+                  allTenantsNames.slice(0, -2)
+              )
+              .openPopup();
           }
         } catch (error) {
           console.log("home error", error);
