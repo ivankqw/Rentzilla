@@ -1,7 +1,7 @@
 <template>
   <!-- Modal -->
   <div class="modal fade" id="newRentalModal" aria-hidden="true" ref="modalEle">
-    <div class="modal-dialog modal-xl" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl" id="newRentalModalDialog" data-bs-backdrop="static">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add new rental</h5>
@@ -20,6 +20,7 @@
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
+          
         </div>
         <div class="modal-body">
           <form id="addRentalForm">
@@ -291,7 +292,6 @@
                 type="button"
                 class="btn btn-success"
                 v-on:click="saveRental()"
-                data-bs-dismiss="modal"
               >
                 + Add Rental
               </button>
@@ -310,6 +310,7 @@ import { db } from "../firebase.js";
 import rentalMixin from "../mixins/rentalMixin";
 import { ref, onMounted } from "vue";
 import { Modal } from "bootstrap";
+
 import moment from "moment";
 
 export default {
@@ -371,6 +372,11 @@ export default {
     };
   },
   methods: {
+    closeAddRentalModal(){
+      var myModalEl = document.getElementById('newRentalModal');
+      var modal = Modal.getInstance(myModalEl);
+      modal.hide();
+    },
     resetAddRentalForm() {
       document.getElementById("addRentalForm").reset();
     },
@@ -678,7 +684,7 @@ export default {
           rentals: arrayUnion(docData),
         });
       }
-
+      this.closeAddRentalModal()
       document.getElementById("addRentalForm").reset();
       this.updateUnpaid();
     },
