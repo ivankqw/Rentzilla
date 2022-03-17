@@ -1,6 +1,9 @@
 <template>
-  <h1>News</h1>
   <div class="container">
+    <h1>News</h1>
+  <button type="button" class="btn btn-lg btn-outline-danger">Business</button>
+  <button type="button" class="btn btn-lg btn-outline-warning">Health</button>
+  <br><br>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="(article, index) in articlesTop" :key="index" class="col">
         <a :href="article.url" target="_blank">
