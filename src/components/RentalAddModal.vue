@@ -10,7 +10,6 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add New Rental</h5>
 
-          
           <button
             type="button"
             class="btn-close"
@@ -39,7 +38,7 @@
                 v-model="address"
               />
 
-              <label for="unitNumber" class="form-label">Unit Number</label>
+              <label for="unitNumber" class="form-label">Unit Number (Enter 'x' if no unit number)</label>
               <input
                 type="text"
                 class="form-control"
@@ -277,13 +276,13 @@
 
             <div class="footer">
               <button
-            @click="resetAddRentalForm()"
-            type="button"
-            class="btn btn-outline-secondary"
-            style="margin-right: 10px"
-          >
-            Clear All
-            </button>
+                @click="resetAddRentalForm()"
+                type="button"
+                class="btn btn-outline-secondary"
+                style="margin-right: 10px"
+              >
+                Clear All
+              </button>
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -309,7 +308,7 @@
 
 <script>
 import { getAuth } from "firebase/auth";
-import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, setDoc, arrayUnion, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import rentalMixin from "../mixins/rentalMixin";
 import { ref, onMounted } from "vue";
@@ -428,9 +427,9 @@ export default {
       Object.assign(this.$data, initialState());
     },
 
-    validateRentalForm() {
+    async validateRentalForm() {
       // Validation of inputs property details
-      console.log(String(this.postalCode).length);
+      
       if (String(this.postalCode).length !== 6) {
         alert("Please enter a valid postal code");
         return false;
@@ -439,7 +438,11 @@ export default {
         alert("Please enter a valid address");
         return false;
       }
-      if (this.unitNumber) {
+      if (!this.unitNumber) {
+        alert("Please enter a valid unit number");
+        return false;
+      } else if (this.unitNumber.toLowerCase() !== "x") {
+      
         let unit = this.unitNumber;
         try {
           if (unit.split("-").length !== 2) {
@@ -458,6 +461,7 @@ export default {
           return false;
         }
       }
+
       if (!this.purchasePrice) {
         alert("Please enter a valid purchase price");
         return false;
@@ -640,14 +644,49 @@ export default {
         return false;
       }
 
+      async function findDuplicateRentals(postalCode, unitNumber) {
+        const auth = getAuth();
+        const userEmail = auth.currentUser.email;
+        const ref = doc(db, "Rentals", userEmail);
+        const docSnap = await getDoc(ref);
+        let rentals = docSnap.data().rentals;
+
+        rentals = rentals.filter((rental) => rental.postalCode == postalCode);
+        
+        if (rentals.length == 0) {
+          return false;
+        } else if (rentals.length == 1) {
+          if (rentals[0].unitNumber === 'x') {
+            // Landed
+            return true;
+          } else {
+            // Not landed
+            return rentals[0].unitNumber == unitNumber;
+          }
+        } else {
+          // rentals now all same postal code
+          rentals = rentals.filter((rental) => rental.unitNumber == unitNumber)
+          if (rentals.length >= 1) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      }
+      let duplicatesPresent = await findDuplicateRentals(this.postalCode, this.unitNumber)
+      if (duplicatesPresent) {
+        alert("Duplicate rental found with postal code " + this.postalCode + " and unit number " + this.unitNumber)
+        return false;
+      }
       return true;
     },
 
     async saveRental() {
-      if (!this.validateRentalForm()) {
+      let valid = await this.validateRentalForm();
+      if (!valid) {
         return;
       }
-
+      console.log("saving rental")
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Rentals", userEmail);
