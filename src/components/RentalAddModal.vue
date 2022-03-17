@@ -8,16 +8,9 @@
     >
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add new rental</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Add New Rental</h5>
 
-          <button
-            @click="resetAddRentalForm()"
-            type="button"
-            class="btn btn-secondary"
-            style="margin-left: 10px"
-          >
-            Clear All
-          </button>
+          
           <button
             type="button"
             class="btn-close"
@@ -283,6 +276,14 @@
             </div>
 
             <div class="footer">
+              <button
+            @click="resetAddRentalForm()"
+            type="button"
+            class="btn btn-outline-secondary"
+            style="margin-right: 10px"
+          >
+            Clear All
+            </button>
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -741,4 +742,8 @@ export default {
 </script>
 
 <style>
+.form-control {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 </style>

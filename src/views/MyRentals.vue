@@ -1,7 +1,10 @@
 <template>
-  <h1 class="header">Ths is the My Rental Properties Page</h1>
-  <h3>Welcome back, {{ $store.state.name }}</h3>
-  <h3>Your email is {{ $store.state.email }}</h3>
+  <h1 class="header">My Rentals</h1>
+  <!-- <h3>Welcome back, {{ $store.state.name }}</h3> -->
+  <!-- <h3>Your email is {{ $store.state.email }}</h3> -->
+
+  <h2 class="header">Rental Properties</h2>
+  <br /><br />
 
   <button
     type="button"
@@ -17,9 +20,9 @@
   <RentalAddModal ref="rentalModal" />
 
   <div class="table-responsive">
-    <table class="table table-striped table-hover">
+    <table class="table table-hover">
       <thead>
-        <tr>
+        <tr class="table-light">
           <th>#</th>
           <th>Postal Code</th>
           <th>Address</th>
@@ -39,7 +42,9 @@
           <td>
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-primary btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#tenantsModal"
               @click="this.showTenantDetails(i)"
             >
               View
@@ -48,7 +53,7 @@
           <td>
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-primary btn-sm"
               @click="this.editRentalDetails(i)"
             >
               Edit
@@ -57,6 +62,69 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="tenantsModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Tenants</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">          
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr class="table-light">
+                  
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Contract Start Date</th>
+                  <th>Contract End Date</th>
+                  <th>Monthly Rent</th>
+                  <th>Next Payment Date</th>
+                  <th>Outstanding rental (months)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(tenant, i) in this.currTenantsArrayClean" :key="i">
+          
+                  <td>{{ tenant.firstName }}</td>
+                  <td>{{ tenant.lastName }}</td>
+                  <td>{{ tenant.contractStartDate }}</td>
+                  <td>{{ tenant.contractEndDate }}</td>
+                  <td>{{ "$" +  tenant.monthlyRent }}</td>
+                  <td>{{ tenant.nextPaymentDate }}</td>
+                  <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
+                  
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <RentalEditModal
@@ -93,7 +161,8 @@
     :index="this.index"
   />
 
-  <h1 class="header">Rent</h1>
+  <h2 class="header">Rent</h2>
+  <br /><br />
   <table id="outstandingRentTable" class="auto-index">
     <tr id="outstandingRentTableHeader">
       <th>#</th>
@@ -105,7 +174,7 @@
 </template>
 
 <script>
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import RentalEditModal from "../components/RentalEditModal.vue";
@@ -115,7 +184,15 @@ import rentalMixin from "../mixins/rentalMixin";
 
 export default {
   name: "MyRentals",
-  computed: {},
+  computed: {
+    currTenantsArrayClean() {
+      return this.currTenants.filter(
+        function (tenant) {
+          return tenant.firstName !== "";
+        }
+      )
+    }
+  },
   mixins: [rentalMixin],
   components: {
     RentalEditModal,
@@ -273,6 +350,7 @@ export default {
       monthlyRent5: "",
 
       rentals: {},
+      currTenants: [],
     };
   },
   async mounted() {
@@ -282,16 +360,24 @@ export default {
   created() {
     const auth = getAuth();
     const userEmail = auth.currentUser.email;
-    onSnapshot(doc(db, "Rentals", userEmail),
-    { includeMetadataChanges: true },
+    onSnapshot(
+      doc(db, "Rentals", userEmail),
+      { includeMetadataChanges: true },
       (doc) => {
         this.rentals = doc.data().rentals;
-      });
+      }
+    );
   },
 
   methods: {
-    showTenantDetails(id) {
-      alert(id);
+    async showTenantDetails(id) {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Rentals", userEmail);
+      const docSnap = await getDoc(ref);
+      const rentals = docSnap.data().rentals;
+      console.log(rentals[id].tenants);
+      this.currTenants = rentals[id].tenants;
     },
   },
 };
@@ -334,10 +420,16 @@ h1 {
 
   font-style: normal;
   font-weight: 700;
-  font-size: 30px;
+  font-size: 40px;
   line-height: 50px;
 
   color: #000000;
+}
+
+h2 {
+  float: left;
+  font-weight: bold;
+  margin-left: 30px;
 }
 
 .singleTenantDetails {
@@ -353,9 +445,5 @@ h1 {
 
 label {
   float: left;
-}
-
-.form-control {
-  margin-bottom: 5px;
 }
 </style>
