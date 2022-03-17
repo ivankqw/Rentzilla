@@ -43,7 +43,7 @@ export default {
             // Get tenant names
             let allTenantsNames = "";
             for (let tenant of rental.tenants) {
-              console.log(tenant);
+              // console.log(tenant);
               allTenantsNames += tenant.firstName
                 ? tenant.firstName +
                   " " +
