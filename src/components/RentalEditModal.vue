@@ -460,10 +460,10 @@ export default {
       this.myLastName1 = event.target.value;
     },
     onContractStart1Change(event) {
-      this.myContractStart1 = event.target.value;
+      this.myContractStartDate1 = event.target.value;
     },
     onContractEnd1Change(event) {
-      this.myContractEnd1 = event.target.value;
+      this.myContractEndDate1 = event.target.value;
     },
     onMonthlyRent1Change(event) {
       this.myMonthlyRent1 = event.target.value;
@@ -475,10 +475,10 @@ export default {
       this.myLastName2 = event.target.value;
     },
     onContractStart2Change(event) {
-      this.myContractStart2 = event.target.value;
+      this.myContractStartDate2 = event.target.value;
     },
     onContractEnd2Change(event) {
-      this.myContractEnd2 = event.target.value;
+      this.myContractEndDate2 = event.target.value;
     },
     onMonthlyRent2Change(event) {
       this.myMonthlyRent2 = event.target.value;
@@ -490,10 +490,10 @@ export default {
       this.myLastName3 = event.target.value;
     },
     onContractStart3Change(event) {
-      this.myContractStart3 = event.target.value;
+      this.myContractStartDate3 = event.target.value;
     },
     onContractEnd3Change(event) {
-      this.myContractEnd3 = event.target.value;
+      this.myContractEndDate3 = event.target.value;
     },
     onMonthlyRent3Change(event) {
       this.myMonthlyRent3 = event.target.value;
@@ -505,10 +505,10 @@ export default {
       this.myLastName4 = event.target.value;
     },
     onContractStart4Change(event) {
-      this.myContractStart4 = event.target.value;
+      this.myContractStartDate4 = event.target.value;
     },
     onContractEnd4Change(event) {
-      this.myContractEnd4 = event.target.value;
+      this.myContractEndDate4 = event.target.value;
     },
     onMonthlyRent4Change(event) {
       this.myMonthlyRent4 = event.target.value;
@@ -520,10 +520,10 @@ export default {
       this.myLastName5 = event.target.value;
     },
     onContractStart5Change(event) {
-      this.myContractStart5 = event.target.value;
+      this.myContractStartDate5 = event.target.value;
     },
     onContractEnd5Change(event) {
-      this.myContractEnd5 = event.target.value;
+      this.myContractEndDate5 = event.target.value;
     },
     onMonthlyRent5Change(event) {
       this.myMonthlyRent5 = event.target.value;
