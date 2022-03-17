@@ -20,13 +20,13 @@
     </div>
     <br>
     <div class="row row-cols-1 row-cols-md-1 g-4 align-items-stretch">
-      <div v-for="(article,index) in articlesBottom" :key="index" class="card mb-3">
+      <div v-for="(article,index) in articlesBottom" :key="index" class="card h-100">
         <a :href="article.url" target="_blank">
         <div class="row g-0">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <img :src="article.urlToImage" class="img-fluid rounded-start" alt="..." />
           </div>
-          <div class="col-md-8">
+          <div class="col-md-9">
             <div class="card-body">
               <h5 class="card-title">{{article.title}}</h5>
               <p class="card-text">

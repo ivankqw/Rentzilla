@@ -1,4 +1,5 @@
 <template>
+<div class="container">
   <h1 class="header">My Rentals</h1>
   <!-- <h3>Welcome back, {{ $store.state.name }}</h3> -->
   <!-- <h3>Your email is {{ $store.state.email }}</h3> -->
@@ -173,6 +174,7 @@
       <th>Months Overdue</th>
     </tr>
   </table>
+  </div>
 </template>
 
 <script>
