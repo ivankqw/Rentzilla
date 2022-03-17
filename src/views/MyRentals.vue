@@ -60,6 +60,8 @@
   </div>
 
   <RentalEditModal
+    @edited="change"
+    :key="refreshEdit"
     ref="rentalEditModal"
     :postalCode="this.postalCode"
     :address="this.address"
@@ -134,7 +136,6 @@ export default {
     }
 
     function editRentalDetails(id) {
-      showRentalEditModal();
       var vu = this;
       vu.index = id;
       var currRental = this.rentals[id];
@@ -222,6 +223,7 @@ export default {
           vu.monthlyRent5 = currRental.tenants[4].monthlyRent;
           break;
       }
+      showRentalEditModal();
     }
 
     return {
@@ -235,6 +237,7 @@ export default {
 
   data() {
     return {
+      refreshEdit: 0,
       index: "",
 
       postalCode: "",
@@ -282,17 +285,22 @@ export default {
   created() {
     const auth = getAuth();
     const userEmail = auth.currentUser.email;
-    onSnapshot(doc(db, "Rentals", userEmail),
-    { includeMetadataChanges: true },
+    onSnapshot(
+      doc(db, "Rentals", userEmail),
+      { includeMetadataChanges: true },
       (doc) => {
         this.rentals = doc.data().rentals;
-      });
+      }
+    );
   },
 
   methods: {
     showTenantDetails(id) {
       alert(id);
     },
+    change() {
+      this.refreshEdit += 1;
+    }
   },
 };
 </script>

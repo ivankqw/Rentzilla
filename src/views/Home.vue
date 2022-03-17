@@ -51,7 +51,7 @@ export default {
           + rental.purchasePrice).openPopup();
           }
         } catch (error) {
-          console.log(error);
+          console.log("home error", error);
         }
       })();
 

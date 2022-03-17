@@ -1,6 +1,14 @@
 <template>
   <!-- Edit Rental Modal -->
-  <div class="modal" id="editRentalModal" aria-hidden="true" ref="modalEle">
+  <div
+    class="modal"
+    id="editRentalModal"
+    aria-hidden="true"
+    ref="modalEle"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel"
+  >
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -10,6 +18,7 @@
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
+            @click="$emit('edited')"
           ></button>
         </div>
         <div class="modal-body">
@@ -32,6 +41,7 @@
                 id="address"
                 placeholder="e.g. Blk 123 Road A"
                 :value="address"
+                @input="onAddressChange"
               />
 
               <label for="unitNumber" class="form-label">Unit Number</label>
@@ -41,6 +51,7 @@
                 id="unitNumber"
                 placeholder="e.g. 01-01"
                 :value="unitNumber"
+                @input="onUnitNumberChange"
               />
 
               <label for="purchasePrice" class="form-label"
@@ -52,6 +63,7 @@
                 id="purchasePrice"
                 placeholder="e.g. 123456"
                 :value="purchasePrice"
+                @input="onPurchasePriceChange"
               />
             </div>
 
@@ -63,6 +75,7 @@
                 id="firstName1"
                 placeholder="First Name"
                 :value="firstName1"
+                @input="onFirstName1Change"
               />
               <input
                 type="text"
@@ -70,6 +83,7 @@
                 id="lastName1"
                 placeholder="Last Name"
                 :value="lastName1"
+                @input="onLastName1Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -79,6 +93,7 @@
                 id="contractStartDate1"
                 name="contractStartDate"
                 :value="contractStartDate1"
+                @input="onContractStart1Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -88,6 +103,7 @@
                 id="contractEndDate1"
                 name="contractEndDate"
                 :value="contractEndDate1"
+                @input="onContractEnd1Change"
               />
               <input
                 type="number"
@@ -95,6 +111,7 @@
                 id="monthlyRent1"
                 placeholder="Monthly Rent"
                 :value="monthlyRent1"
+                @input="onMonthlyRent1Change"
               />
             </div>
 
@@ -106,6 +123,7 @@
                 id="firstName2"
                 placeholder="First Name"
                 :value="firstName2"
+                @input="onFirstName2Change"
               />
               <input
                 type="text"
@@ -113,6 +131,7 @@
                 id="lastName2"
                 placeholder="Last Name"
                 :value="lastName2"
+                @input="onLastName2Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -122,6 +141,7 @@
                 id="contractStartDate2"
                 name="contractStartDate"
                 :value="contractStartDate2"
+                @input="onContractStartDate2Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -131,6 +151,7 @@
                 id="contractEndDate2"
                 name="contractEndDate"
                 :value="contractEndDate2"
+                @input="onContractEndDate2Change"
               />
               <input
                 type="number"
@@ -138,6 +159,7 @@
                 id="monthlyRent2"
                 placeholder="Monthly Rent"
                 :value="monthlyRent2"
+                @input="onMonthlyRent2Change"
               />
             </div>
 
@@ -149,6 +171,7 @@
                 id="firstName3"
                 placeholder="First Name"
                 :value="firstName3"
+                @input="onFirstName3Change"
               />
               <input
                 type="text"
@@ -156,6 +179,7 @@
                 id="lastName3"
                 placeholder="Last Name"
                 :value="lastName3"
+                @input="onLastName3Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -165,6 +189,7 @@
                 id="contractStartDate3"
                 name="contractStartDate"
                 :value="contractStartDate3"
+                @input="onContractStartDate3Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -174,6 +199,7 @@
                 id="contractEndDate3"
                 name="contractEndDate"
                 :value="contractEndDate3"
+                @input="onContractEndDate3Change"
               />
               <input
                 type="number"
@@ -181,6 +207,7 @@
                 id="monthlyRent3"
                 placeholder="Monthly Rent"
                 :value="monthlyRent3"
+                @input="onMonthlyRent3Change"
               />
             </div>
 
@@ -192,6 +219,7 @@
                 id="firstName4"
                 placeholder="First Name"
                 :value="firstName4"
+                @input="onFirstName4Change"
               />
               <input
                 type="text"
@@ -199,6 +227,7 @@
                 id="lastName4"
                 placeholder="Last Name"
                 :value="lastName4"
+                @input="onLastName4Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -208,6 +237,7 @@
                 id="contractStartDate4"
                 name="contractStartDate"
                 :value="contractStartDate4"
+                @input="onContractStartDate4Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -217,6 +247,7 @@
                 id="contractEndDate4"
                 name="contractEndDate"
                 :value="contractEndDate4"
+                @input="onContractEndDate4Change"
               />
               <input
                 type="number"
@@ -224,6 +255,7 @@
                 id="monthlyRent4"
                 placeholder="Monthly Rent"
                 :value="monthlyRent4"
+                @input="onMonthlyRent4Change"
               />
             </div>
 
@@ -235,6 +267,7 @@
                 id="firstName5"
                 placeholder="First Name"
                 :value="firstName5"
+                @input="onFirstName5Change"
               />
               <input
                 type="text"
@@ -242,6 +275,7 @@
                 id="lastName5"
                 placeholder="Last Name"
                 :value="lastName5"
+                @input="onLastName5Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -251,6 +285,7 @@
                 id="contractStartDate5"
                 name="contractStartDate"
                 :value="contractStartDate5"
+                @input="onContractStartDate5Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -260,6 +295,7 @@
                 id="contractEndDate5"
                 name="contractEndDate"
                 :value="contractEndDate5"
+                @input="onContractEndDate5Change"
               />
               <input
                 type="number"
@@ -267,6 +303,7 @@
                 id="monthlyRent5"
                 placeholder="Monthly Rent"
                 :value="monthlyRent5"
+                @input="onMonthlyRent5Change"
               />
             </div>
 
@@ -285,13 +322,14 @@
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
                 style="margin-right: 10px"
+                @click="$emit('edited')"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 class="btn btn-success"
-                v-on:click="saveRental(this.index)"
+                v-on:click="saveRental()"
                 data-bs-dismiss="modal"
               >
                 Save Rental
@@ -307,43 +345,40 @@
 <script>
 import { ref, onMounted } from "vue";
 import { Modal } from "bootstrap";
-//import {getAuth} from "firebase/auth"
-//import {doc, arrayUnion, updateDoc, setDoc} from "firebase/firestore"
-//import db from "../firebase.js"
+import { getAuth } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../firebase.js";
+import rentalMixin from "../mixins/rentalMixin";
 
 export default {
-  name: "EditModal",
+  name: "RentalEditModal",
+  mixins: [rentalMixin],
   props: [
     "index",
     "postalCode",
     "address",
     "unitNumber",
     "purchasePrice",
-
     "firstName1",
     "lastName1",
     "contractStartDate1",
     "contractEndDate1",
     "monthlyRent1",
-
     "firstName2",
     "lastName2",
     "contractStartDate2",
     "contractEndDate2",
     "monthlyRent2",
-
     "firstName3",
     "lastName3",
     "contractStartDate3",
     "contractEndDate3",
     "monthlyRent3",
-
     "firstName4",
     "lastName4",
     "contractStartDate4",
     "contractEndDate4",
     "monthlyRent4",
-
     "firstName5",
     "lastName5",
     "contractStartDate5",
@@ -353,15 +388,36 @@ export default {
 
   data() {
     return {
-      myIndex: this.index,
-      myPostalCode: this.postalCode,
-      myAddress: this.address,
-      myUnitNumber: this.unitNumber,
-      myPurchasePrice: this.purchasePrice,
-
-      myFirstName1: this.firstName1,
-      myLastName1: this.lastName1,
-    }
+      myPostalCode: "",
+      myAddress: "",
+      myUnitNumber: "",
+      myPurchasePrice: "",
+      myFirstName1: "",
+      myLastName1: "",
+      myContractStartDate1: "",
+      myContractEndDate1: "",
+      myMonthlyRent1: "",
+      myFirstName2: "",
+      myLastName2: "",
+      myContractStartDate2: "",
+      myContractEndDate2: "",
+      myMonthlyRent2: "",
+      myFirstName3: "",
+      myLastName3: "",
+      myContractStartDate3: "",
+      myContractEndDate3: "",
+      myMonthlyRent3: "",
+      myFirstName4: "",
+      myLastName4: "",
+      myContractStartDate4: "",
+      myContractEndDate4: "",
+      myMonthlyRent4: "",
+      myFirstName5: "",
+      myLastName5: "",
+      myContractStartDate5: "",
+      myContractEndDate5: "",
+      myMonthlyRent5: "",
+    };
   },
 
   setup() {
@@ -373,46 +429,118 @@ export default {
     function show() {
       thisModalObj.show();
     }
+    function hide() {
+      this.$emit("edited");
+      this.ModalObj.hide();
+    }
     return {
       show,
-      modalEle
-    }
+      modalEle,
+      hide,
+    };
   },
 
   methods: {
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
     },
-    async saveRental(index) {
-      alert(index)
-      console.log(this.myIndex);
-      console.log(this.myPostalCode);
-      console.log(this.myAddress);
-      /*
-      // Validation of inputs property details
-      console.log(String(this.postalCode).length);
-      if (String(this.postalCode).length !== 6) {
-        alert("Please enter a valid postal code");
-        return;
-      } else if (!this.address) {
-        alert("Please enter a valid address");
-        return;
-      } else if (!this.unitNumber) {
-        alert("Please enter a valid unit number");
-        return;
-      } else if (!this.purchasePrice) {
-        alert("Please enter a valid purchase price");
-        return;
-      }
+    onAddressChange(event) {
+      this.myAddress = event.target.value;
+    },
+    onUnitNumberChange(event) {
+      this.myUnitNumber = event.target.value;
+    },
+    onPurchasePriceChange(event) {
+      this.myPurchasePrice = event.target.value;
+    },
+    onFirstName1Change(event) {
+      this.myFirstName1 = event.target.value;
+    },
+    onLastName1Change(event) {
+      this.myLastName1 = event.target.value;
+    },
+    onContractStart1Change(event) {
+      this.myContractStart1 = event.target.value;
+    },
+    onContractEnd1Change(event) {
+      this.myContractEnd1 = event.target.value;
+    },
+    onMonthlyRent1Change(event) {
+      this.myMonthlyRent1 = event.target.value;
+    },
+    onFirstName2Change(event) {
+      this.myFirstName2 = event.target.value;
+    },
+    onLastName2Change(event) {
+      this.myLastName2 = event.target.value;
+    },
+    onContractStart2Change(event) {
+      this.myContractStart2 = event.target.value;
+    },
+    onContractEnd2Change(event) {
+      this.myContractEnd2 = event.target.value;
+    },
+    onMonthlyRent2Change(event) {
+      this.myMonthlyRent2 = event.target.value;
+    },
+    onFirstName3Change(event) {
+      this.myFirstName3 = event.target.value;
+    },
+    onLastName3Change(event) {
+      this.myLastName3 = event.target.value;
+    },
+    onContractStart3Change(event) {
+      this.myContractStart3 = event.target.value;
+    },
+    onContractEnd3Change(event) {
+      this.myContractEnd3 = event.target.value;
+    },
+    onMonthlyRent3Change(event) {
+      this.myMonthlyRent3 = event.target.value;
+    },
+    onFirstName4Change(event) {
+      this.myFirstName4 = event.target.value;
+    },
+    onLastName4Change(event) {
+      this.myLastName4 = event.target.value;
+    },
+    onContractStart4Change(event) {
+      this.myContractStart4 = event.target.value;
+    },
+    onContractEnd4Change(event) {
+      this.myContractEnd4 = event.target.value;
+    },
+    onMonthlyRent4Change(event) {
+      this.myMonthlyRent4 = event.target.value;
+    },
+    onFirstName5Change(event) {
+      this.myFirstName5 = event.target.value;
+    },
+    onLastName5Change(event) {
+      this.myLastName5 = event.target.value;
+    },
+    onContractStart5Change(event) {
+      this.myContractStart5 = event.target.value;
+    },
+    onContractEnd5Change(event) {
+      this.myContractEnd5 = event.target.value;
+    },
+    onMonthlyRent5Change(event) {
+      this.myMonthlyRent5 = event.target.value;
+    },
+    async saveRental() {
+      this.$emit("edited");
 
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Rentals", userEmail);
       var long;
       var lat;
+      var postalFind = this.myPostalCode ? this.myPostalCode : this.postalCode;
+      console.log("postalFind", postalFind);
 
       let result = await fetch(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${this.postalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
+        `https://developers.onemap.sg/commonapi/search?searchVal=${postalFind}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
       )
         .then((response) => response.text())
         .then((result) => {
@@ -424,81 +552,161 @@ export default {
       long = result.LONGITUDE;
 
       const docData = {
-        postalCode: this.postalCode,
-        address: this.address,
-        unitNumber: this.unitNumber,
-        purchasePrice: this.purchasePrice,
+        postalCode: postalFind,
+        address: this.myAddress ? this.myAddress : this.address,
+        unitNumber: this.myUnitNumber ? this.myUnitNumber : this.unitNumber,
+        purchasePrice: this.myPurchasePrice
+          ? this.myPurchasePrice
+          : this.purchasePrice,
         longtitude: long,
         latitude: lat,
 
         tenants: [
           {
-            firstName: this.firstName1,
-            lastName: this.lastName1,
-            contractStartDate: this.contractStartDate1,
-            contractEndDate: this.contractEndDate1,
-            monthlyRent: this.monthlyRent1,
-            nextPaymentDate: this.addMonths(this.contractStartDate1, 1),
+            firstName: this.myFirstName1 ? this.myFirstName1 : this.firstName1,
+            lastName: this.myLastName1 ? this.myLastName1 : this.lastName1,
+            contractStartDate: this.myContractStartDate1
+              ? this.myContractStartDate1
+              : this.contractStartDate1,
+            contractEndDate: this.myContractEndDate1
+              ? this.myContractEndDate1
+              : this.contractEndDate1,
+            monthlyRent: this.myMonthlyRent1
+              ? this.myMonthlyRent1
+              : this.monthlyRent1,
+            nextPaymentDate: this.addMonths(
+              this.myContractStartDate1
+                ? this.myContractStartDate1
+                : this.contractStartDate1,
+              1
+            ),
             numberOfMonthsRentalUnpaid: 0,
           },
           {
-            firstName: this.firstName2,
-            lastName: this.lastName2,
-            contractStartDate: this.contractStartDate2,
-            contractEndDate: this.contractEndDate2,
-            monthlyRent: this.monthlyRent2,
-            nextPaymentDate: this.addMonths(this.contractStartDate2, 1),
+            firstName: this.myFirstName2 ? this.myFirstName2 : this.firstName2,
+            lastName: this.myLastName2 ? this.myLastName2 : this.lastName2,
+            contractStartDate: this.myContractStartDate2
+              ? this.myContractStartDate2
+              : this.contractStartDate2,
+            contractEndDate: this.myContractEndDate2
+              ? this.myContractEndDate2
+              : this.contractEndDate2,
+            monthlyRent: this.myMonthlyRent2
+              ? this.myMonthlyRent2
+              : this.monthlyRent2,
+            nextPaymentDate: this.addMonths(
+              this.myContractStartDate2
+                ? this.myContractStartDate2
+                : this.contractStartDate2,
+              1
+            ),
             numberOfMonthsRentalUnpaid: 0,
           },
           {
-            firstName: this.firstName3,
-            lastName: this.lastName3,
-            contractStartDate: this.contractStartDate3,
-            contractEndDate: this.contractEndDate3,
-            monthlyRent: this.monthlyRent3,
-            nextPaymentDate: this.addMonths(this.contractStartDate3, 1),
+            firstName: this.myFirstName3 ? this.myFirstName3 : this.firstName3,
+            lastName: this.myLastName3 ? this.myLastName3 : this.lastName3,
+            contractStartDate: this.myContractStartDate3
+              ? this.myContractStartDate3
+              : this.contractStartDate3,
+            contractEndDate: this.myContractEndDate3
+              ? this.myContractEndDate3
+              : this.contractEndDate3,
+            monthlyRent: this.myMonthlyRent3
+              ? this.myMonthlyRent3
+              : this.monthlyRent3,
+            nextPaymentDate: this.addMonths(
+              this.myContractStartDate3
+                ? this.myContractStartDate3
+                : this.contractStartDate3,
+              1
+            ),
             numberOfMonthsRentalUnpaid: 0,
           },
           {
-            firstName: this.firstName4,
-            lastName: this.lastName4,
-            contractStartDate: this.contractStartDate4,
-            contractEndDate: this.contractEndDate4,
-            monthlyRent: this.monthlyRent4,
-            nextPaymentDate: this.addMonths(this.contractStartDate4, 1),
+            firstName: this.myFirstName4 ? this.myFirstName4 : this.firstName4,
+            lastName: this.myLastName4 ? this.myLastName4 : this.lastName4,
+            contractStartDate: this.myContractStartDate4
+              ? this.myContractStartDate4
+              : this.contractStartDate4,
+            contractEndDate: this.myContractEndDate4
+              ? this.myContractEndDate4
+              : this.contractEndDate4,
+            monthlyRent: this.myMonthlyRent4
+              ? this.myMonthlyRent4
+              : this.monthlyRent4,
+            nextPaymentDate: this.addMonths(
+              this.myContractStartDate4
+                ? this.myContractStartDate4
+                : this.contractStartDate4,
+              1
+            ),
             numberOfMonthsRentalUnpaid: 0,
           },
           {
-            firstName: this.firstName5,
-            lastName: this.lastName5,
-            contractStartDate: this.contractStartDate5,
-            contractEndDate: this.contractEndDate5,
-            monthlyRent: this.monthlyRent5,
-            nextPaymentDate: this.addMonths(this.contractStartDate5, 1),
+            firstName: this.myFirstName5 ? this.myFirstName5 : this.firstName5,
+            lastName: this.myLastName5 ? this.myLastName5 : this.lastName5,
+            contractStartDate: this.myContractStartDate5
+              ? this.myContractStartDate5
+              : this.contractStartDate5,
+            contractEndDate: this.myContractEndDate5
+              ? this.myContractEndDate5
+              : this.contractEndDate5,
+            monthlyRent: this.myMonthlyRent5
+              ? this.myMonthlyRent5
+              : this.monthlyRent5,
+            nextPaymentDate: this.addMonths(
+              this.myContractStartDate5
+                ? this.myContractStartDate5
+                : this.contractStartDate5,
+              1
+            ),
             numberOfMonthsRentalUnpaid: 0,
           },
         ],
       };
 
-      try {
-        await updateDoc(ref, {
-          rentals: arrayUnion(docData),
-        });
-      } catch (error) {
-        await setDoc(ref, {
-          rentals: arrayUnion(docData),
-        });
-      }
+      var newRentals;
+      await getDoc(ref)
+        .then((x) => (newRentals = x.data()))
+        .catch((error) => console.log("get", error));
+      newRentals.rentals[this.index] = docData;
 
-      document.getElementById("addRentalForm").reset();
+      setDoc(ref, {
+        rentals: newRentals.rentals,
+      })
+        .then(() => {
+          console.log("updated!", newRentals);
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+
       this.updateUnpaid();
-      */
     },
 
-    deleteRental(index) {
-      alert(index)
-    }
-  }
+    async deleteRental(index) {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Rentals", userEmail);
+      alert("deleting");
+      var newRentals;
+      await getDoc(ref)
+        .then((x) => (newRentals = x.data()))
+        .catch((error) => console.log("get", error));
+      newRentals.rentals.splice(index, 1)
+      setDoc(ref, {
+        rentals: newRentals.rentals,
+      })
+        .then(() => {
+          console.log("updated!", newRentals);
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+
+      this.updateUnpaid();
+    },
+  },
 };
 </script>
 
