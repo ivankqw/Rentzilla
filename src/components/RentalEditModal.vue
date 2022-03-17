@@ -1,7 +1,7 @@
 <template>
   <!-- Edit Rental Modal -->
   <div
-    class="modal"
+    class="modal fade"
     id="editRentalModal"
     aria-hidden="true"
     ref="modalEle"
