@@ -1,10 +1,10 @@
 <template>
-<div class="container">
-  <h1>Ths is the home page</h1>
-  <h3>Welcome back, {{ $store.state.name }}</h3>
-  <h3>Your email is {{ $store.state.email }}</h3>
-  <div id="mapid"></div>
-</div>
+  <div class="container">
+    <h1>Ths is the home page</h1>
+    <h3>Welcome back, {{ $store.state.name }}</h3>
+    <h3>Your email is {{ $store.state.email }}</h3>
+    <div id="mapid"></div>
+  </div>
 </template>
 
 <script>
@@ -31,46 +31,75 @@ export default {
     })();
     let mymap;
     onMounted(() => {
-      // TODO
       //get all user's rentals
       (async () => {
         try {
           rentals = await getDoc(doc(db, "Rentals", auth.currentUser.email));
           rentals = rentals.data().rentals;
+          console.log("rentals", rentals);
 
-          //put all markers into the map
+          //data preprocessing
+          //get all unique postal codes
+          let uniquePostalCodes = [];
+          let resultObj = {};
           for (let rental of rentals) {
-            // Get tenant names
-            let allTenantsNames = "";
-            for (let tenant of rental.tenants) {
-              console.log(tenant);
-              allTenantsNames += tenant.firstName
-                ? tenant.firstName +
-                  " " +
-                  tenant.lastName +
-                  " ($" +
-                  tenant.monthlyRent +
-                  ")" +
-                  ", "
-                : "";
+            if (!uniquePostalCodes.includes(rental.postalCode)) {
+              uniquePostalCodes.push(rental.postalCode);
+              resultObj[rental.postalCode] = {
+                latitude: rental.latitude,
+                longtitude: rental.longtitude,
+                addresses: [rental.address],
+                unitNumbers: [rental.unitNumber],
+                purchasePrices: [rental.purchasePrice],
+                tenants: [rental.tenants],
+              };
+            } else {
+              resultObj[rental.postalCode].unitNumbers.push(rental.unitNumber);
+              resultObj[rental.postalCode].purchasePrices.push(
+                rental.purchasePrice
+              );
+              resultObj[rental.postalCode].tenants.push(rental.tenants);
+              resultObj[rental.postalCode].addresses.push(rental.address);
             }
-            //console.log(rental);
-            let currLat = parseFloat(rental.latitude);
-            let currLong = parseFloat(rental.longtitude);
+          }
+          //console.log("unique", uniquePostalCodes);
+          //console.log(resultObj)
+
+          var counter = 0;
+          for (let [postalCode, values] of Object.entries(resultObj)) {
+            console.log(postalCode);
+            let currLat = parseFloat(values.latitude);
+            let currLong = parseFloat(values.longtitude);
             let currMarker = leaflet.marker([currLat, currLong]).addTo(mymap);
-            currMarker
-              .bindPopup(
-                "<h5>" +
-                  rental.address +
-                  "</h5>" +
-                  "<br>" +
-                  rental.unitNumber +
-                  "<br>" +
-                  rental.purchasePrice +
-                  "<br> Tenants: " +
-                  allTenantsNames.slice(0, -2)
-              )
-              .openPopup();
+            let currString = "";
+            while (counter < values.addresses.length) {
+              currString += "<h5>" + values.addresses[counter] + "</h5>";
+              currString +=
+                "<br>" + "Unit Number: " + values.unitNumbers[counter];
+              currString +=
+                "<br>" +
+                "Purchase Price: " +
+                values.purchasePrices[counter] +
+                "<br>";
+              var currAllTenantsNames = "";
+              for (let tenant of values.tenants[counter]) {
+                currAllTenantsNames += tenant.firstName
+                  ? tenant.firstName +
+                    " " +
+                    tenant.lastName +
+                    " ($" +
+                    tenant.monthlyRent +
+                    ")" +
+                    ", "
+                  : "";
+              }
+              currString += currAllTenantsNames;
+              currString += "<br><br>";
+              counter++;
+            }
+            counter = 0;
+
+            currMarker.bindPopup(currString).openPopup();
           }
         } catch (error) {
           console.log("home error", error);
