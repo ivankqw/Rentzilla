@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit expense</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Edit Expense</h5>
           <button
             type="button"
             class="btn-close"
@@ -15,6 +15,7 @@
         <div class="modal-body">
           <form id="editExpenseForm">
             <div class="mb-3">
+
               <label for="postalCode" class="form-label">Postal Code</label>
               <input
                 type="number"
@@ -26,7 +27,7 @@
 
 
               <label for="expenseType" class="form-label">Type of Expense</label> 
-              <select class="form-control" id="expenseType" :value="expenseType">
+              <select class="form-control" id="expenseType" :value="expenseType" @input="onExpenseTypeChange">
                 <option value="loan">Loan</option>
                 <option value="maintenance">Maintenance</option>
                 <option value="furnishing">Furnishing</option>
@@ -42,6 +43,7 @@
                 class="form-control"
                 id="expenseCost"
                 :value="expenseCost"
+                @input="onExpenseCostChange"
               />
 
               <label for="expenseDate" class="form-label"
@@ -51,6 +53,7 @@
                 type="date"
                 id="expenseDate"
                 :value="purchasePrice"
+                @input="onExpenseDateChange"
               />
             </div>
 
@@ -79,7 +82,7 @@
                 v-on:click="saveExpense(this.index)"
                 data-bs-dismiss="modal"
               >
-                Save Rental
+                Save Expense
               </button>
             </div>
           </form>
@@ -90,15 +93,19 @@
 </template>
 
 <script>
-// import { getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 // import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
-// import { db } from "../firebase.js";
+import { db } from "../firebase.js";
+import { doc, getDoc, updateDoc} from "firebase/firestore";
 import { ref, onMounted } from 'vue';
 import { Modal } from 'bootstrap';
+import expenseMixin from "../mixins/expenseMixin";
 
 export default {
   name: "ExpenseEditModal",
+  mixins: [expenseMixin],
   props: [
+    // "expenseId",
     "index",
     "postalCode",
     "expenseType",
@@ -125,6 +132,12 @@ export default {
     function show() {
       thisModalObj.show();
     }
+    /////
+    // function hide() {
+    //   this.$emit("edited");
+    //   thisModalObj.hide();
+    // }
+    /////
     return {
       show,
       modalEle
@@ -132,41 +145,87 @@ export default {
   },
 
   methods: {
+    // testbutton() {
+    //   console.log("myIndex=", this.myIndex); // why do we need this index 
+    //   console.log("myPostalCode=", this.myPostalCode);
+    //   console.log("myExpenseType=", this.myExpenseType);
+    //   console.log("myExpenseCost=", this.myExpenseCost);
+    //   console.log("myExpenseDate=", this.myExpenseDate);
+    // },
+
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
+      console.log('onPostalCodeChange, event.target.value=', event.target.value);
+      
+    },
+    onExpenseTypeChange(event) {
+      this.myExpenseType = event.target.value;
+      console.log('onExpenseTypeChange, event.target.value=', event.target.value);
+
+    },
+    onExpenseCostChange(event) {
+      this.myExpenseCost = event.target.value;
+      console.log('onExpenseCostChange, event.target.value=', event.target.value);
+
+    },
+    onExpenseDateChange(event) {
+      this.myExpenseDate = event.target.value;
+      console.log('onExpenseDateChange, event.target.value=', event.target.value);
     },
 
     async saveExpense(index) {
-      alert(index)
-      console.log(this.myIndex);
-      console.log(this.myPostalCode);
+      // alert(index)
+      console.log("CLICKED SAVE EXPENSE")
+      this.$emit("edited");
+
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Expenses", userEmail);
+      const docSnap = await getDoc(ref);
+      const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
+
+      console.log("myIndex=", this.myIndex); 
+      console.log("myPostalCode=", this.myPostalCode);
+      console.log("myExpenseType=", this.myExpenseType);
+      console.log("myExpenseCost=", this.myExpenseCost);
+      console.log("myExpenseDate=", this.myExpenseDate);
+
+      console.log('before: expenses[index].postalCode=', expenses[index].postalCode);
+
+
+      expenses[index].postalCode = this.myPostalCode;
+      expenses[index].expenseType = this.myExpenseType;
+      expenses[index].expenseCost = this.myExpenseCost;
+      expenses[index].expenseDate = this.myExpenseDate;
+
+      console.log('after: expenses[index].postalCode=', expenses[index].postalCode);
+      await updateDoc(ref, { expenses: expenses });
+
+      /** 
+      const docData = {
+        index: this.myIndex, ///
+        postalCode: this.myPostalCode,
+        expenseType: this.expenseType,
+        expenseCost: this.expenseCost,
+        expenseDate: this.expenseDate,
+      };
+      var newExpenses;
+      await getDoc(ref)
+        .then((x) => (newExpenses = x.data()))
+        .catch((error) => console.log("get", error));
+      newExpenses.expenses[this.index] = docData;
       
-      // console.log(String(this.postalCode).length);
-      // if (String(this.postalCode).length !== 6) {
-      //   alert("Please enter a valid postal code");
-      //   return;
-      // } else if (!this.expenseType) {
-      //   alert("Please choose a valid type of expense");
-      //   return;
-      // } else if (!this.expenseCost) {
-      //   alert("Please enter a valid cost");
-      //   return;
-      // } else if (!this.expenseDate) {
-      //   alert("Please enter a valid date");
-      //   return;
-      // }
+      setDoc(ref, {
+        expenses: newExpenses.expenses,
+      }).then(() => {
+          console.log("updated!", newExpenses);
+        }).catch((error) => {
+          console.log("Error", error);
+        });
+      */
 
-      // const auth = getAuth();
-      // const userEmail = auth.currentUser.email;
-      // const ref = doc(db, "Expenses", userEmail);
-
-      // const docData = {
-      //   postalCode: this.postalCode,
-      //   expenseType: this.expenseType,
-      //   expenseCost: this.expenseCost,
-      //   expenseDate: this.expenseDate,
-
-      // };
+      // this.updateExpense(); // from mixin
+    },
 
       // try {
       //   await updateDoc(ref, {
@@ -180,7 +239,7 @@ export default {
 
       // document.getElementById("addExpenseForm").reset();
       // //this.updateUnpaid();
-    },
+    
 
     deleteExpense(index) {
       alert(index)

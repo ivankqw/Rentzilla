@@ -54,6 +54,7 @@
 <!-- need to add in address and unit num -->
   <ExpenseEditModal
     ref="expenseEditModal"
+    :index="this.index" 
     :postalCode="this.postalCode"
     :expenseType="this.expenseType"
     :expenseCost="this.expenseCost"
@@ -94,11 +95,14 @@ export default {
       showExpenseEditModal();
       var vu = this;
       var currExpense = this.expenses[id];
+      vu.index = id; ///
       vu.postalCode = currExpense.postalCode;
       vu.expenseType = currExpense.expenseType;
       vu.expenseCost = currExpense.expenseCost;
       vu.expenseDate = currExpense.expenseDate;
       console.log("Inside editExpenseDetails")
+      console.log("id=", id);
+
       // switch (currRental.tenants.length) {
       //   case 1:
       //     vu.firstName1 = currRental.tenants[0].firstName;
@@ -120,6 +124,7 @@ export default {
 
   data() {
     return {
+      index: "",
       postalCode: "",
       
       expenseType: "",
