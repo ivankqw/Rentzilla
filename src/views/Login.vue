@@ -1,36 +1,54 @@
 <template>
-  <h1>Log In</h1>
-  <form @submit.prevent="login">
-    <div class="form-group">
-      <input
-        type="email"
-        v-model="loginForm.email"
-        placeholder="Your Email"
-        class="form-control form-control-lg"
-      />
+  <div>
+    <br /><br />
+    <div>
+      <div class="row row-eq-height">
+        <Welcome/>
+        <div class="col h-100 m-3">
+          <div class="card p-5">
+            <h1>Log In</h1>
+            <form @submit.prevent="login">
+              <div class="form-group">
+                <input
+                  type="email"
+                  v-model="loginForm.email"
+                  placeholder="Your Email"
+                  class="form-control form-control-lg"
+                />
+              </div>
+              <br />
+              <div class="form-group">
+                <input
+                  type="password"
+                  v-model="loginForm.password"
+                  placeholder="Password"
+                  class="form-control form-control-lg"
+                />
+              </div>
+              <br />
+              <button
+                type="submit"
+                value="Login"
+                class="btn btn-dark btn-lg btn-block"
+              >
+                Log In
+              </button>
+              <p class="forgot-password text-right mt-2 mb-4">
+                Don't have an account?
+                <router-link to="/signup">Sign Up</router-link>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <br />
-    <div class="form-group">
-      <input
-        type="password"
-        v-model="loginForm.password"
-        placeholder="Password"
-        class="form-control form-control-lg"
-      />
-    </div>
-    <br />
-    <button type="submit" value="Login" class="btn btn-dark btn-lg btn-block">
-      Log In
-    </button>
-    <p class="forgot-password text-right mt-2 mb-4">
-      Don't have an account? <router-link to="/signup">Sign Up</router-link>
-    </p>
-  </form>
+  </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import { useStore } from "vuex";
+import Welcome from "../components/Welcome"
 
 export default {
   name: "Login",
@@ -47,10 +65,13 @@ export default {
       loginForm,
     };
   },
+  components :{
+    Welcome
+  }
 };
 </script>
 
-<style>
+<style scoped>
 .carousel .carousel-item {
   height: 500px;
 }
@@ -63,4 +84,5 @@ export default {
   height: 100%;
   width: 100%;
 }
+
 </style>

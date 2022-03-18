@@ -1,43 +1,59 @@
 <template>
-  <h1>Sign Up</h1>
-  <form @submit.prevent="signup">
-    <div class="form-group">
-      <input
-        type="text"
-        v-model="signupForm.name"
-        placeholder="Your Full Name"
-        class="form-control form-control-lg"
-      />
+  <div>
+    <br /><br />
+    <div>
+      <div class="row row-eq-height">
+        <Welcome />
+        <div class="col align-self-end m-3">
+          <div class="card p-5 ">
+            <h1>Sign Up</h1>
+            <form @submit.prevent="signup">
+              <div class="form-group">
+                <input
+                  type="text"
+                  v-model="signupForm.name"
+                  placeholder="Your Full Name"
+                  class="form-control form-control-lg"
+                />
+              </div>
+              <br />
+              <div class="form-group">
+                <input
+                  type="email"
+                  v-model="signupForm.email"
+                  placeholder="Your Email"
+                  class="form-control form-control-lg"
+                />
+              </div>
+              <br />
+              <div class="form-group">
+                <input
+                  type="password"
+                  v-model="signupForm.password"
+                  placeholder="Password"
+                  class="form-control form-control-lg"
+                />
+              </div>
+              <br />
+              <button type="submit" class="btn btn-dark btn-lg btn-block">
+                Sign Up
+              </button>
+              <p class="text-right mt-2 mb-4">
+                Already have an account?
+                <router-link to="/login">Log In</router-link>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <br />
-    <div class="form-group">
-      <input
-        type="email"
-        v-model="signupForm.email"
-        placeholder="Your Email"
-        class="form-control form-control-lg"
-      />
-    </div>
-    <br />
-    <div class="form-group">
-      <input
-        type="password"
-        v-model="signupForm.password"
-        placeholder="Password"
-        class="form-control form-control-lg"
-      />
-    </div>
-    <br />
-    <button type="submit" class="btn btn-dark btn-lg btn-block">Sign Up</button>
-    <p class="text-right mt-2 mb-4">
-      Already have an account? <router-link to="/login">Log In</router-link>
-    </p>
-  </form>
+  </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import { useStore } from "vuex";
+import Welcome from "../components/Welcome";
 
 export default {
   name: "Signup",
@@ -53,6 +69,9 @@ export default {
       signupForm,
       signup,
     };
+  },
+  components: {
+    Welcome,
   },
 };
 </script>
