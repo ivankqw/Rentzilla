@@ -141,7 +141,7 @@
                 id="contractStartDate2"
                 name="contractStartDate"
                 :value="contractStartDate2"
-                @input="onContractStartDate2Change"
+                @input="onContractStart2Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -151,7 +151,7 @@
                 id="contractEndDate2"
                 name="contractEndDate"
                 :value="contractEndDate2"
-                @input="onContractEndDate2Change"
+                @input="onContractEnd2Change"
               />
               <input
                 type="number"
@@ -189,7 +189,7 @@
                 id="contractStartDate3"
                 name="contractStartDate"
                 :value="contractStartDate3"
-                @input="onContractStartDate3Change"
+                @input="onContractStart3Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -199,7 +199,7 @@
                 id="contractEndDate3"
                 name="contractEndDate"
                 :value="contractEndDate3"
-                @input="onContractEndDate3Change"
+                @input="onContractEnd3Change"
               />
               <input
                 type="number"
@@ -237,7 +237,7 @@
                 id="contractStartDate4"
                 name="contractStartDate"
                 :value="contractStartDate4"
-                @input="onContractStartDate4Change"
+                @input="onContractStart4Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -247,7 +247,7 @@
                 id="contractEndDate4"
                 name="contractEndDate"
                 :value="contractEndDate4"
-                @input="onContractEndDate4Change"
+                @input="onContractEnd4Change"
               />
               <input
                 type="number"
@@ -285,7 +285,7 @@
                 id="contractStartDate5"
                 name="contractStartDate"
                 :value="contractStartDate5"
-                @input="onContractStartDate5Change"
+                @input="onContractStart5Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -295,7 +295,7 @@
                 id="contractEndDate5"
                 name="contractEndDate"
                 :value="contractEndDate5"
-                @input="onContractEndDate5Change"
+                @input="onContractEnd5Change"
               />
               <input
                 type="number"
