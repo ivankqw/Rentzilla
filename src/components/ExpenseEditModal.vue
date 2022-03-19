@@ -15,6 +15,12 @@
         <div class="modal-body">
           <form id="editExpenseForm">
             <div class="mb-3">
+              <button type="button" @click="testbutton">test button</button>
+              <h2 :v-text="postalCode">Postal code is {{postalCode}}</h2>
+              <p :v-text="index">Index {{index}}</p>
+              <p :v-text="expenseType">Exp type {{expenseType}}</p>
+              <p :v-text="expenseCost">Exp cost {{expenseCost}}</p>
+              <p :v-text="expenseDate">Exp date {{expenseDate}}</p>
 
               <label for="postalCode" class="form-label">Postal Code</label>
               <input
@@ -96,16 +102,13 @@
 import { getAuth } from "firebase/auth";
 // import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
-import { doc, getDoc, updateDoc} from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc} from "firebase/firestore";
 import { ref, onMounted } from 'vue';
 import { Modal } from 'bootstrap';
-import expenseMixin from "../mixins/expenseMixin";
 
 export default {
   name: "ExpenseEditModal",
-  mixins: [expenseMixin],
   props: [
-    // "expenseId",
     "index",
     "postalCode",
     "expenseType",
@@ -116,7 +119,7 @@ export default {
   data() {
     return {
       myIndex: this.index,
-      myPostalCode: this.postalCode,
+      myPostalCode: this.postalCode, 
       myExpenseType: this.expenseType,
       myExpenseCost: this.expenseCost,
       myExpenseDate: this.expenseDate,
@@ -124,6 +127,7 @@ export default {
   },
 
   setup() {
+    console.log("setup");
     let modalEle = ref(null);
     let thisModalObj = null;
     onMounted(() => {
@@ -145,13 +149,13 @@ export default {
   },
 
   methods: {
-    // testbutton() {
-    //   console.log("myIndex=", this.myIndex); // why do we need this index 
-    //   console.log("myPostalCode=", this.myPostalCode);
-    //   console.log("myExpenseType=", this.myExpenseType);
-    //   console.log("myExpenseCost=", this.myExpenseCost);
-    //   console.log("myExpenseDate=", this.myExpenseDate);
-    // },
+    testbutton() {
+      console.log("myIndex=", this.myIndex); 
+      console.log("myPostalCode=", this.myPostalCode);
+      console.log("myExpenseType=", this.myExpenseType);
+      console.log("myExpenseCost=", this.myExpenseCost);
+      console.log("myExpenseDate=", this.myExpenseDate);
+    },
 
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
@@ -184,12 +188,39 @@ export default {
       const docSnap = await getDoc(ref);
       const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
 
-      console.log("myIndex=", this.myIndex); 
-      console.log("myPostalCode=", this.myPostalCode);
-      console.log("myExpenseType=", this.myExpenseType);
-      console.log("myExpenseCost=", this.myExpenseCost);
-      console.log("myExpenseDate=", this.myExpenseDate);
+      // console.log("myIndex is ''", this.index == ""); 
+      // console.log("myPostalCode is ''", this.postalCode == "");
+      // console.log("myExpenseType is ''", this.expenseType == "");
+      // console.log("myExpenseCost is ''", this.myExpenseCost == "");
+      // console.log("myExpenseDate is ''", this.myExpenseDate == "");
 
+      console.log("parents\nindex is ", this.$parent.index); 
+      console.log("postalCode is ", this.$parent.postalCode);
+      console.log("expenseType is ", this.$parent.expenseType);
+      console.log("expenseCost is ", this.$parent.myExpenseCost);
+      console.log("expenseDate is ", this.$parent.myExpenseDate);
+
+      if (this.myIndex == "") {
+        this.myIndex = this.$parent.index;
+        console.log("*");
+      }
+      if (this.myPostalCode == "") {
+        this.myPostalCode = this.$parent.postalCode;
+        console.log("**");
+      }
+      if (this.myExpenseType == "") {
+        this.myExpenseType = this.$parent.expenseType;
+        console.log("***");        
+      }
+      if (this.myExpenseCost == "") {
+        this.myExpenseCost = this.$parent.expenseCost;
+        console.log("****");        
+      }
+      if (this.myExpenseDate == "") {
+        this.myExpenseDate = this.$parent.expenseDate;
+        console.log("*****");        
+
+      }
       console.log('before: expenses[index].postalCode=', expenses[index].postalCode);
 
 
@@ -200,8 +231,17 @@ export default {
 
       console.log('after: expenses[index].postalCode=', expenses[index].postalCode);
       await updateDoc(ref, { expenses: expenses });
+      this.myPostalCode = "";
+      this.myExpenseType = "";
+      this.myExpenseCost = "";
+      this.myExpenseDate = "";
+      /* 
+      // this.onPostalCodeChange(event);
+      // this.onExpenseTypeChange(event);
+      // this.onExpenseCostChange(event);
+      // this.onExpenseDateChange(event); 
 
-      /** 
+
       const docData = {
         index: this.myIndex, ///
         postalCode: this.myPostalCode,
@@ -241,11 +281,34 @@ export default {
       // //this.updateUnpaid();
     
 
-    deleteExpense(index) {
-      alert(index)
+    async deleteExpense(index) {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Rentals", userEmail);
+      console.log("CLICKED DELETE BUTTON");
+      var newExpenses;
+      await getDoc(ref)
+        .then((x) => (newExpenses = x.data()))
+        .catch((error) => console.log("get", error));
+
+      console.log("newExp = ", newExpenses);
+      newExpenses.expenses.splice(index, 1)
+      setDoc(ref, {
+        expenses: newExpenses.expenses,
+      })
+        .then(() => {
+          console.log("updated!", newExpenses);
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+
+      // this.updateUnpaid();
     }
-  }
-};
+
+  },
+}
+
 </script>
 
 <style>

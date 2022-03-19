@@ -100,9 +100,12 @@ export default {
       vu.expenseType = currExpense.expenseType;
       vu.expenseCost = currExpense.expenseCost;
       vu.expenseDate = currExpense.expenseDate;
-      console.log("Inside editExpenseDetails")
+      console.log("CLICKED ON MAHAGE:\nInside editExpenseDetails")
       console.log("id=", id);
-
+      console.log("postalCode=", vu.postalCode);
+      console.log("expenseType=", vu.expenseType);
+      console.log("expenseCost=", vu.expenseCost);
+      console.log("expenseDate=", vu.expenseDate);
       // switch (currRental.tenants.length) {
       //   case 1:
       //     vu.firstName1 = currRental.tenants[0].firstName;
