@@ -100,7 +100,7 @@ export default {
       vu.expenseType = currExpense.expenseType;
       vu.expenseCost = currExpense.expenseCost;
       vu.expenseDate = currExpense.expenseDate;
-      console.log("CLICKED ON MAHAGE:\nInside editExpenseDetails")
+      console.log("CLICKED ON MANAGE:\nInside editExpenseDetails")
       console.log("id=", id);
       console.log("postalCode=", vu.postalCode);
       console.log("expenseType=", vu.expenseType);

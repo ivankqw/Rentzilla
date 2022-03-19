@@ -14,6 +14,8 @@
         </div>
         <div class="modal-body">
           <form id="addExpenseForm">
+            <button type="button" class="btn btn-primary" @click="testbutton">test button</button>
+
             <div class="mb-3">
               <label for="postalCode" class="form-label">Rental</label> 
               <input 
@@ -77,6 +79,7 @@
 <script>
 import { getAuth } from "firebase/auth";
 import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
+// import { doc, getDoc} from "firebase/firestore";
 import { db } from "../firebase.js";
 import { ref, onMounted } from 'vue';
 import { Modal } from 'bootstrap';
@@ -109,7 +112,29 @@ export default {
     };
   },
   methods: {
+    // async testbutton() {
+    //   const auth = getAuth();
+    //   const userEmail = auth.currentUser.email;
+    //   const ref = doc(db, "Expenses", userEmail);
+    //   const docSnap = await getDoc(ref);
+    //   const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
+    //   console.log("Test button:\nexpenses=", expenses);
+    //   console.log("expenses is arr", expenses instanceof Array );
+    // },
+
     async saveExpense() {
+      console.log("CLICKED + ADD EXPENSE")
+      
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Expenses", userEmail);
+      const docData = {
+        postalCode: this.postalCode,
+        expenseType: this.expenseType,
+        expenseCost: this.expenseCost,
+        expenseDate: this.expenseDate,
+      };
+
       // Validation of inputs property details
       console.log(String(this.postalCode).length);
       if (String(this.postalCode).length !== 6) {
@@ -126,18 +151,6 @@ export default {
         return;
       }
 
-      const auth = getAuth();
-      const userEmail = auth.currentUser.email;
-      const ref = doc(db, "Expenses", userEmail);
-
-      const docData = {
-        postalCode: this.postalCode,
-        expenseType: this.expenseType,
-        expenseCost: this.expenseCost,
-        expenseDate: this.expenseDate,
-
-      };
-
       try {
         await updateDoc(ref, {
           expenses: arrayUnion(docData),
@@ -149,7 +162,6 @@ export default {
       }
 
       document.getElementById("addExpenseForm").reset();
-      //this.updateUnpaid();
     },
   },
 };

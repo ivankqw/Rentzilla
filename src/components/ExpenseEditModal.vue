@@ -16,11 +16,11 @@
           <form id="editExpenseForm">
             <div class="mb-3">
               <button type="button" @click="testbutton">test button</button>
-              <h2 :v-text="postalCode">Postal code is {{postalCode}}</h2>
+              <!-- <h2 :v-text="postalCode">Postal code is {{postalCode}}</h2>
               <p :v-text="index">Index {{index}}</p>
               <p :v-text="expenseType">Exp type {{expenseType}}</p>
               <p :v-text="expenseCost">Exp cost {{expenseCost}}</p>
-              <p :v-text="expenseDate">Exp date {{expenseDate}}</p>
+              <p :v-text="expenseDate">Exp date {{expenseDate}}</p> -->
 
               <label for="postalCode" class="form-label">Postal Code</label>
               <input
@@ -86,7 +86,7 @@
                 type="button"
                 class="btn btn-success"
                 v-on:click="saveExpense(this.index)"
-                data-bs-dismiss="modal"
+                data-bs-dismiss="modal fade"
               >
                 Save Expense
               </button>
@@ -102,7 +102,7 @@
 import { getAuth } from "firebase/auth";
 // import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
-import { doc, getDoc, updateDoc, setDoc} from "firebase/firestore";
+import { doc, getDoc, updateDoc} from "firebase/firestore";
 import { ref, onMounted } from 'vue';
 import { Modal } from 'bootstrap';
 
@@ -116,6 +116,28 @@ export default {
     "expenseDate",
   ],
 
+  setup() {
+    console.log("setup from ExpenseEditModal.vue");
+    let modalEle = ref(null);
+    let thisModalObj = null;
+    onMounted(() => {
+      thisModalObj = new Modal(modalEle.value);
+    });
+    function show() {
+      thisModalObj.show();
+    }
+
+    // function hide() {
+    //   this.$emit("edited");
+    //   thisModalObj.hide();
+    // }
+
+    return {
+      show,
+      modalEle
+    }
+  },
+
   data() {
     return {
       myIndex: this.index,
@@ -126,27 +148,6 @@ export default {
     }
   },
 
-  setup() {
-    console.log("setup");
-    let modalEle = ref(null);
-    let thisModalObj = null;
-    onMounted(() => {
-      thisModalObj = new Modal(modalEle.value);
-    });
-    function show() {
-      thisModalObj.show();
-    }
-    /////
-    // function hide() {
-    //   this.$emit("edited");
-    //   thisModalObj.hide();
-    // }
-    /////
-    return {
-      show,
-      modalEle
-    }
-  },
 
   methods: {
     testbutton() {
@@ -178,7 +179,6 @@ export default {
     },
 
     async saveExpense(index) {
-      // alert(index)
       console.log("CLICKED SAVE EXPENSE")
       this.$emit("edited");
 
@@ -241,14 +241,6 @@ export default {
       // this.onExpenseCostChange(event);
       // this.onExpenseDateChange(event); 
 
-
-      const docData = {
-        index: this.myIndex, ///
-        postalCode: this.myPostalCode,
-        expenseType: this.expenseType,
-        expenseCost: this.expenseCost,
-        expenseDate: this.expenseDate,
-      };
       var newExpenses;
       await getDoc(ref)
         .then((x) => (newExpenses = x.data()))
@@ -264,46 +256,41 @@ export default {
         });
       */
 
-      // this.updateExpense(); // from mixin
     },
 
-      // try {
-      //   await updateDoc(ref, {
-      //     expenses: arrayUnion(docData),
-      //   });
-      // } catch (error) {
-      //   await setDoc(ref, {
-      //     expenses: arrayUnion(docData),
-      //   });
-      // }
-
-      // document.getElementById("addExpenseForm").reset();
-      // //this.updateUnpaid();
     
 
     async deleteExpense(index) {
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
-      const ref = doc(db, "Rentals", userEmail);
-      console.log("CLICKED DELETE BUTTON");
-      var newExpenses;
-      await getDoc(ref)
-        .then((x) => (newExpenses = x.data()))
-        .catch((error) => console.log("get", error));
+      const ref = doc(db, "Expenses", userEmail);
+      const docSnap = await getDoc(ref);
+      const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
+      console.log("CLICKED DELETE BUTTON\nTo delete: ", expenses[index]);
 
-      console.log("newExp = ", newExpenses);
-      newExpenses.expenses.splice(index, 1)
-      setDoc(ref, {
-        expenses: newExpenses.expenses,
-      })
-        .then(() => {
-          console.log("updated!", newExpenses);
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
+      // var newExpenses;
+      // await getDoc(ref)
+      //   .then((x) => (newExpenses = x.data()))
+      //   .catch((error) => console.log("get", error));
+      // newExpenses = expenses;
+      console.log("exp b4 = ", expenses);
+      expenses.splice(index, 1)
+      console.log("exp aft = ", expenses);
+      // await updateDoc(ref, { expenses: newExpenses });
+      await updateDoc(ref, { expenses: expenses });
 
-      // this.updateUnpaid();
+      console.log("exp finally, ", expenses);
+
+      // setDoc(ref, {
+      //   expenses: newExpenses.expenses,
+      // })
+      //   .then(() => {
+      //     console.log("updated!", newExpenses);
+      //   })
+      //   .catch((error) => {
+      //     console.log("Error", error);
+      //   });
+
     }
 
   },
