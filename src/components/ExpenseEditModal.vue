@@ -58,7 +58,7 @@
               <input
                 type="date"
                 id="expenseDate"
-                :value="purchasePrice"
+                :value="expenseDate"
                 @input="onExpenseDateChange"
               />
             </div>
