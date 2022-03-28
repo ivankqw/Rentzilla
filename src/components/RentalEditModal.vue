@@ -351,7 +351,6 @@ import { db } from "../firebase.js";
 import rentalMixin from "../mixins/rentalMixin";
 import moment from "moment";
 
-
 export default {
   name: "RentalEditModal",
   mixins: [rentalMixin],
@@ -386,6 +385,7 @@ export default {
     "contractStartDate5",
     "contractEndDate5",
     "monthlyRent5",
+    "numTenants",
   ],
 
   data() {
@@ -399,26 +399,26 @@ export default {
       myContractStartDate1: null,
       myContractEndDate1: null,
       myMonthlyRent1: null,
-      myFirstName2: "",
-      myLastName2: "",
-      myContractStartDate2: "",
-      myContractEndDate2: "",
-      myMonthlyRent2: "",
-      myFirstName3: "",
-      myLastName3: "",
-      myContractStartDate3: "",
-      myContractEndDate3: "",
-      myMonthlyRent3: "",
-      myFirstName4: "",
-      myLastName4: "",
-      myContractStartDate4: "",
-      myContractEndDate4: "",
-      myMonthlyRent4: "",
-      myFirstName5: "",
-      myLastName5: "",
-      myContractStartDate5: "",
-      myContractEndDate5: "",
-      myMonthlyRent5: "",
+      myFirstName2: null,
+      myLastName2: null,
+      myContractStartDate2: null,
+      myContractEndDate2: null,
+      myMonthlyRent2: null,
+      myFirstName3: null,
+      myLastName3: null,
+      myContractStartDate3: null,
+      myContractEndDate3: null,
+      myMonthlyRent3: null,
+      myFirstName4: null,
+      myLastName4: null,
+      myContractStartDate4: null,
+      myContractEndDate4: null,
+      myMonthlyRent4: null,
+      myFirstName5: null,
+      myLastName5: null,
+      myContractStartDate5: null,
+      myContractEndDate5: null,
+      myMonthlyRent5: null,
     };
   },
 
@@ -492,6 +492,8 @@ export default {
       }
 
       // Validate tenants' details
+      let numTenantsRemaining = this.numTenants;
+      console.log(numTenantsRemaining);
 
       if (
         this.myFirstName1 !== null ||
@@ -502,38 +504,352 @@ export default {
       ) {
         // Modification to tenant details
         if (
+          this.firstName1 &&
           this.myFirstName1 === "" &&
           this.myLastName1 === "" &&
           this.myContractStartDate1 === "" &&
           this.myContractEndDate1 === "" &&
           this.myMonthlyRent1 === ""
         ) {
-          // All tenant details for this tenant deleted
-          // Delete tenant
-          alert("Tenant 1 details deleted");
+          // tenant
+          console.log("tenant 1 deleted");
+          numTenantsRemaining--;
+        } else if (
+          !this.firstName1 &&
+          this.myFirstName1 === "" &&
+          this.myLastName1 === "" &&
+          this.myContractStartDate1 === "" &&
+          this.myContractEndDate1 === "" &&
+          this.myMonthlyRent1 === ""
+        ) {
+          console.log("");
+        } else if (
+          !this.firstName1 &&
+          !(
+            this.myFirstName1 &&
+            this.myLastName1 &&
+            this.myContractStartDate1 &&
+            this.myContractEndDate1 &&
+            this.myMonthlyRent1
+          )
+        ) {
+          alert("Please ensure that all details for tenant 1 are filled up");
+          return false;
         } else {
           // Not all tenant details for this tenant deleted,
           // need to check that no updated fields for this tenant are empty or invalid
           if (
-            (this.myFirstName1 !== null && this.myFirstName1 === "") ||
-            (this.myLastName1 !== null && this.myLastName1 === "") ||
-            (this.myContractStartDate1 !== null && this.myContractStartDate1 === "") ||
-            (this.myContractEndDate1 !== null && this.myContractEndDate1 === "") ||
-            (this.myMonthlyRent1 !== null && this.myMonthlyRent1 === "") 
-            ) {
-            alert("Please ensure that all details for tenant 1 are filled up")
+            this.myFirstName1 === "" ||
+            this.myLastName1 === "" ||
+            this.myContractStartDate1 === "" ||
+            this.myContractEndDate1 === "" ||
+            this.myMonthlyRent1 === ""
+          ) {
+            alert("Please ensure that all details for tenant 1 are filled up");
             return false;
           }
-          let contractStartDate1 = this.myContractStartDate1 === null ? this.contractStartDate1 : this.myContractStartDate1;
-          let contractEndDate1 = this.myContractEndDate1 === null ? this.contractEndDate1 : this.myContractEndDate1;
+          let contractStartDate1 =
+            this.myContractStartDate1 === null
+              ? this.contractStartDate1
+              : this.myContractStartDate1;
+          let contractEndDate1 =
+            this.myContractEndDate1 === null
+              ? this.contractEndDate1
+              : this.myContractEndDate1;
           if (
             moment(contractStartDate1).isSameOrAfter(moment(contractEndDate1))
           ) {
-          alert("Please ensure that contract end date is after contract start date for Tenant 1");
+            alert(
+              "Please ensure that contract end date is after contract start date for Tenant 1"
+            );
+          }
+        }
+      }
+      if (
+        this.myFirstName2 !== null ||
+        this.myLastName2 !== null ||
+        this.myContractStartDate2 != null ||
+        this.myContractEndDate2 !== null ||
+        this.myMonthlyRent2 !== null
+      ) {
+        // Modification to tenant details
+        if (
+          this.firstName2 &&
+          this.myFirstName2 === "" &&
+          this.myLastName2 === "" &&
+          this.myContractStartDate2 === "" &&
+          this.myContractEndDate2 === "" &&
+          this.myMonthlyRent2 === ""
+        ) {
+          // tenant
+          console.log("tenant 2 deleted");
+          numTenantsRemaining--;
+        } else if (
+          !this.firstName2 &&
+          this.myFirstName2 === "" &&
+          this.myLastName2 === "" &&
+          this.myContractStartDate2 === "" &&
+          this.myContractEndDate2 === "" &&
+          this.myMonthlyRent2 === ""
+        ) {
+          console.log("");
+        } else if (
+          !this.firstName2 &&
+          !(
+            this.myFirstName2 &&
+            this.myLastName2 &&
+            this.myContractStartDate2 &&
+            this.myContractEndDate2 &&
+            this.myMonthlyRent2
+          )
+        ) {
+          alert("Please ensure that all details for tenant 2 are filled up");
+          return false;
+        } else {
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          if (
+            this.myFirstName2 === "" ||
+            this.myLastName2 === "" ||
+            this.myContractStartDate2 === "" ||
+            this.myContractEndDate2 === "" ||
+            this.myMonthlyRent2 === ""
+          ) {
+            alert("Please ensure that all details for tenant 2 are filled up");
+            return false;
+          }
+          let contractStartDate2 =
+            this.myContractStartDate2 === null
+              ? this.contractStartDate2
+              : this.myContractStartDate2;
+          let contractEndDate2 =
+            this.myContractEndDate2 === null
+              ? this.contractEndDate2
+              : this.myContractEndDate2;
+          if (
+            moment(contractStartDate2).isSameOrAfter(moment(contractEndDate2))
+          ) {
+            alert(
+              "Please ensure that contract end date is after contract start date for Tenant 2"
+            );
+          }
+        }
+      }
+      if (
+        this.myFirstName3 !== null ||
+        this.myLastName3 !== null ||
+        this.myContractStartDate3 != null ||
+        this.myContractEndDate3 !== null ||
+        this.myMonthlyRent3 !== null
+      ) {
+        // Modification to tenant details
+        if (
+          this.firstName3 &&
+          this.myFirstName3 === "" &&
+          this.myLastName3 === "" &&
+          this.myContractStartDate3 === "" &&
+          this.myContractEndDate3 === "" &&
+          this.myMonthlyRent3 === ""
+        ) {
+          // tenant
+          console.log("tenant 3 deleted");
+          numTenantsRemaining--;
+        } else if (
+          !this.firstName3 &&
+          this.myFirstName3 === "" &&
+          this.myLastName3 === "" &&
+          this.myContractStartDate3 === "" &&
+          this.myContractEndDate3 === "" &&
+          this.myMonthlyRent3 === ""
+        ) {
+          console.log("");
+        } else if (
+          !this.firstName3 &&
+          !(
+            this.myFirstName3 &&
+            this.myLastName3 &&
+            this.myContractStartDate3 &&
+            this.myContractEndDate3 &&
+            this.myMonthlyRent3
+          )
+        ) {
+          alert("Please ensure that all details for tenant 3 are filled up");
+          return false;
+        } else {
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          if (
+            this.myFirstName3 === "" ||
+            this.myLastName3 === "" ||
+            this.myContractStartDate3 === "" ||
+            this.myContractEndDate3 === "" ||
+            this.myMonthlyRent3 === ""
+          ) {
+            alert("Please ensure that all details for tenant 3 are filled up");
+            return false;
+          }
+          let contractStartDate3 =
+            this.myContractStartDate3 === null
+              ? this.contractStartDate3
+              : this.myContractStartDate3;
+          let contractEndDate3 =
+            this.myContractEndDate3 === null
+              ? this.contractEndDate3
+              : this.myContractEndDate3;
+          if (
+            moment(contractStartDate3).isSameOrAfter(moment(contractEndDate3))
+          ) {
+            alert(
+              "Please ensure that contract end date is after contract start date for Tenant 3"
+            );
+          }
+        }
+      }
+      if (
+        this.myFirstName4 !== null ||
+        this.myLastName4 !== null ||
+        this.myContractStartDate4 != null ||
+        this.myContractEndDate4 !== null ||
+        this.myMonthlyRent4 !== null
+      ) {
+        // Modification to tenant details
+        if (
+          this.firstName4 &&
+          this.myFirstName4 === "" &&
+          this.myLastName4 === "" &&
+          this.myContractStartDate4 === "" &&
+          this.myContractEndDate4 === "" &&
+          this.myMonthlyRent4 === ""
+        ) {
+          // tenant
+          console.log("tenant 4 deleted");
+          numTenantsRemaining--;
+        } else if (
+          !this.firstName4 &&
+          this.myFirstName4 === "" &&
+          this.myLastName4 === "" &&
+          this.myContractStartDate4 === "" &&
+          this.myContractEndDate4 === "" &&
+          this.myMonthlyRent4 === ""
+        ) {
+          console.log("");
+        } else if (
+          !this.firstName4 &&
+          !(
+            this.myFirstName4 &&
+            this.myLastName4 &&
+            this.myContractStartDate4 &&
+            this.myContractEndDate4 &&
+            this.myMonthlyRent4
+          )
+        ) {
+          alert("Please ensure that all details for tenant 4 are filled up");
+          return false;
+        } else {
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          if (
+            this.myFirstName4 === "" ||
+            this.myLastName4 === "" ||
+            this.myContractStartDate4 === "" ||
+            this.myContractEndDate4 === "" ||
+            this.myMonthlyRent4 === ""
+          ) {
+            alert("Please ensure that all details for tenant 4 are filled up");
+            return false;
+          }
+          let contractStartDate4 =
+            this.myContractStartDate4 === null
+              ? this.contractStartDate4
+              : this.myContractStartDate4;
+          let contractEndDate4 =
+            this.myContractEndDate4 === null
+              ? this.contractEndDate4
+              : this.myContractEndDate4;
+          if (
+            moment(contractStartDate4).isSameOrAfter(moment(contractEndDate4))
+          ) {
+            alert(
+              "Please ensure that contract end date is after contract start date for Tenant 4"
+            );
+          }
+        }
+      }
+      if (
+        this.myFirstName5 !== null ||
+        this.myLastName5 !== null ||
+        this.myContractStartDate5 != null ||
+        this.myContractEndDate5 !== null ||
+        this.myMonthlyRent5 !== null
+      ) {
+        // Modification to tenant details
+        if (
+          this.firstName5 &&
+          this.myFirstName5 === "" &&
+          this.myLastName5 === "" &&
+          this.myContractStartDate5 === "" &&
+          this.myContractEndDate5 === "" &&
+          this.myMonthlyRent5 === ""
+        ) {
+          // tenant
+          console.log("tenant 5 deleted");
+          numTenantsRemaining--;
+        } else if (
+          !this.firstName5 &&
+          this.myFirstName5 === "" &&
+          this.myLastName5 === "" &&
+          this.myContractStartDate5 === "" &&
+          this.myContractEndDate5 === "" &&
+          this.myMonthlyRent5 === ""
+        ) {
+          console.log("");
+        } else if (
+          !this.firstName5 &&
+          !(
+            this.myFirstName5 &&
+            this.myLastName5 &&
+            this.myContractStartDate5 &&
+            this.myContractEndDate5 &&
+            this.myMonthlyRent5
+          )
+        ) {
+          alert("Please ensure that all details for tenant 5 are filled up");
+          return false;
+        } else {
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          if (
+            this.myFirstName5 === "" ||
+            this.myLastName5 === "" ||
+            this.myContractStartDate5 === "" ||
+            this.myContractEndDate5 === "" ||
+            this.myMonthlyRent5 === ""
+          ) {
+            alert("Please ensure that all details for tenant 5 are filled up");
+            return false;
+          }
+          let contractStartDate5 =
+            this.myContractStartDate5 === null
+              ? this.contractStartDate5
+              : this.myContractStartDate5;
+          let contractEndDate5 =
+            this.myContractEndDate5 === null
+              ? this.contractEndDate5
+              : this.myContractEndDate5;
+          if (
+            moment(contractStartDate5).isSameOrAfter(moment(contractEndDate5))
+          ) {
+            alert(
+              "Please ensure that contract end date is after contract start date for Tenant 5"
+            );
           }
         }
       }
 
+      if (numTenantsRemaining < 1) {
+        alert("Please ensure that there is at least one tenant");
+        return false;
+      }
       return true;
     },
 

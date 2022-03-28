@@ -162,6 +162,7 @@
     :contractEndDate5="this.contractEndDate5"
     :monthlyRent5="this.monthlyRent5"
     :index="this.index"
+    :numTenants="this.numTenantsForCurrentEditRental"
   />
 
   <h2 class="header">Rent</h2>
@@ -222,6 +223,14 @@ export default {
       vu.postalCode = currRental.postalCode;
       vu.unitNumber = currRental.unitNumber;
       vu.purchasePrice = currRental.purchasePrice;
+      
+      this.numTenantsForCurrentEditRental = 0;
+      for (let x of currRental.tenants) {
+        if (x.firstName) {
+          this.numTenantsForCurrentEditRental += 1
+        }
+      }
+      
       switch (currRental.tenants.length) {
         case 1:
           vu.firstName1 = currRental.tenants[0].firstName;
@@ -356,6 +365,8 @@ export default {
 
       rentals: {},
       currTenants: [],
+
+      numTenantsForCurrentEditRental: 0,
     };
   },
   async mounted() {
