@@ -490,6 +490,8 @@ export default {
           return false;
         }
       }
+      // Validate no duplicate property using postal code + unit num
+
 
       // Validate tenants' details
       let numTenantsRemaining = this.numTenants;
@@ -516,11 +518,11 @@ export default {
           numTenantsRemaining--;
         } else if (
           !this.firstName1 &&
-          this.myFirstName1 === "" &&
-          this.myLastName1 === "" &&
-          this.myContractStartDate1 === "" &&
-          this.myContractEndDate1 === "" &&
-          this.myMonthlyRent1 === ""
+          !this.myFirstName1 &&
+          !this.myLastName1 &&
+          !this.myContractStartDate1 &&
+          !this.myContractEndDate1  &&
+          !this.myMonthlyRent1
         ) {
           console.log("");
         } else if (
@@ -586,11 +588,11 @@ export default {
           numTenantsRemaining--;
         } else if (
           !this.firstName2 &&
-          this.myFirstName2 === "" &&
-          this.myLastName2 === "" &&
-          this.myContractStartDate2 === "" &&
-          this.myContractEndDate2 === "" &&
-          this.myMonthlyRent2 === ""
+          !this.myFirstName2 &&
+          !this.myLastName2 &&
+          !this.myContractStartDate2 &&
+          !this.myContractEndDate2  &&
+          !this.myMonthlyRent2
         ) {
           console.log("");
         } else if (
@@ -656,11 +658,11 @@ export default {
           numTenantsRemaining--;
         } else if (
           !this.firstName3 &&
-          this.myFirstName3 === "" &&
-          this.myLastName3 === "" &&
-          this.myContractStartDate3 === "" &&
-          this.myContractEndDate3 === "" &&
-          this.myMonthlyRent3 === ""
+          !this.myFirstName3 &&
+          !this.myLastName3 &&
+          !this.myContractStartDate3 &&
+          !this.myContractEndDate3 &&
+          !this.myMonthlyRent3
         ) {
           console.log("");
         } else if (
@@ -726,11 +728,11 @@ export default {
           numTenantsRemaining--;
         } else if (
           !this.firstName4 &&
-          this.myFirstName4 === "" &&
-          this.myLastName4 === "" &&
-          this.myContractStartDate4 === "" &&
-          this.myContractEndDate4 === "" &&
-          this.myMonthlyRent4 === ""
+          !this.myFirstName4 &&
+          !this.myLastName4 &&
+          !this.myContractStartDate4 &&
+          !this.myContractEndDate4 &&
+          !this.myMonthlyRent4
         ) {
           console.log("");
         } else if (
@@ -796,11 +798,11 @@ export default {
           numTenantsRemaining--;
         } else if (
           !this.firstName5 &&
-          this.myFirstName5 === "" &&
-          this.myLastName5 === "" &&
-          this.myContractStartDate5 === "" &&
-          this.myContractEndDate5 === "" &&
-          this.myMonthlyRent5 === ""
+          !this.myFirstName5 &&
+          !this.myLastName5 &&
+          !this.myContractStartDate5 &&
+          !this.myContractEndDate5 &&
+          !this.myMonthlyRent5
         ) {
           console.log("");
         } else if (
