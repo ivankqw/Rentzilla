@@ -10,7 +10,7 @@
 <script>
 import leaflet from "leaflet";
 import { onMounted } from "vue";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 
@@ -35,6 +35,11 @@ export default {
       (async () => {
         try {
           rentals = await getDoc(doc(db, "Rentals", auth.currentUser.email));
+          if (!rentals.exists()) {
+              await setDoc(doc(db, "Rentals", auth.currentUser.email), {
+                rentals: [],
+              })
+          }
           rentals = rentals.data().rentals;
           console.log("rentals", rentals);
 
