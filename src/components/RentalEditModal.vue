@@ -349,6 +349,8 @@ import { getAuth } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import rentalMixin from "../mixins/rentalMixin";
+import moment from "moment";
+
 
 export default {
   name: "RentalEditModal",
@@ -388,15 +390,15 @@ export default {
 
   data() {
     return {
-      myPostalCode: "",
-      myAddress: "",
-      myUnitNumber: "",
-      myPurchasePrice: "",
-      myFirstName1: "",
-      myLastName1: "",
-      myContractStartDate1: "",
-      myContractEndDate1: "",
-      myMonthlyRent1: "",
+      myPostalCode: null,
+      myAddress: null,
+      myUnitNumber: null,
+      myPurchasePrice: null,
+      myFirstName1: null,
+      myLastName1: null,
+      myContractStartDate1: null,
+      myContractEndDate1: null,
+      myMonthlyRent1: null,
       myFirstName2: "",
       myLastName2: "",
       myContractStartDate2: "",
@@ -441,6 +443,100 @@ export default {
   },
 
   methods: {
+    validateEditRentalForm() {
+      // Validate property details
+      if (this.myPostalCode !== null) {
+        if (String(this.myPostalCode).length !== 6) {
+          alert("Please enter a valid postal code");
+          return false;
+        }
+      }
+
+      if (this.myAddress !== null) {
+        if (!this.myAddress) {
+          alert("Please enter a valid address");
+          return false;
+        }
+      }
+
+      if (this.myUnitNumber !== null) {
+        if (!this.myUnitNumber) {
+          alert("Please enter a valid unit number");
+          return false;
+        } else if (this.myUnitNumber.toLowerCase() !== "x") {
+          let unit = this.myUnitNumber;
+          try {
+            if (unit.split("-").length !== 2) {
+              alert("Please enter a valid unit number");
+              return false;
+            } else if (
+              !/^\d+$/.test(unit.split("-")[0]) ||
+              !/^\d+$/.test(unit.split("-")[1])
+            ) {
+              alert("Please enter a valid unit number");
+              return false;
+            }
+          } catch (error) {
+            alert("Please enter a valid unit number");
+            console.log(error);
+            return false;
+          }
+        }
+      }
+
+      if (this.myPurchasePrice !== null) {
+        if (!this.myPurchasePrice) {
+          alert("Please enter a valid purchase price");
+          return false;
+        }
+      }
+
+      // Validate tenants' details
+
+      if (
+        this.myFirstName1 !== null ||
+        this.myLastName1 !== null ||
+        this.myContractStartDate1 != null ||
+        this.myContractEndDate1 !== null ||
+        this.myMonthlyRent1 !== null
+      ) {
+        // Modification to tenant details
+        if (
+          this.myFirstName1 === "" &&
+          this.myLastName1 === "" &&
+          this.myContractStartDate1 === "" &&
+          this.myContractEndDate1 === "" &&
+          this.myMonthlyRent1 === ""
+        ) {
+          // All tenant details for this tenant deleted
+          // Delete tenant
+          alert("Tenant 1 details deleted");
+        } else {
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          if (
+            (this.myFirstName1 !== null && this.myFirstName1 === "") ||
+            (this.myLastName1 !== null && this.myLastName1 === "") ||
+            (this.myContractStartDate1 !== null && this.myContractStartDate1 === "") ||
+            (this.myContractEndDate1 !== null && this.myContractEndDate1 === "") ||
+            (this.myMonthlyRent1 !== null && this.myMonthlyRent1 === "") 
+            ) {
+            alert("Please ensure that all details for tenant 1 are filled up")
+            return false;
+          }
+          let contractStartDate1 = this.myContractStartDate1 === null ? this.contractStartDate1 : this.myContractStartDate1;
+          let contractEndDate1 = this.myContractEndDate1 === null ? this.contractEndDate1 : this.myContractEndDate1;
+          if (
+            moment(contractStartDate1).isSameOrAfter(moment(contractEndDate1))
+          ) {
+          alert("Please ensure that contract end date is after contract start date for Tenant 1");
+          }
+        }
+      }
+
+      return true;
+    },
+
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
     },
@@ -529,6 +625,14 @@ export default {
       this.myMonthlyRent5 = event.target.value;
     },
     async saveRental() {
+      let valid = await this.validateEditRentalForm();
+      if (!valid) {
+        alert(
+          "Please re-enter valid details for rental ID " + (this.index + 1)
+        );
+        return;
+      }
+
       this.$emit("edited");
 
       const auth = getAuth();
@@ -693,7 +797,7 @@ export default {
       await getDoc(ref)
         .then((x) => (newRentals = x.data()))
         .catch((error) => console.log("get", error));
-      newRentals.rentals.splice(index, 1)
+      newRentals.rentals.splice(index, 1);
       setDoc(ref, {
         rentals: newRentals.rentals,
       })
