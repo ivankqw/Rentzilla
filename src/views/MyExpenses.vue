@@ -20,7 +20,7 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Postal Code</th>
+        <th>Address</th>
         
         <th>Type of Expense</th>
         <th>Cost</th>
@@ -135,6 +135,8 @@ export default {
       expenseDate: "",
 
       expenses: {},
+
+      rentals: {},
     };
   },
   async mounted() {
@@ -148,6 +150,11 @@ export default {
     const expenses = docSnap.data().expenses;
     console.log(expenses);
     this.expenses = expenses;
+
+    const rentalRef = doc(db, "Rentals", userEmail);
+    const rentalDocSnap = await getDoc(rentalRef);
+    const rentals = rentalDocSnap.data().rentals;
+    this.rentals = rentals;
 
     //wat is thissss
     onSnapshot(doc(db, "Expenses", userEmail)), (doc) => {

@@ -18,21 +18,25 @@
 
             <div class="mb-3">
               <label for="postalCode" class="form-label">Rental</label> 
-              <input 
+              <!-- <input 
               type="number" 
               class="form-control"
               id="postalCode" 
               placeholder="Select Rental"
-              v-model="postalCode"/>
+              v-model="postalCode"/> -->
+              <select class="form-control" name="postalCode" id="postalCode" v-model="postalCode">
+                <option v-for="rental in rentals" :value="rental.postalCode" :key="rental.postalCode">{{rental.address}} {{rental.postalCode}} {{rental.unitNumber}}</option>
+              </select>
             
-            <label for="expenseType" class="form-label">Type of Expense</label> 
-            <select class="form-control" name="expenseType" id="expenseType" v-model="expenseType">
-                <option value="loan">Loan</option>
-                <option value="maintenance">Maintenance</option>
-                <option value="furnishing">Furnishing</option>
-                <option value="utilities">Utilities</option>
-                <option value="tax">Tax</option>
-                <option value="others">Others</option>
+            
+              <label for="expenseType" class="form-label">Type of Expense</label> 
+              <select class="form-control" name="expenseType" id="expenseType" v-model="expenseType">
+                  <option value="loan">Loan</option>
+                  <option value="maintenance">Maintenance</option>
+                  <option value="furnishing">Furnishing</option>
+                  <option value="utilities">Utilities</option>
+                  <option value="tax">Tax</option>
+                  <option value="others">Others</option>
                 
               </select>
 
@@ -78,7 +82,7 @@
 
 <script>
 import { getAuth } from "firebase/auth";
-import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
 // import { doc, getDoc} from "firebase/firestore";
 import { db } from "../firebase.js";
 import { ref, onMounted } from 'vue';
@@ -86,41 +90,59 @@ import { Modal } from 'bootstrap';
 
 export default {
   name: "ExpenseAddModal",
+
   setup() {
     let modalEle = ref(null);
     let thisModalObj = null;
     onMounted(() => {
       thisModalObj = new Modal(modalEle.value);
+
     });
     function show() {
       thisModalObj.show();
     }
+
+    
     return {
       show,
       modalEle
     }
   },
 
+  mounted() {
+    this.testbutton();
+  },
+
   data() {
     return {
+      address: "",
+
       postalCode: "",
       expenseType: "",
       expenseCost: "",
       expenseDate: "",
 
       expenses: {},
+
+      rentals: {},
     };
   },
   methods: {
-    // async testbutton() {
-    //   const auth = getAuth();
-    //   const userEmail = auth.currentUser.email;
-    //   const ref = doc(db, "Expenses", userEmail);
-    //   const docSnap = await getDoc(ref);
-    //   const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
-    //   console.log("Test button:\nexpenses=", expenses);
-    //   console.log("expenses is arr", expenses instanceof Array );
-    // },
+    async testbutton() {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Expenses", userEmail);
+      const docSnap = await getDoc(ref);
+      const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
+      // console.log("expenses is arr", expenses instanceof Array );
+
+      const rentalRef = doc(db, "Rentals", userEmail);
+      const rentalDocSnap = await getDoc(rentalRef);
+      const rentals = rentalDocSnap.data().rentals;
+      this.rentals = rentals;
+
+      console.log("Test button:\nexpenses=", expenses, "\nrentals:\n", rentals);
+    },
 
     async saveExpense() {
       console.log("CLICKED + ADD EXPENSE")
