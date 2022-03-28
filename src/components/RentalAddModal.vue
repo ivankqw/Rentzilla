@@ -699,9 +699,10 @@ export default {
         .then((response) => response.text())
         .then((result) => {
           console.log(result);
+          if (JSON.parse(result).found == 0) { alert("Please enter a valid postal code"); }
           return JSON.parse(result).results[0];
         })
-        .catch((error) => console.log("error", error));
+        .catch((error) => alert("postal code error", error));
       lat = result.LATITUDE;
       long = result.LONGITUDE;
 
