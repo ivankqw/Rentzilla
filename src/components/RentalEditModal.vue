@@ -388,10 +388,10 @@ export default {
 
   data() {
     return {
-      myPostalCode: "",
-      myAddress: "",
-      myUnitNumber: "",
-      myPurchasePrice: "",
+      myPostalCode: null,
+      myAddress: null,
+      myUnitNumber: null,
+      myPurchasePrice: null,
       myFirstName1: "",
       myLastName1: "",
       myContractStartDate1: "",
@@ -441,6 +441,56 @@ export default {
   },
 
   methods: {
+    validateEditRentalForm() {
+      if (this.myPostalCode !== null) {
+        if (String(this.myPostalCode).length !== 6) {
+          alert("Please enter a valid postal code");
+          return false;
+        }
+      }
+
+      if (this.myAddress !== null) {
+        if (!this.myAddress) {
+          alert("Please enter a valid address");
+          return false;
+        }
+      }
+
+      if (this.myUnitNumber !== null) {
+        if (!this.myUnitNumber) {
+          alert("Please enter a valid unit number");
+          return false;
+        } else if (this.myUnitNumber.toLowerCase() !== "x") {
+          let unit = this.myUnitNumber;
+          try {
+            if (unit.split("-").length !== 2) {
+              alert("Please enter a valid unit number");
+              return false;
+            } else if (
+              !/^\d+$/.test(unit.split("-")[0]) ||
+              !/^\d+$/.test(unit.split("-")[1])
+            ) {
+              alert("Please enter a valid unit number");
+              return false;
+            }
+          } catch (error) {
+            alert("Please enter a valid unit number");
+            console.log(error);
+            return false;
+          }
+        }
+      }
+
+      if (this.myPurchasePrice !== null) {
+        if (!this.myPurchasePrice) {
+          alert("Please enter a valid purchase price");
+          return false;
+        }
+      }
+
+      return true;
+    },
+
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
     },
@@ -529,6 +579,14 @@ export default {
       this.myMonthlyRent5 = event.target.value;
     },
     async saveRental() {
+      let valid = await this.validateEditRentalForm();
+      if (!valid) {
+        alert(
+          "Please re-enter valid details for rental ID " + (this.index + 1)
+        );
+        return;
+      }
+
       this.$emit("edited");
 
       const auth = getAuth();
@@ -693,7 +751,7 @@ export default {
       await getDoc(ref)
         .then((x) => (newRentals = x.data()))
         .catch((error) => console.log("get", error));
-      newRentals.rentals.splice(index, 1)
+      newRentals.rentals.splice(index, 1);
       setDoc(ref, {
         rentals: newRentals.rentals,
       })
