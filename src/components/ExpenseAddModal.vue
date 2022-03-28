@@ -14,7 +14,7 @@
         </div>
         <div class="modal-body">
           <form id="addExpenseForm">
-            <!-- <button type="button" class="btn btn-primary" @click="testbutton">test button</button> -->
+            <button type="button" class="btn btn-primary" @click="testbutton">test button</button>
 
             <div class="mb-3">
               <label for="postalCode" class="form-label">Rental</label> 
@@ -90,23 +90,33 @@ import { Modal } from 'bootstrap';
 
 export default {
   name: "ExpenseAddModal",
+
   setup() {
     let modalEle = ref(null);
     let thisModalObj = null;
     onMounted(() => {
       thisModalObj = new Modal(modalEle.value);
+
     });
     function show() {
       thisModalObj.show();
     }
+
+    
     return {
       show,
       modalEle
     }
   },
 
+  mounted() {
+    this.testbutton();
+  },
+
   data() {
     return {
+      address: "",
+
       postalCode: "",
       expenseType: "",
       expenseCost: "",
