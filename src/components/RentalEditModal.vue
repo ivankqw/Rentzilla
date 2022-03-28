@@ -349,6 +349,8 @@ import { getAuth } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import rentalMixin from "../mixins/rentalMixin";
+import moment from "moment";
+
 
 export default {
   name: "RentalEditModal",
@@ -392,11 +394,11 @@ export default {
       myAddress: null,
       myUnitNumber: null,
       myPurchasePrice: null,
-      myFirstName1: "",
-      myLastName1: "",
-      myContractStartDate1: "",
-      myContractEndDate1: "",
-      myMonthlyRent1: "",
+      myFirstName1: null,
+      myLastName1: null,
+      myContractStartDate1: null,
+      myContractEndDate1: null,
+      myMonthlyRent1: null,
       myFirstName2: "",
       myLastName2: "",
       myContractStartDate2: "",
@@ -442,6 +444,7 @@ export default {
 
   methods: {
     validateEditRentalForm() {
+      // Validate property details
       if (this.myPostalCode !== null) {
         if (String(this.myPostalCode).length !== 6) {
           alert("Please enter a valid postal code");
@@ -485,6 +488,49 @@ export default {
         if (!this.myPurchasePrice) {
           alert("Please enter a valid purchase price");
           return false;
+        }
+      }
+
+      // Validate tenants' details
+
+      if (
+        this.myFirstName1 !== null ||
+        this.myLastName1 !== null ||
+        this.myContractStartDate1 != null ||
+        this.myContractEndDate1 !== null ||
+        this.myMonthlyRent1 !== null
+      ) {
+        // Modification to tenant details
+        if (
+          this.myFirstName1 === "" &&
+          this.myLastName1 === "" &&
+          this.myContractStartDate1 === "" &&
+          this.myContractEndDate1 === "" &&
+          this.myMonthlyRent1 === ""
+        ) {
+          // All tenant details for this tenant deleted
+          // Delete tenant
+          alert("Tenant 1 details deleted");
+        } else {
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          if (
+            (this.myFirstName1 !== null && this.myFirstName1 === "") ||
+            (this.myLastName1 !== null && this.myLastName1 === "") ||
+            (this.myContractStartDate1 !== null && this.myContractStartDate1 === "") ||
+            (this.myContractEndDate1 !== null && this.myContractEndDate1 === "") ||
+            (this.myMonthlyRent1 !== null && this.myMonthlyRent1 === "") 
+            ) {
+            alert("Please ensure that all details for tenant 1 are filled up")
+            return false;
+          }
+          let contractStartDate1 = this.myContractStartDate1 === null ? this.contractStartDate1 : this.myContractStartDate1;
+          let contractEndDate1 = this.myContractEndDate1 === null ? this.contractEndDate1 : this.myContractEndDate1;
+          if (
+            moment(contractStartDate1).isSameOrAfter(moment(contractEndDate1))
+          ) {
+          alert("Please ensure that contract end date is after contract start date for Tenant 1");
+          }
         }
       }
 
