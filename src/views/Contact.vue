@@ -9,7 +9,7 @@
           <div class="text-center">
             <i class="far fa-file-alt fa-4x mb-3 text-primary"></i>
             <h2>Your opinion matters</h2>
-            <form>
+            <form id="myForm">
               <!-- Message input -->
               <div class="form-outline mb-4">
                 <textarea
@@ -53,42 +53,40 @@ export default {
 
   methods: {
     async submitFeedback() {
-      if (String(this.feedback).length == 0) {
-        alert("Please ensure you have written something before submitting");
-        return false;
-      }
-
       console.log("Creating Document");
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Feedbacks", userEmail);
       const docData = {
         feedback: this.feedback,
-        };
+      };
 
-        try {
-          await updateDoc(ref, {
-            feedbacks: arrayUnion(docData),
-          });
-        } catch (error) {
-          await setDoc(ref, { 
-            feedbacks: arrayUnion(docData),
-            });
-        }
-      // const addedDoc = await addDoc(ref, this.feedback);
-      alert("Document created successfully!");
-      console.log(docData);
-      document.forms.reset();
-      //document.getElementById("feedback").reset();
-      // this.$router.push("/contact");
-    },
-
-    async validateFeedbackForm() {
       if (String(this.feedback).length == 0) {
         alert("Please ensure you have written something before submitting");
         return false;
       }
+
+      try {
+        await updateDoc(ref, {
+          feedbacks: arrayUnion(docData),
+        });
+      } catch (error) {
+        await setDoc(ref, {
+          feedbacks: arrayUnion(docData),
+        });
+      }
+      alert("Feedback submitted successfully!");
+      console.log(docData);
+      document.getElementById("myForm").reset();
+      this.feedback = "";
     },
+
+    // async validateFeedbackForm() {
+    //   if (String(this.feedback).length == 0) {
+    //     alert("Please ensure you have written something before submitting");
+    //     return false;
+    //   }
+    // },
   },
 };
 </script>
