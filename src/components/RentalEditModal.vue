@@ -31,7 +31,7 @@
                 id="postalCode"
                 placeholder="e.g. 123456"
                 :value="postalCode"
-                @input="onPostalCodeChange"
+                @change="onPostalCodeChange"
               />
 
               <label for="address" class="form-label">Address</label>
@@ -41,7 +41,7 @@
                 id="address"
                 placeholder="e.g. Blk 123 Road A"
                 :value="address"
-                @input="onAddressChange"
+                @change="onAddressChange"
               />
 
               <label for="unitNumber" class="form-label">Unit Number</label>
@@ -51,7 +51,7 @@
                 id="unitNumber"
                 placeholder="e.g. 01-01"
                 :value="unitNumber"
-                @input="onUnitNumberChange"
+                @change="onUnitNumberChange"
               />
 
               <label for="purchasePrice" class="form-label"
@@ -63,7 +63,7 @@
                 id="purchasePrice"
                 placeholder="e.g. 123456"
                 :value="purchasePrice"
-                @input="onPurchasePriceChange"
+                @change="onPurchasePriceChange"
               />
             </div>
 
@@ -75,7 +75,7 @@
                 id="firstName1"
                 placeholder="First Name"
                 :value="firstName1"
-                @input="onFirstName1Change"
+                @change="onFirstName1Change"
               />
               <input
                 type="text"
@@ -83,7 +83,7 @@
                 id="lastName1"
                 placeholder="Last Name"
                 :value="lastName1"
-                @input="onLastName1Change"
+                @change="onLastName1Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -93,7 +93,7 @@
                 id="contractStartDate1"
                 name="contractStartDate"
                 :value="contractStartDate1"
-                @input="onContractStart1Change"
+                @change="onContractStart1Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -103,7 +103,7 @@
                 id="contractEndDate1"
                 name="contractEndDate"
                 :value="contractEndDate1"
-                @input="onContractEnd1Change"
+                @change="onContractEnd1Change"
               />
               <input
                 type="number"
@@ -111,7 +111,7 @@
                 id="monthlyRent1"
                 placeholder="Monthly Rent"
                 :value="monthlyRent1"
-                @input="onMonthlyRent1Change"
+                @change="onMonthlyRent1Change"
               />
             </div>
 
@@ -123,7 +123,7 @@
                 id="firstName2"
                 placeholder="First Name"
                 :value="firstName2"
-                @input="onFirstName2Change"
+                @change="onFirstName2Change"
               />
               <input
                 type="text"
@@ -131,7 +131,7 @@
                 id="lastName2"
                 placeholder="Last Name"
                 :value="lastName2"
-                @input="onLastName2Change"
+                @change="onLastName2Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -141,7 +141,7 @@
                 id="contractStartDate2"
                 name="contractStartDate"
                 :value="contractStartDate2"
-                @input="onContractStart2Change"
+                @change="onContractStart2Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -151,7 +151,7 @@
                 id="contractEndDate2"
                 name="contractEndDate"
                 :value="contractEndDate2"
-                @input="onContractEnd2Change"
+                @change="onContractEnd2Change"
               />
               <input
                 type="number"
@@ -159,7 +159,7 @@
                 id="monthlyRent2"
                 placeholder="Monthly Rent"
                 :value="monthlyRent2"
-                @input="onMonthlyRent2Change"
+                @change="onMonthlyRent2Change"
               />
             </div>
 
@@ -171,7 +171,7 @@
                 id="firstName3"
                 placeholder="First Name"
                 :value="firstName3"
-                @input="onFirstName3Change"
+                @change="onFirstName3Change"
               />
               <input
                 type="text"
@@ -179,7 +179,7 @@
                 id="lastName3"
                 placeholder="Last Name"
                 :value="lastName3"
-                @input="onLastName3Change"
+                @change="onLastName3Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -189,7 +189,7 @@
                 id="contractStartDate3"
                 name="contractStartDate"
                 :value="contractStartDate3"
-                @input="onContractStart3Change"
+                @change="onContractStart3Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -199,7 +199,7 @@
                 id="contractEndDate3"
                 name="contractEndDate"
                 :value="contractEndDate3"
-                @input="onContractEnd3Change"
+                @change="onContractEnd3Change"
               />
               <input
                 type="number"
@@ -207,7 +207,7 @@
                 id="monthlyRent3"
                 placeholder="Monthly Rent"
                 :value="monthlyRent3"
-                @input="onMonthlyRent3Change"
+                @change="onMonthlyRent3Change"
               />
             </div>
 
@@ -219,7 +219,7 @@
                 id="firstName4"
                 placeholder="First Name"
                 :value="firstName4"
-                @input="onFirstName4Change"
+                @change="onFirstName4Change"
               />
               <input
                 type="text"
@@ -227,7 +227,7 @@
                 id="lastName4"
                 placeholder="Last Name"
                 :value="lastName4"
-                @input="onLastName4Change"
+                @change="onLastName4Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -237,7 +237,7 @@
                 id="contractStartDate4"
                 name="contractStartDate"
                 :value="contractStartDate4"
-                @input="onContractStart4Change"
+                @change="onContractStart4Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -247,7 +247,7 @@
                 id="contractEndDate4"
                 name="contractEndDate"
                 :value="contractEndDate4"
-                @input="onContractEnd4Change"
+                @change="onContractEnd4Change"
               />
               <input
                 type="number"
@@ -255,7 +255,7 @@
                 id="monthlyRent4"
                 placeholder="Monthly Rent"
                 :value="monthlyRent4"
-                @input="onMonthlyRent4Change"
+                @change="onMonthlyRent4Change"
               />
             </div>
 
@@ -267,7 +267,7 @@
                 id="firstName5"
                 placeholder="First Name"
                 :value="firstName5"
-                @input="onFirstName5Change"
+                @change="onFirstName5Change"
               />
               <input
                 type="text"
@@ -275,7 +275,7 @@
                 id="lastName5"
                 placeholder="Last Name"
                 :value="lastName5"
-                @input="onLastName5Change"
+                @change="onLastName5Change"
               />
               <label for="contractStartDate" class="form-label"
                 >Contract Start Date:</label
@@ -285,7 +285,7 @@
                 id="contractStartDate5"
                 name="contractStartDate"
                 :value="contractStartDate5"
-                @input="onContractStart5Change"
+                @change="onContractStart5Change"
               /><br />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
@@ -295,7 +295,7 @@
                 id="contractEndDate5"
                 name="contractEndDate"
                 :value="contractEndDate5"
-                @input="onContractEnd5Change"
+                @change="onContractEnd5Change"
               />
               <input
                 type="number"
@@ -303,7 +303,7 @@
                 id="monthlyRent5"
                 placeholder="Monthly Rent"
                 :value="monthlyRent5"
-                @input="onMonthlyRent5Change"
+                @change="onMonthlyRent5Change"
               />
             </div>
 
@@ -492,7 +492,6 @@ export default {
       }
       // Validate no duplicate property using postal code + unit num
 
-
       // Validate tenants' details
       let numTenantsRemaining = this.numTenants;
       console.log(numTenantsRemaining);
@@ -521,7 +520,7 @@ export default {
           !this.myFirstName1 &&
           !this.myLastName1 &&
           !this.myContractStartDate1 &&
-          !this.myContractEndDate1  &&
+          !this.myContractEndDate1 &&
           !this.myMonthlyRent1
         ) {
           console.log("");
@@ -591,7 +590,7 @@ export default {
           !this.myFirstName2 &&
           !this.myLastName2 &&
           !this.myContractStartDate2 &&
-          !this.myContractEndDate2  &&
+          !this.myContractEndDate2 &&
           !this.myMonthlyRent2
         ) {
           console.log("");
@@ -967,6 +966,9 @@ export default {
         .then((response) => response.text())
         .then((result) => {
           console.log(result);
+          if (JSON.parse(result).found == 0) {
+            alert("Please enter a valid postal code");
+          }
           return JSON.parse(result).results[0];
         })
         .catch((error) => console.log("error", error));
@@ -985,19 +987,24 @@ export default {
 
         tenants: [
           {
-            firstName: this.myFirstName1 ? this.myFirstName1 : this.firstName1,
-            lastName: this.myLastName1 ? this.myLastName1 : this.lastName1,
-            contractStartDate: this.myContractStartDate1
-              ? this.myContractStartDate1
-              : this.contractStartDate1,
-            contractEndDate: this.myContractEndDate1
-              ? this.myContractEndDate1
-              : this.contractEndDate1,
-            monthlyRent: this.myMonthlyRent1
-              ? this.myMonthlyRent1
-              : this.monthlyRent1,
+            firstName:
+              this.myFirstName1 !== null ? this.myFirstName1 : this.firstName1,
+            lastName:
+              this.myLastName1 !== null ? this.myLastName1 : this.lastName1,
+            contractStartDate:
+              this.myContractStartDate1 !== null
+                ? this.myContractStartDate1
+                : this.contractStartDate1,
+            contractEndDate:
+              this.myContractEndDate1 !== null
+                ? this.myContractEndDate1
+                : this.contractEndDate1,
+            monthlyRent:
+              this.myMonthlyRent1 !== null
+                ? this.myMonthlyRent1
+                : this.monthlyRent1,
             nextPaymentDate: this.addMonths(
-              this.myContractStartDate1
+              this.myContractStartDate1 !== null
                 ? this.myContractStartDate1
                 : this.contractStartDate1,
               1
@@ -1005,19 +1012,24 @@ export default {
             numberOfMonthsRentalUnpaid: 0,
           },
           {
-            firstName: this.myFirstName2 ? this.myFirstName2 : this.firstName2,
-            lastName: this.myLastName2 ? this.myLastName2 : this.lastName2,
-            contractStartDate: this.myContractStartDate2
-              ? this.myContractStartDate2
-              : this.contractStartDate2,
-            contractEndDate: this.myContractEndDate2
-              ? this.myContractEndDate2
-              : this.contractEndDate2,
-            monthlyRent: this.myMonthlyRent2
-              ? this.myMonthlyRent2
-              : this.monthlyRent2,
+            firstName:
+              this.myFirstName2 !== null ? this.myFirstName2 : this.firstName2,
+            lastName:
+              this.myLastName2 !== null ? this.myLastName2 : this.lastName2,
+            contractStartDate:
+              this.myContractStartDate2 !== null
+                ? this.myContractStartDate2
+                : this.contractStartDate2,
+            contractEndDate:
+              this.myContractEndDate2 !== null
+                ? this.myContractEndDate2
+                : this.contractEndDate2,
+            monthlyRent:
+              this.myMonthlyRent2 !== null
+                ? this.myMonthlyRent2
+                : this.monthlyRent2,
             nextPaymentDate: this.addMonths(
-              this.myContractStartDate2
+              this.myContractStartDate2 !== null
                 ? this.myContractStartDate2
                 : this.contractStartDate2,
               1
@@ -1025,19 +1037,24 @@ export default {
             numberOfMonthsRentalUnpaid: 0,
           },
           {
-            firstName: this.myFirstName3 ? this.myFirstName3 : this.firstName3,
-            lastName: this.myLastName3 ? this.myLastName3 : this.lastName3,
-            contractStartDate: this.myContractStartDate3
-              ? this.myContractStartDate3
-              : this.contractStartDate3,
-            contractEndDate: this.myContractEndDate3
-              ? this.myContractEndDate3
-              : this.contractEndDate3,
-            monthlyRent: this.myMonthlyRent3
-              ? this.myMonthlyRent3
-              : this.monthlyRent3,
+            firstName:
+              this.myFirstName3 !== null ? this.myFirstName3 : this.firstName3,
+            lastName:
+              this.myLastName3 !== null ? this.myLastName3 : this.lastName3,
+            contractStartDate:
+              this.myContractStartDate3 !== null
+                ? this.myContractStartDate3
+                : this.contractStartDate3,
+            contractEndDate:
+              this.myContractEndDate3 !== null
+                ? this.myContractEndDate3
+                : this.contractEndDate3,
+            monthlyRent:
+              this.myMonthlyRent3 !== null
+                ? this.myMonthlyRent3
+                : this.monthlyRent3,
             nextPaymentDate: this.addMonths(
-              this.myContractStartDate3
+              this.myContractStartDate3 !== null
                 ? this.myContractStartDate3
                 : this.contractStartDate3,
               1
@@ -1045,19 +1062,24 @@ export default {
             numberOfMonthsRentalUnpaid: 0,
           },
           {
-            firstName: this.myFirstName4 ? this.myFirstName4 : this.firstName4,
-            lastName: this.myLastName4 ? this.myLastName4 : this.lastName4,
-            contractStartDate: this.myContractStartDate4
-              ? this.myContractStartDate4
-              : this.contractStartDate4,
-            contractEndDate: this.myContractEndDate4
-              ? this.myContractEndDate4
-              : this.contractEndDate4,
-            monthlyRent: this.myMonthlyRent4
-              ? this.myMonthlyRent4
-              : this.monthlyRent4,
+            firstName:
+              this.myFirstName4 !== null ? this.myFirstName4 : this.firstName4,
+            lastName:
+              this.myLastName4 !== null ? this.myLastName4 : this.lastName4,
+            contractStartDate:
+              this.myContractStartDate4 !== null
+                ? this.myContractStartDate4
+                : this.contractStartDate4,
+            contractEndDate:
+              this.myContractEndDate4 !== null
+                ? this.myContractEndDate4
+                : this.contractEndDate4,
+            monthlyRent:
+              this.myMonthlyRent4 !== null
+                ? this.myMonthlyRent4
+                : this.monthlyRent4,
             nextPaymentDate: this.addMonths(
-              this.myContractStartDate4
+              this.myContractStartDate4 !== null
                 ? this.myContractStartDate4
                 : this.contractStartDate4,
               1
@@ -1065,19 +1087,24 @@ export default {
             numberOfMonthsRentalUnpaid: 0,
           },
           {
-            firstName: this.myFirstName5 ? this.myFirstName5 : this.firstName5,
-            lastName: this.myLastName5 ? this.myLastName5 : this.lastName5,
-            contractStartDate: this.myContractStartDate5
-              ? this.myContractStartDate5
-              : this.contractStartDate5,
-            contractEndDate: this.myContractEndDate5
-              ? this.myContractEndDate5
-              : this.contractEndDate5,
-            monthlyRent: this.myMonthlyRent5
-              ? this.myMonthlyRent5
-              : this.monthlyRent5,
+            firstName:
+              this.myFirstName5 !== null ? this.myFirstName5 : this.firstName5,
+            lastName:
+              this.myLastName5 !== null ? this.myLastName5 : this.lastName5,
+            contractStartDate:
+              this.myContractStartDate5 !== null
+                ? this.myContractStartDate5
+                : this.contractStartDate5,
+            contractEndDate:
+              this.myContractEndDate5 !== null
+                ? this.myContractEndDate5
+                : this.contractEndDate5,
+            monthlyRent:
+              this.myMonthlyRent5 !== null
+                ? this.myMonthlyRent5
+                : this.monthlyRent5,
             nextPaymentDate: this.addMonths(
-              this.myContractStartDate5
+              this.myContractStartDate5 !== null
                 ? this.myContractStartDate5
                 : this.contractStartDate5,
               1
