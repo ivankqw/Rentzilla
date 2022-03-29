@@ -20,7 +20,12 @@
               <label for="fullAddress" class="form-label">Rental Address</label> 
 
               <select class="form-control" name="fullAddress" id="fullAddress" v-model="fullAddress">
-                <option v-for="rental in rentals" :key="rental.postalCode">{{rental.address}} {{rental.postalCode}} {{rental.unitNumber}}</option>
+                <!-- <option v-for="rental in rentals" :key="rental.index">
+                  <textarea v-model="address">{{rental.address}}
+                  <p v-model="unitNumber">{{rental.unitNumber}}
+                  <p v-model="postalCode">{{rental.postalCode}}</p>
+                </option> -->
+                <option v-for="(rental, idx) in rentals" :key="idx">{{rental.address}}, {{rental.unitNumber}}, S{{rental.postalCode}}</option>
               </select>
             
             
@@ -56,6 +61,7 @@
             class="btn btn-secondary" 
             data-bs-dismiss="modal" 
             style="margin-right: 10px"
+            @click="resetAddExpenseForm()"
             >
             Cancel
             </button>
@@ -123,8 +129,7 @@ export default {
   data() {
     return {
       fullAddress: "",
-
-      postalCode: "",
+      rentalIndex: "", 
       expenseType: "",
       expenseCost: "",
       expenseDate: "",
@@ -139,9 +144,41 @@ export default {
     testbutton() {
       console.log("Test button");
       console.log("expenses:\n", this.expenses);
-
       console.log("rentals:\n", this.rentals);
     },
+
+    getRentalIndex(fullAddress) {
+      console.log("fullAddress = ", fullAddress);
+      let rentals = JSON.parse(JSON.stringify(this.rentals))
+      console.log("rentals = ", rentals);
+      for (let rentalId in rentals) {
+        let currRental = rentals[rentalId];
+        let currFullAdd = currRental.address + ", " + currRental.unitNumber + ", S" + currRental.postalCode;
+        // console.log("currRental = ", currRental);
+
+        if (currFullAdd == fullAddress) {
+          return rentalId;
+        }
+      }
+      console.log("Rental ID not found");
+      return -1;
+    },
+
+    resetAddExpenseForm() {
+      function initialState() {
+        return {
+          fullAddress: "",
+          rentalIndex: "", 
+          expenseType: "",
+          expenseCost: "",
+          expenseDate: "",
+          expenses: {},
+          rentals: {},
+        }
+      }
+      Object.assign(this.$data, initialState());
+    },
+
 
     async saveExpense() {
       console.log("CLICKED + ADD EXPENSE")
@@ -151,7 +188,7 @@ export default {
       const ref = doc(db, "Expenses", userEmail);
       const docData = {
         fullAddress: this.fullAddress,
-        // postalCode: this.postalCode,
+        rentalIndex: this.rentalIndex,
         expenseType: this.expenseType,
         expenseCost: this.expenseCost,
         expenseDate: this.expenseDate,
@@ -171,9 +208,11 @@ export default {
         alert("Please enter a valid date");
         return;
       }
-      
 
-      console.log("ref: ", ref);
+      console.log("fullAddress = ", this.fullAddress);
+
+      docData.rentalIndex = this.getRentalIndex(this.fullAddress);
+      
       console.log("docData: ", docData);
       try {
         await updateDoc(ref, {
@@ -189,6 +228,7 @@ export default {
       var myModalEl = document.getElementById("newExpenseModal");
       var modal = Modal.getInstance(myModalEl);
       modal.hide();
+      this.resetAddExpenseForm;
     },
   },
 };

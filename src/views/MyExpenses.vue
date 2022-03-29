@@ -49,7 +49,7 @@
     </table>
   </div>
 
-  <ExpenseAddModal ref="expenseModal" />
+  <ExpenseAddModal ref="expenseModal"/>
 
 <!-- need to add in address and unit num -->
   <ExpenseEditModal
@@ -59,7 +59,7 @@
     :expenseType="this.expenseType"
     :expenseCost="this.expenseCost"
     :expenseDate="this.expenseDate"
-    />
+  />
 
 
 </template>
