@@ -17,15 +17,10 @@
             <button type="button" class="btn btn-primary" @click="testbutton">test button</button>
 
             <div class="mb-3">
-              <label for="postalCode" class="form-label">Rental</label> 
-              <!-- <input 
-              type="number" 
-              class="form-control"
-              id="postalCode" 
-              placeholder="Select Rental"
-              v-model="postalCode"/> -->
-              <select class="form-control" name="postalCode" id="postalCode" v-model="postalCode">
-                <option v-for="rental in rentals" :value="rental.postalCode" :key="rental.postalCode">{{rental.address}} {{rental.postalCode}} {{rental.unitNumber}}</option>
+              <label for="fullAddress" class="form-label">Rental Address</label> 
+
+              <select class="form-control" name="fullAddress" id="fullAddress" v-model="fullAddress">
+                <option v-for="rental in rentals" :key="rental.postalCode">{{rental.address}} {{rental.postalCode}} {{rental.unitNumber}}</option>
               </select>
             
             
@@ -46,7 +41,7 @@
             <input 
             type="number" 
             class="form-control" 
-            placeholder="4000"
+            placeholder="e.g. 4000"
             v-model="expenseCost"/>
 
 
@@ -65,7 +60,7 @@
             Cancel
             </button>
             <button 
-            type="submit" 
+            type="button" 
             class="btn btn-success" 
             v-on:click="saveExpense()"
             data-bs-dismiss="modal fade"
@@ -109,13 +104,25 @@ export default {
     }
   },
 
-  mounted() {
-    this.testbutton();
+  async mounted() {
+    const auth = getAuth();
+    const userEmail = auth.currentUser.email;
+    const ref = doc(db, "Expenses", userEmail);
+    const docSnap = await getDoc(ref);
+    const expenses = docSnap.data().expenses; // JSON.parse(JSON.stringify(docSnap.data().expenses));
+    this.expenses = expenses;
+    console.log("mounted expenses:", expenses);
+
+    const rentalRef = doc(db, "Rentals", userEmail);
+    const rentalDocSnap = await getDoc(rentalRef);
+    const rentals = rentalDocSnap.data().rentals;
+    this.rentals = rentals;
+    console.log("mounted rentals:", rentals);
   },
 
   data() {
     return {
-      address: "",
+      fullAddress: "",
 
       postalCode: "",
       expenseType: "",
@@ -127,21 +134,13 @@ export default {
       rentals: {},
     };
   },
+  
   methods: {
-    async testbutton() {
-      const auth = getAuth();
-      const userEmail = auth.currentUser.email;
-      const ref = doc(db, "Expenses", userEmail);
-      const docSnap = await getDoc(ref);
-      const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
-      // console.log("expenses is arr", expenses instanceof Array );
+    testbutton() {
+      console.log("Test button");
+      console.log("expenses:\n", this.expenses);
 
-      const rentalRef = doc(db, "Rentals", userEmail);
-      const rentalDocSnap = await getDoc(rentalRef);
-      const rentals = rentalDocSnap.data().rentals;
-      this.rentals = rentals;
-
-      console.log("Test button:\nexpenses=", expenses, "\nrentals:\n", rentals);
+      console.log("rentals:\n", this.rentals);
     },
 
     async saveExpense() {
@@ -151,28 +150,31 @@ export default {
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Expenses", userEmail);
       const docData = {
-        postalCode: this.postalCode,
+        fullAddress: this.fullAddress,
+        // postalCode: this.postalCode,
         expenseType: this.expenseType,
         expenseCost: this.expenseCost,
         expenseDate: this.expenseDate,
       };
 
       // Validation of inputs property details
-      console.log(String(this.postalCode).length);
-      if (String(this.postalCode).length !== 6) {
-        alert("Please enter a valid postal code");
+      if (!this.fullAddress) {
+        alert("Please choose a valid rental address");
         return;
-      } else if (!this.expenseType) {
+      } if (!this.expenseType) {
         alert("Please choose a valid type of expense");
         return;
-      } else if (!this.expenseCost) {
+      } else if (!this.expenseCost || this.expenseCost <= 0) {
         alert("Please enter a valid cost");
         return;
       } else if (!this.expenseDate) {
         alert("Please enter a valid date");
         return;
       }
+      
 
+      console.log("ref: ", ref);
+      console.log("docData: ", docData);
       try {
         await updateDoc(ref, {
           expenses: arrayUnion(docData),
@@ -184,6 +186,9 @@ export default {
       }
 
       document.getElementById("addExpenseForm").reset();
+      var myModalEl = document.getElementById("newExpenseModal");
+      var modal = Modal.getInstance(myModalEl);
+      modal.hide();
     },
   },
 };

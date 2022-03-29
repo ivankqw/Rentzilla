@@ -30,7 +30,7 @@
     <tbody>
         <tr v-for="(expense, i) in expenses" :key="i">
           <td>{{ i + 1 }}</td>
-          <td>{{ expense.postalCode }}</td>
+          <td>{{ expense.fullAddress }}</td>
 
           <td>{{ expense.expenseType }}</td>
           <td>{{ expense.expenseCost }}</td>
@@ -55,7 +55,7 @@
   <ExpenseEditModal
     ref="expenseEditModal"
     :index="this.index" 
-    :postalCode="this.postalCode"
+    :fullAddress="this.fullAddress"
     :expenseType="this.expenseType"
     :expenseCost="this.expenseCost"
     :expenseDate="this.expenseDate"
@@ -95,14 +95,14 @@ export default {
       showExpenseEditModal();
       var vu = this;
       var currExpense = this.expenses[id];
-      vu.index = id; ///
-      vu.postalCode = currExpense.postalCode;
+      vu.index = id; 
+      vu.fullAddress = currExpense.fullAddress;
       vu.expenseType = currExpense.expenseType;
       vu.expenseCost = currExpense.expenseCost;
       vu.expenseDate = currExpense.expenseDate;
-      console.log("CLICKED ON MANAGE:\nInside editExpenseDetails")
+      console.log("CLICKED ON MANAGE:\nInside editExpenseDetails");
       console.log("id=", id);
-      console.log("postalCode=", vu.postalCode);
+      console.log("fullAddress=", vu.fullAddress);
       console.log("expenseType=", vu.expenseType);
       console.log("expenseCost=", vu.expenseCost);
       console.log("expenseDate=", vu.expenseDate);
@@ -128,7 +128,8 @@ export default {
   data() {
     return {
       index: "",
-      postalCode: "",
+      // postalCode: "",
+      fullAddress: "",
       
       expenseType: "",
       expenseCost: "",
