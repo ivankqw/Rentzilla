@@ -4,6 +4,7 @@
   <button type="button" class="btn btn-lg btn-outline-danger">Business</button>
   <button type="button" class="btn btn-lg btn-outline-warning">Health</button>
   <br><br>
+      <h1>Top News</h1>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="(article, index) in articlesTop" :key="index" class="col">
         <a :href="article.url" target="_blank">
@@ -22,6 +23,7 @@
       </div>
     </div>
     <br>
+        <h1>More News</h1>
     <div class="row row-cols-1 row-cols-md-1 g-4 align-items-stretch">
       <div v-for="(article,index) in articlesBottom" :key="index" class="card h-100">
         <a :href="article.url" target="_blank">
