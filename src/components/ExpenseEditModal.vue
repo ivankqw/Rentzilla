@@ -16,20 +16,20 @@
           <form id="editExpenseForm">
             <div class="mb-3">
               <button type="button" @click="testbutton">test button</button>
-              <!-- <h2 :v-text="postalCode">Postal code is {{postalCode}}</h2>
-              <p :v-text="index">Index {{index}}</p>
+              <p :v-text="fullAddress">Rental Address: {{fullAddress}}</p>
+              <!-- <p :v-text="index">Index {{index}}</p>
               <p :v-text="expenseType">Exp type {{expenseType}}</p>
               <p :v-text="expenseCost">Exp cost {{expenseCost}}</p>
               <p :v-text="expenseDate">Exp date {{expenseDate}}</p> -->
 
-              <label for="postalCode" class="form-label">Postal Code</label>
+              <!-- <label for="postalCode" class="form-label">Postal Code</label>
               <input
                 type="number"
                 class="form-control"
                 id="postalCode"
                 :value="postalCode"
                 @input="onPostalCodeChange"
-              />
+              /> -->
 
 
               <label for="expenseType" class="form-label">Type of Expense</label> 
@@ -110,7 +110,8 @@ export default {
   name: "ExpenseEditModal",
   props: [
     "index",
-    "postalCode",
+    "fullAddress",
+    // "postalCode",
     "expenseType",
     "expenseCost",
     "expenseDate",
@@ -141,7 +142,8 @@ export default {
   data() {
     return {
       myIndex: this.index,
-      myPostalCode: this.postalCode, 
+      myFullAddress: this.fullAddress,
+      // myPostalCode: this.postalCode, 
       myExpenseType: this.expenseType,
       myExpenseCost: this.expenseCost,
       myExpenseDate: this.expenseDate,
@@ -152,7 +154,7 @@ export default {
   methods: {
     testbutton() {
       console.log("myIndex=", this.myIndex); 
-      console.log("myPostalCode=", this.myPostalCode);
+      console.log("myFullAddress=", this.myFullAddress);
       console.log("myExpenseType=", this.myExpenseType);
       console.log("myExpenseCost=", this.myExpenseCost);
       console.log("myExpenseDate=", this.myExpenseDate);
@@ -195,19 +197,21 @@ export default {
       // console.log("myExpenseDate is ''", this.myExpenseDate == "");
 
       console.log("parents\nindex is ", this.$parent.index); 
-      console.log("postalCode is ", this.$parent.postalCode);
+      console.log("fullAddress is ", this.$parent.fullAddress);
       console.log("expenseType is ", this.$parent.expenseType);
-      console.log("expenseCost is ", this.$parent.myExpenseCost);
-      console.log("expenseDate is ", this.$parent.myExpenseDate);
+      console.log("expenseCost is ", this.$parent.expenseCost);
+      console.log("expenseDate is ", this.$parent.expenseDate);
 
+      this.myFullAddress = this.$parent.fullAddress;
+      // if user did not edit the data, populate it with the original (parent) data
       if (this.myIndex == "") {
         this.myIndex = this.$parent.index;
         console.log("*");
       }
-      if (this.myPostalCode == "") {
-        this.myPostalCode = this.$parent.postalCode;
-        console.log("**");
-      }
+      // if (this.myPostalCode == "") {
+      //   this.myPostalCode = this.$parent.postalCode;
+      //   console.log("**");
+      // }
       if (this.myExpenseType == "") {
         this.myExpenseType = this.$parent.expenseType;
         console.log("***");        
@@ -221,20 +225,25 @@ export default {
         console.log("*****");        
 
       }
-      console.log('before: expenses[index].postalCode=', expenses[index].postalCode);
+      console.log('before: expenses[index].fullAddress=', expenses[index].fullAddress);
 
 
-      expenses[index].postalCode = this.myPostalCode;
+      expenses[index].fullAddress = this.myFullAddress;
       expenses[index].expenseType = this.myExpenseType;
       expenses[index].expenseCost = this.myExpenseCost;
       expenses[index].expenseDate = this.myExpenseDate;
 
-      console.log('after: expenses[index].postalCode=', expenses[index].postalCode);
+      console.log('after: expenses[index].fullAddress=', expenses[index].fullAddress);
       await updateDoc(ref, { expenses: expenses });
-      this.myPostalCode = "";
+      this.myFullAddress = "";
       this.myExpenseType = "";
       this.myExpenseCost = "";
       this.myExpenseDate = "";
+
+      // close the modal
+      var myModalEl = document.getElementById("expenseEditModal");
+      var modal = Modal.getInstance(myModalEl);
+      modal.hide();
       /* 
       // this.onPostalCodeChange(event);
       // this.onExpenseTypeChange(event);

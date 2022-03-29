@@ -93,8 +93,9 @@ export default {
 
     function editExpenseDetails(id) {
       showExpenseEditModal();
+      var currExpense = JSON.parse(JSON.stringify(this.expenses))[id];
+      console.log("currExpense=", currExpense);
       var vu = this;
-      var currExpense = this.expenses[id];
       vu.index = id; 
       vu.fullAddress = currExpense.fullAddress;
       vu.expenseType = currExpense.expenseType;
@@ -127,7 +128,7 @@ export default {
 
   data() {
     return {
-      index: "",
+      index: "", // numbering of expenses in expenses table
       // postalCode: "",
       fullAddress: "",
       
@@ -141,8 +142,6 @@ export default {
     };
   },
   async mounted() {
-    //await this.updateExpense();
-    //await this.displayExpenses();
     const auth = getAuth();
     const userEmail = auth.currentUser.email;
 
