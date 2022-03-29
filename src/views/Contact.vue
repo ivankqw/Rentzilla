@@ -1,16 +1,105 @@
 <template>
-  <h1>Ths is the Contact page</h1>
-  <h3> Welcome back, {{$store.state.name}} </h3>
-  <h3> Your email is {{$store.state.email}} </h3>
+  <div class="container">
+    <img src="@/assets/hdb.jpg" alt="..." />
+
+    <div class="mx-0 mx-sm-auto">
+      <div class="card">
+        <div class="card-header"></div>
+        <div class="modal-body">
+          <div class="text-center">
+            <i class="far fa-file-alt fa-4x mb-3 text-primary"></i>
+            <h2>Your opinion matters</h2>
+            <form>
+              <!-- Message input -->
+              <div class="form-outline mb-4">
+                <textarea
+                  class="form-control"
+                  id="feedback"
+                  rows="4"
+                  placeholder="Please enter your feedback here"
+                  v-model="feedback"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer text-end">
+            <button
+              type="button"
+              class="btn btn-primary"
+              v-on:click="submitFeedback()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
+import { db } from "../firebase.js";
+import { getAuth } from "firebase/auth";
+
 export default {
-  
+  name: "Contact",
+
+  data() {
+    return {
+      feedback: "",
+    };
+  },
+
+  methods: {
+    async submitFeedback() {
+      if (String(this.feedback).length == 0) {
+        alert("Please ensure you have written something before submitting");
+        return false;
+      }
+
+      console.log("Creating Document");
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Feedbacks", userEmail);
+      const docData = {
+        feedback: this.feedback,
+        };
+
+        try {
+          await updateDoc(ref, {
+            feedbacks: arrayUnion(docData),
+          });
+        } catch (error) {
+          await setDoc(ref, { 
+            feedbacks: arrayUnion(docData),
+            });
+        }
+      // const addedDoc = await addDoc(ref, this.feedback);
+      alert("Document created successfully!");
+      console.log(docData);
+      document.forms.reset();
+      //document.getElementById("feedback").reset();
+      // this.$router.push("/contact");
+    },
+
+    async validateFeedbackForm() {
+      if (String(this.feedback).length == 0) {
+        alert("Please ensure you have written something before submitting");
+        return false;
+      }
+    },
+  },
 };
 </script>
 
-
 <style>
-
+img {
+  height: auto;
+  max-width: 40%;
+  background-repeat: no-repeat;
+  background-position: left left;
+  background-size: cover;
+  float: left;
+}
 </style>
