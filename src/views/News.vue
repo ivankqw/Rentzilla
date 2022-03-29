@@ -1,10 +1,40 @@
 <template>
-  <div class="container">
-    <h1>News</h1>
-  <button type="button" class="btn btn-lg btn-outline-danger">Business</button>
-  <button type="button" class="btn btn-lg btn-outline-warning">Health</button>
-  <br><br>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="container" style="margin-top: 20px">
+    <h2 id="firstHeader" style="text-align: left; float: left">Latest News</h2>
+
+    <nav
+      class="navbar navbar-light bg-light justify-content-center"
+      style="text-align: center"
+    >
+      <form class="form-inline">
+        <button
+          class="btn btn-outline-warning"
+          type="button"
+          id="generalNews"
+          v-on:click="getGeneralNews()"
+        >
+          General
+        </button>
+        <button
+          class="btn btn-outline-success"
+          type="button"
+          id="bizNews"
+          v-on:click="getBizNews()"
+        >
+          Business
+        </button>
+        <button
+          class="btn btn-outline-danger"
+          type="button"
+          id="healthNews"
+          v-on:click="getHealthNews()"
+        >
+          Health
+        </button>
+      </form>
+    </nav>
+    <br />
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="top-content">
       <div v-for="(article, index) in articlesTop" :key="index" class="col">
         <a :href="article.url" target="_blank">
           <div class="card h-100">
@@ -21,26 +51,38 @@
         </a>
       </div>
     </div>
-    <br>
-    <div class="row row-cols-1 row-cols-md-1 g-4 align-items-stretch">
-      <div v-for="(article,index) in articlesBottom" :key="index" class="card h-100">
+    <br />
+    <h2 id="secondHeader" style="text-align: left">Other News</h2>
+    <div
+      class="row row-cols-1 row-cols-md-1 g-4 align-items-stretch"
+      id="bottom-content"
+    >
+      <div
+        v-for="(article, index) in articlesBottom"
+        :key="index"
+        class="card h-100"
+      >
         <a :href="article.url" target="_blank">
-        <div class="row g-0">
-          <div class="col-md-3">
-            <img :src="article.urlToImage" class="img-fluid rounded-start" alt="..." />
-          </div>
-          <div class="col-md-9">
-            <div class="card-body">
-              <h5 class="card-title">{{article.title}}</h5>
-              <p class="card-text">
-                {{article.description}}
-              </p>
-              <p class="card-text">
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </p>
+          <div class="row g-0">
+            <div class="col-md-3">
+              <img
+                :src="article.urlToImage"
+                class="img-fluid rounded-start"
+                alt="..."
+              />
+            </div>
+            <div class="col-md-9">
+              <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text">
+                  {{ article.description }}
+                </p>
+                <p class="card-text">
+                  <small class="text-muted">Last updated 3 mins ago</small>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
         </a>
       </div>
     </div>
@@ -53,6 +95,7 @@ import { db } from "../firebase.js";
 
 export default {
   name: "News",
+
   data() {
     return {
       articlesTop: [],
@@ -64,7 +107,7 @@ export default {
     try {
       newsApiKey = await getDoc(doc(db, "Admin", "NewsApi"));
       newsApiKey = newsApiKey.data().key;
-      var url = `https://newsapi.org/v2/top-headlines?country=sg&category=business&apiKey=${newsApiKey}`;
+      var url = `https://newsapi.org/v2/top-headlines?country=sg&category=general&apiKey=${newsApiKey}`;
 
       fetch(url)
         .then((response) => response.json())
@@ -82,10 +125,75 @@ export default {
     replaceByDefault(e) {
       e.target.src = "../assets/rentzilla_logo.png";
     },
+
+    async getGeneralNews() {
+      this.$router.push("/news");
+    },
+
+    async getBizNews() {
+      var topNews = document.getElementById("top-content");
+      if (topNews) {
+        topNews.remove();
+      }
+
+      var firstHeader = document.getElementById("firstHeader");
+      if (firstHeader) {
+        firstHeader.remove();
+      }
+
+      document.getElementById("secondHeader").innerHTML = "Business News";
+
+      var newsApiKey;
+      try {
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi"));
+        newsApiKey = newsApiKey.data().key;
+        var url = `https://newsapi.org/v2/top-headlines?country=sg&category=business&apiKey=${newsApiKey}`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((json) => json.articles)
+          .then((articles) => {
+            this.articlesBottom = Array.from(articles).slice(2);
+            console.log(articles);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getHealthNews() {
+      var topNews = document.getElementById("top-content");
+      if (topNews) {
+        topNews.remove();
+      }
+
+      var firstHeader = document.getElementById("firstHeader");
+      if (firstHeader) {
+        firstHeader.remove();
+      }
+
+      document.getElementById("secondHeader").innerHTML = "Health News";
+
+      var newsApiKey;
+      try {
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi"));
+        newsApiKey = newsApiKey.data().key;
+        var url = `https://newsapi.org/v2/top-headlines?country=sg&category=health&apiKey=${newsApiKey}`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((json) => json.articles)
+          .then((articles) => {
+            this.articlesBottom = Array.from(articles).slice(2);
+            console.log(articles);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
-
 
 <style scoped>
 .card:hover {
