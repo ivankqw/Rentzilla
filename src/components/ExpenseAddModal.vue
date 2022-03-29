@@ -10,27 +10,24 @@
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
+            v-on:click="resetAddExpenseForm()"
           ></button>
         </div>
         <div class="modal-body">
-          <form id="addExpenseForm">
+          <form id="addExpenseForm" autocomplete="off">
             <button type="button" class="btn btn-primary" @click="testbutton">test button</button>
 
             <div class="mb-3">
               <label for="fullAddress" class="form-label">Rental Address</label> 
-
-              <select class="form-control" name="fullAddress" id="fullAddress" v-model="fullAddress">
-                <!-- <option v-for="rental in rentals" :key="rental.index">
-                  <textarea v-model="address">{{rental.address}}
-                  <p v-model="unitNumber">{{rental.unitNumber}}
-                  <p v-model="postalCode">{{rental.postalCode}}</p>
-                </option> -->
-                <option v-for="(rental, idx) in rentals" :key="idx">{{rental.address}}, {{rental.unitNumber}}, S{{rental.postalCode}}</option>
+              <select class="form-control" name="fullAddress" id="fullAddress" value="" v-model="fullAddress">
+                  <option hidden>Click to select</option>
+                  <option v-for="rental in rentals" :key="rental.address">{{rental.address}}, {{rental.unitNumber}}, S{{rental.postalCode}}</option>
               </select>
             
             
               <label for="expenseType" class="form-label">Type of Expense</label> 
               <select class="form-control" name="expenseType" id="expenseType" v-model="expenseType">
+                  <option disabled hidden selected>Click to select</option>
                   <option value="loan">Loan</option>
                   <option value="maintenance">Maintenance</option>
                   <option value="furnishing">Furnishing</option>
@@ -61,7 +58,7 @@
             class="btn btn-secondary" 
             data-bs-dismiss="modal" 
             style="margin-right: 10px"
-            @click="resetAddExpenseForm()"
+            v-on:click="resetAddExpenseForm()"
             >
             Cancel
             </button>
@@ -165,18 +162,20 @@ export default {
     },
 
     resetAddExpenseForm() {
-      function initialState() {
-        return {
-          fullAddress: "",
-          rentalIndex: "", 
-          expenseType: "",
-          expenseCost: "",
-          expenseDate: "",
-          expenses: {},
-          rentals: {},
-        }
-      }
-      Object.assign(this.$data, initialState());
+      document.getElementById("addExpenseForm").reset();
+      console.log("form resetted");
+      // function initialState() {
+        // return {
+          // fullAddress: "",
+          // rentalIndex: "", 
+          // expenseType: "",
+          // expenseCost: "",
+          // expenseDate: "",
+          // expenses: {},
+          // rentals: {},
+        // }
+      // }
+      // Object.assign(this.$data, initialState());
     },
 
 
@@ -224,11 +223,12 @@ export default {
         });
       }
 
-      document.getElementById("addExpenseForm").reset();
+      this.resetAddExpenseForm();
+      
+      // close the modal
       var myModalEl = document.getElementById("newExpenseModal");
       var modal = Modal.getInstance(myModalEl);
       modal.hide();
-      this.resetAddExpenseForm;
     },
   },
 };
