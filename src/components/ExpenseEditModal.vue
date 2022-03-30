@@ -5,9 +5,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Edit Expense</h5>
-          <button
+          <button class="btn-close"
             type="button"
-            class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
@@ -15,24 +14,9 @@
         <div class="modal-body">
           <form id="editExpenseForm">
             <div class="mb-3">
-              <button type="button" @click="testbutton">test button</button>
-              <p :v-text="fullAddress">Rental Address: {{fullAddress}}</p>
-              <!-- <p :v-text="index">Index {{index}}</p>
-              <p :v-text="expenseType">Exp type {{expenseType}}</p>
-              <p :v-text="expenseCost">Exp cost {{expenseCost}}</p>
-              <p :v-text="expenseDate">Exp date {{expenseDate}}</p> -->
-
-              <!-- <label for="postalCode" class="form-label">Postal Code</label>
-              <input
-                type="number"
-                class="form-control"
-                id="postalCode"
-                :value="postalCode"
-                @input="onPostalCodeChange"
-              /> -->
-
-
-              <label for="expenseType" class="form-label">Type of Expense</label> 
+              <h5 :v-text="fullAddress">Rental Address: {{fullAddress}}</h5>
+              <br>
+              <label for="expenseType">Type of Expense</label> 
               <select class="form-control" id="expenseType" :value="expenseType" @input="onExpenseTypeChange">
                 <option value="loan">Loan</option>
                 <option value="maintenance">Maintenance</option>
@@ -42,8 +26,8 @@
                 <option value="others">Others</option>
                 
               </select>
-
-              <label for="expenseCost" class="form-label">Cost</label>
+              <br>
+              <label for="expenseCost">Cost</label>
               <input
                 type="number"
                 class="form-control"
@@ -51,12 +35,11 @@
                 :value="expenseCost"
                 @input="onExpenseCostChange"
               />
-
-              <label for="expenseDate" class="form-label"
-                >Date of Expense</label
-              >
+              <br>
+              <label for="expenseDate">Date of Expense</label>
               <input
                 type="date"
+                class="form-control"
                 id="expenseDate"
                 :value="expenseDate"
                 @input="onExpenseDateChange"
@@ -64,7 +47,7 @@
             </div>
 
 
-            <div class="footer">
+            <div class="modal-footer">
               <button
                 type="button"
                 class="btn btn-danger"
@@ -152,13 +135,6 @@ export default {
 
 
   methods: {
-    testbutton() {
-      console.log("myIndex=", this.myIndex); 
-      console.log("myFullAddress=", this.myFullAddress);
-      console.log("myExpenseType=", this.myExpenseType);
-      console.log("myExpenseCost=", this.myExpenseCost);
-      console.log("myExpenseDate=", this.myExpenseDate);
-    },
 
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
@@ -225,7 +201,7 @@ export default {
         console.log("*****");        
 
       }
-      console.log('before: expenses[index].fullAddress=', expenses[index].fullAddress);
+      console.log('before: expenses[index]=', expenses[index]);
 
 
       expenses[index].fullAddress = this.myFullAddress;
@@ -233,7 +209,7 @@ export default {
       expenses[index].expenseCost = this.myExpenseCost;
       expenses[index].expenseDate = this.myExpenseDate;
 
-      console.log('after: expenses[index].fullAddress=', expenses[index].fullAddress);
+      console.log('after: expenses[index]=', expenses[index]);
       await updateDoc(ref, { expenses: expenses });
       this.myFullAddress = "";
       this.myExpenseType = "";
@@ -309,4 +285,9 @@ export default {
 
 <style>
 
+
+form {
+  align-content: left;
+  text-align: left;
+}
 </style>

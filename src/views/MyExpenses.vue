@@ -1,12 +1,11 @@
 <template>
 
-  <h1 class="header">This is the My Expenses page </h1>
-  <h3> Welcome back, {{$store.state.name}} </h3>
-  <h3> Your email is {{$store.state.email}} </h3>
+  <h1 class="header">My Expenses</h1>
+  <!-- <h3> Welcome back, {{$store.state.name}} </h3>
+  <h3> Your email is {{$store.state.email}} </h3> -->
 
-  <button
+  <button id="newExpenseBtn"
     type="button"
-    id="newExpenseBtn"
     class="btn btn-warning"
     data-bs-toggle="modal"
     data-bs-target="#newExpenseModal"
@@ -15,23 +14,22 @@
   </button>
   <br />
 
-  <div class="table-responsive">
+  <div class="table-responsive" id="expensestable">
     <table class="table table-striped table-hover">
     <thead>
-      <tr>
+      <tr class="table-light">
         <th>#</th>
         <th>Address</th>
-        
         <th>Type of Expense</th>
         <th>Cost</th>
         <th>Date of Expense</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
         <tr v-for="(expense, i) in expenses" :key="i">
           <td>{{ i + 1 }}</td>
           <td>{{ expense.fullAddress }}</td>
-
           <td>{{ expense.expenseType }}</td>
           <td>{{ expense.expenseCost }}</td>
           <td>{{ expense.expenseDate }}</td>
@@ -60,8 +58,6 @@
     :expenseCost="this.expenseCost"
     :expenseDate="this.expenseDate"
   />
-
-
 </template>
 
 <script>
@@ -95,24 +91,23 @@ export default {
       showExpenseEditModal();
       var currExpense = JSON.parse(JSON.stringify(this.expenses))[id];
       console.log("currExpense=", currExpense);
-      var vu = this;
-      vu.index = id; 
-      vu.fullAddress = currExpense.fullAddress;
-      vu.expenseType = currExpense.expenseType;
-      vu.expenseCost = currExpense.expenseCost;
-      vu.expenseDate = currExpense.expenseDate;
+      this.index = id; 
+      this.fullAddress = currExpense.fullAddress;
+      this.expenseType = currExpense.expenseType;
+      this.expenseCost = currExpense.expenseCost;
+      this.expenseDate = currExpense.expenseDate;
       console.log("CLICKED ON MANAGE:\nInside editExpenseDetails");
       console.log("id=", id);
-      console.log("fullAddress=", vu.fullAddress);
-      console.log("expenseType=", vu.expenseType);
-      console.log("expenseCost=", vu.expenseCost);
-      console.log("expenseDate=", vu.expenseDate);
+      console.log("fullAddress=", this.fullAddress);
+      console.log("expenseType=", this.expenseType);
+      console.log("expenseCost=", this.expenseCost);
+      console.log("expenseDate=", this.expenseDate);
       // switch (currRental.tenants.length) {
       //   case 1:
-      //     vu.firstName1 = currRental.tenants[0].firstName;
-      //     vu.contractStartDate1 = currRental.tenants[0].contractStartDate;
-      //     vu.contractEndDate1 = currRental.tenants[0].contractEndDate;
-      //     vu.monthlyRent1 = currRental.tenants[0].monthlyRent;
+      //     this.firstName1 = currRental.tenants[0].firstName;
+      //     this.contractStartDate1 = currRental.tenants[0].contractStartDate;
+      //     this.contractEndDate1 = currRental.tenants[0].contractEndDate;
+      //     this.monthlyRent1 = currRental.tenants[0].monthlyRent;
       //     break;
       // } 
     }
@@ -179,8 +174,16 @@ export default {
 };
 </script>
 
-
 <style scoped>
+h1 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 50px;
+  color: #000000;
+}
+
+
 #newExpenseBtn {
   display: flex;
   flex-direction: row;
@@ -209,7 +212,6 @@ export default {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  height: 50px;
   left: 58px;
   top: 170px;
 }

@@ -15,41 +15,36 @@
         </div>
         <div class="modal-body">
           <form id="addExpenseForm" autocomplete="off">
-            <button type="button" class="btn btn-primary" @click="testbutton">test button</button>
+            <!-- <button type="button" class="btn btn-primary" @click="testbutton">test button</button> -->
 
             <div class="mb-3">
-              <label for="fullAddress" class="form-label">Rental Address</label> 
+              <label for="fullAddress" >Rental Address</label> 
               <select class="form-control" name="fullAddress" id="fullAddress" value="" v-model="fullAddress">
                   <option hidden>Click to select</option>
                   <option v-for="rental in rentals" :key="rental.address">{{rental.address}}, {{rental.unitNumber}}, S{{rental.postalCode}}</option>
               </select>
-            
-            
-              <label for="expenseType" class="form-label">Type of Expense</label> 
+              <br>
+              <label for="expenseType">Type of Expense</label> 
               <select class="form-control" name="expenseType" id="expenseType" v-model="expenseType">
                   <option disabled hidden selected>Click to select</option>
-                  <option value="loan">Loan</option>
-                  <option value="maintenance">Maintenance</option>
-                  <option value="furnishing">Furnishing</option>
-                  <option value="utilities">Utilities</option>
-                  <option value="tax">Tax</option>
-                  <option value="others">Others</option>
-                
+                  <option value="Loan">Loan</option>
+                  <option value="Maintenance">Maintenance</option>
+                  <option value="Furnishing">Furnishing</option>
+                  <option value="Utilities">Utilities</option>
+                  <option value="Tax">Tax</option>
+                  <option value="Others">Others</option>
               </select>
-
-            <!-- <input type="text" class="form-control" placeholder="Furnishing" v-model="expenseType"/> -->
-            
-            <label for="expenseCost" class="form-label">Cost</label>
-            <input 
-            type="number" 
-            class="form-control" 
-            placeholder="e.g. 4000"
-            v-model="expenseCost"/>
-
-
-            <label for="expenseDate" class="form-label">Date of Expense</label>
-            <input type="date" id="expenseDate" v-model="expenseDate"/>
-          </div>
+              <br>
+              <label for="expenseCost">Cost</label>
+              <input 
+              type="number" 
+              class="form-control" 
+              placeholder="e.g. 4000"
+              v-model="expenseCost"/>
+              <br>
+              <label for="expenseDate" >Date of Expense</label> <!-- class = "form-label" -->
+              <input id="expenseDate" class="form-control" type="date" v-model="expenseDate"/>
+            </div>
 
 
           <div class="modal-footer">
@@ -138,16 +133,16 @@ export default {
   },
   
   methods: {
-    testbutton() {
-      console.log("Test button");
-      console.log("expenses:\n", this.expenses);
-      console.log("rentals:\n", this.rentals);
-    },
+    // testbutton() {
+    //   console.log("Test button");
+    //   console.log("expenses:\n", this.expenses);
+    //   console.log("rentals:\n", this.rentals);
+    // },
 
     getRentalIndex(fullAddress) {
-      console.log("fullAddress = ", fullAddress);
+      // console.log("fullAddress = ", fullAddress);
       let rentals = JSON.parse(JSON.stringify(this.rentals))
-      console.log("rentals = ", rentals);
+      // console.log("rentals = ", rentals);
       for (let rentalId in rentals) {
         let currRental = rentals[rentalId];
         let currFullAdd = currRental.address + ", " + currRental.unitNumber + ", S" + currRental.postalCode;
@@ -164,18 +159,6 @@ export default {
     resetAddExpenseForm() {
       document.getElementById("addExpenseForm").reset();
       console.log("form resetted");
-      // function initialState() {
-        // return {
-          // fullAddress: "",
-          // rentalIndex: "", 
-          // expenseType: "",
-          // expenseCost: "",
-          // expenseDate: "",
-          // expenses: {},
-          // rentals: {},
-        // }
-      // }
-      // Object.assign(this.$data, initialState());
     },
 
 
@@ -223,12 +206,11 @@ export default {
         });
       }
 
-      this.resetAddExpenseForm();
-      
       // close the modal
       var myModalEl = document.getElementById("newExpenseModal");
       var modal = Modal.getInstance(myModalEl);
       modal.hide();
+      this.resetAddExpenseForm();
     },
   },
 };
