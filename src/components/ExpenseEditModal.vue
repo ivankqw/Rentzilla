@@ -1,11 +1,20 @@
 <template>
   <!-- Edit Expense Modal -->
-  <div class="modal fade" id="expenseEditModal" aria-hidden="true" ref="modalEle">
+  <div
+    class="modal fade"
+    id="expenseEditModal"
+    aria-hidden="true"
+    ref="modalEle"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel"
+  >
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Edit Expense</h5>
-          <button class="btn-close"
+          <button
+            class="btn-close"
             type="button"
             data-bs-dismiss="modal"
             aria-label="Close"
@@ -15,24 +24,38 @@
           <form id="editExpenseForm">
             <div class="mb-3">
               <!-- <h5 :v-text="fullAddress">Rental Address: {{fullAddress}}</h5> -->
-              <label for="fullAddress" >Rental Address</label> 
+              <label for="fullAddress">Rental Address</label>
               <!-- <button type="button" class="btn btn-primary" @click="testbutton">test button</button> -->
-              <select class="form-control" name="fullAddress" id="fullAddress" :value="fullAddress" @input="onFullAddressChange">
-                  <!-- <option hidden>Click to select</option> -->
-                  <option v-for="rental in rentals" :key="rental.address">{{rental.address}}, {{rental.unitNumber}}, S{{rental.postalCode}}</option>
+              <select
+                class="form-control"
+                name="fullAddress"
+                id="fullAddress"
+                :value="fullAddress"
+                @input="onFullAddressChange"
+              >
+                <!-- <option hidden>Click to select</option> -->
+                <option v-for="rental in rentals" :key="rental.address">
+                  {{ rental.address }}, {{ rental.unitNumber }}, S{{
+                    rental.postalCode
+                  }}
+                </option>
               </select>
-              <br>
-              <label for="expenseType">Type of Expense</label> 
-              <select class="form-control" id="expenseType" :value="expenseType" @input="onExpenseTypeChange">
-                <option value="loan">Loan</option>
+              <br />
+              <label for="expenseType">Type of Expense</label>
+              <select
+                class="form-control"
+                id="expenseType"
+                :value="expenseType"
+                @input="onExpenseTypeChange"
+              >
+                <option value="Loan">Loan</option>
                 <option value="Maintenance">Maintenance</option>
                 <option value="Furnishing">Furnishing</option>
                 <option value="Utilities">Utilities</option>
                 <option value="Tax">Tax</option>
                 <option value="Others">Others</option>
-                
               </select>
-              <br>
+              <br />
               <label for="expenseCost">Cost</label>
               <input
                 type="number"
@@ -41,7 +64,7 @@
                 :value="expenseCost"
                 @input="onExpenseCostChange"
               />
-              <br>
+              <br />
               <label for="expenseDate">Date of Expense</label>
               <input
                 type="date"
@@ -51,7 +74,6 @@
                 @input="onExpenseDateChange"
               />
             </div>
-
 
             <div class="modal-footer">
               <button
@@ -91,19 +113,13 @@
 import { getAuth } from "firebase/auth";
 // import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
-import { doc, getDoc, updateDoc} from "firebase/firestore";
-import { ref, onMounted } from 'vue';
-import { Modal } from 'bootstrap';
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { ref, onMounted } from "vue";
+import { Modal } from "bootstrap";
 
 export default {
   name: "ExpenseEditModal",
-  props: [
-    "index",
-    "fullAddress",
-    "expenseType",
-    "expenseCost",
-    "expenseDate",
-  ],
+  props: ["index", "fullAddress", "expenseType", "expenseCost", "expenseDate"],
 
   setup() {
     console.log("setup from ExpenseEditModal.vue");
@@ -123,8 +139,8 @@ export default {
 
     return {
       show,
-      modalEle
-    }
+      modalEle,
+    };
   },
   async mounted() {
     const auth = getAuth();
@@ -146,13 +162,12 @@ export default {
     return {
       myIndex: this.index,
       myFullAddress: this.fullAddress,
-      // myPostalCode: this.postalCode, 
+      // myPostalCode: this.postalCode,
       myExpenseType: this.expenseType,
       myExpenseCost: this.expenseCost,
       myExpenseDate: this.expenseDate,
-    }
+    };
   },
-
 
   methods: {
     testbutton() {
@@ -161,30 +176,43 @@ export default {
 
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
-      console.log('onPostalCodeChange, event.target.value=', event.target.value);
-      
+      console.log(
+        "onPostalCodeChange, event.target.value=",
+        event.target.value
+      );
     },
     onFullAddressChange(event) {
       this.myFullAddress = event.target.value;
-      console.log('onFullAddressChange, event.target.value=', event.target.value);
-      console.log('this.myFullAddress=', this.myFullAddress);      
+      console.log(
+        "onFullAddressChange, event.target.value=",
+        event.target.value
+      );
+      console.log("this.myFullAddress=", this.myFullAddress);
     },
     onExpenseTypeChange(event) {
       this.myExpenseType = event.target.value;
-      console.log('onExpenseTypeChange, event.target.value=', event.target.value);
+      console.log(
+        "onExpenseTypeChange, event.target.value=",
+        event.target.value
+      );
     },
     onExpenseCostChange(event) {
       this.myExpenseCost = event.target.value;
-      console.log('onExpenseCostChange, event.target.value=', event.target.value);
-
+      console.log(
+        "onExpenseCostChange, event.target.value=",
+        event.target.value
+      );
     },
     onExpenseDateChange(event) {
       this.myExpenseDate = event.target.value;
-      console.log('onExpenseDateChange, event.target.value=', event.target.value);
+      console.log(
+        "onExpenseDateChange, event.target.value=",
+        event.target.value
+      );
     },
 
     async saveExpense(index) {
-      console.log("CLICKED SAVE EXPENSE")
+      console.log("CLICKED SAVE EXPENSE");
       this.$emit("edited");
 
       const auth = getAuth();
@@ -193,13 +221,13 @@ export default {
       const docSnap = await getDoc(ref);
       const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
 
-      // console.log("myIndex is ''", this.index == ""); 
+      // console.log("myIndex is ''", this.index == "");
       // console.log("myPostalCode is ''", this.postalCode == "");
       // console.log("myExpenseType is ''", this.expenseType == "");
       // console.log("myExpenseCost is ''", this.myExpenseCost == "");
       // console.log("myExpenseDate is ''", this.myExpenseDate == "");
 
-      console.log("parents\nindex is ", this.$parent.index); 
+      console.log("parents\nindex is ", this.$parent.index);
       console.log("fullAddress is ", this.$parent.fullAddress);
       console.log("expenseType is ", this.$parent.expenseType);
       console.log("expenseCost is ", this.$parent.expenseCost);
@@ -216,27 +244,26 @@ export default {
       }
       if (this.myExpenseType == "") {
         this.myExpenseType = this.$parent.expenseType;
-        console.log("***");        
+        console.log("***");
       }
       if (this.myExpenseCost == "") {
         this.myExpenseCost = this.$parent.expenseCost;
-        console.log("****");        
+        console.log("****");
       }
       if (this.myExpenseDate == "") {
         this.myExpenseDate = this.$parent.expenseDate;
-        console.log("*****");        
+        console.log("*****");
       }
       console.log("fullAddress is now ", this.myFullAddress);
 
-      console.log('before: expenses[index]=', expenses[index]);
-
+      console.log("before: expenses[index]=", expenses[index]);
 
       expenses[index].fullAddress = this.myFullAddress;
       expenses[index].expenseType = this.myExpenseType;
       expenses[index].expenseCost = this.myExpenseCost;
       expenses[index].expenseDate = this.myExpenseDate;
 
-      console.log('after: expenses[index]=', expenses[index]);
+      console.log("after: expenses[index]=", expenses[index]);
       await updateDoc(ref, { expenses: expenses });
       this.myFullAddress = "";
       this.myExpenseType = "";
@@ -267,7 +294,6 @@ export default {
           console.log("Error", error);
         });
       */
-
     },
 
     async deleteExpense(index) {
@@ -284,7 +310,7 @@ export default {
       //   .catch((error) => console.log("get", error));
       // newExpenses = expenses;
       console.log("exp b4 = ", expenses);
-      expenses.splice(index, 1)
+      expenses.splice(index, 1);
       console.log("exp aft = ", expenses);
       // await updateDoc(ref, { expenses: newExpenses });
       await updateDoc(ref, { expenses: expenses });
@@ -300,17 +326,12 @@ export default {
       //   .catch((error) => {
       //     console.log("Error", error);
       //   });
-
-    }
-
+    },
   },
-}
-
+};
 </script>
 
 <style>
-
-
 form {
   align-content: left;
   text-align: left;
