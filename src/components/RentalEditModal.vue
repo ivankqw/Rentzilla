@@ -312,8 +312,9 @@
                 type="button"
                 class="btn btn-danger"
                 data-bs-dismiss="modal"
-                @click="deleteRental(this.index)"
                 style="margin-right: 10px"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
               >
                 Delete
               </button>
@@ -329,13 +330,56 @@
               <button
                 type="button"
                 class="btn btn-success"
+                data-bs-toggle="modal"
                 v-on:click="saveRental()"
-                data-bs-dismiss="modal"
               >
                 Save Rental
               </button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ConfirmModal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this Rental Property? This will delete
+          all Expenses related to it.
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            @click="deleteRental(this.index)"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>
@@ -1137,22 +1181,36 @@ export default {
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Rentals", userEmail);
-      alert("deleting");
+      //alert("deleting");
       var newRentals;
       await getDoc(ref)
         .then((x) => (newRentals = x.data()))
-        .catch((error) => console.log("get", error));
+        .catch((error) => console.log("get rental", error));
       newRentals.rentals.splice(index, 1);
       setDoc(ref, {
         rentals: newRentals.rentals,
       })
         .then(() => {
-          console.log("updated!", newRentals);
+          console.log("updated rentals!", newRentals);
         })
         .catch((error) => {
           console.log("Error", error);
         });
-
+      //delete all expenses related 
+      var newExp;
+      await getDoc(doc(db, "Expenses", userEmail))
+      .then((x) => {newExp = x.data(); console.log(newExp);})
+      .catch((err) => console.log("get expense", err))
+      newExp = newExp.expenses.filter(exp => parseInt(exp.rentalIndex) !== index)
+      setDoc(doc(db, "Expenses", userEmail), {
+        expenses: newExp,
+      })
+      .then(() => {
+          console.log("updated expenses!", newExp);
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
       this.updateUnpaid();
     },
   },

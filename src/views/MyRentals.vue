@@ -167,7 +167,8 @@
 
     <h2 class="header">Rent</h2>
     <br /><br />
-    <table id="outstandingRentTable" class="auto-index">
+    <div class="table-responsive">
+    <table id="outstandingRentTable" class="table table-hover auto-index">
       <tr id="outstandingRentTableHeader">
         <th>#</th>
         <th>Tenant Name</th>
@@ -183,6 +184,7 @@
         </tr>
       </tbody>
     </table>
+  </div>
   </div>
 </template>
 
