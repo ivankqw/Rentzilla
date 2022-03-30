@@ -176,7 +176,7 @@
       </tr>
       <tbody>
         <tr v-for="(tenant, i) in this.outstandingTenants" :key="i">
-          <td></td>
+          <td>{{ i + 1 }}</td>
           <td>{{ tenant.firstName + " " + tenant.lastName }}</td>
           <td>{{ "$" + tenant.monthlyRent }}</td>
           <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
@@ -203,7 +203,7 @@ export default {
         return tenant.firstName !== "";
       });
     },
-    
+
     outstandingTenants() {
       const allUnpaid = [];
       try {
@@ -221,10 +221,11 @@ export default {
         console.log("showOutstanding error", error);
       }
 
-      // Sort array 
-      //this.outstandingRents = allUnpaid.sort((a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid);
-      return allUnpaid.sort((a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid);
-    }
+      // Sort array
+      return allUnpaid.sort(
+        (a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid
+      );
+    },
   },
   mixins: [rentalMixin],
   components: {
@@ -395,8 +396,6 @@ export default {
       currTenants: [],
 
       numTenantsForCurrentEditRental: 0,
-
-      outstandingRents: [],
     };
   },
   async mounted() {
