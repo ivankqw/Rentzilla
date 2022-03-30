@@ -25,11 +25,11 @@
               <label for="expenseType">Type of Expense</label> 
               <select class="form-control" id="expenseType" :value="expenseType" @input="onExpenseTypeChange">
                 <option value="loan">Loan</option>
-                <option value="maintenance">Maintenance</option>
-                <option value="furnishing">Furnishing</option>
-                <option value="utilities">Utilities</option>
-                <option value="tax">Tax</option>
-                <option value="others">Others</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Furnishing">Furnishing</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Tax">Tax</option>
+                <option value="Others">Others</option>
                 
               </select>
               <br>

@@ -422,7 +422,6 @@ export default {
   position: relative;
   height: 37px;
   width: 200px;
-  left: 5%;
 
   background: #ffb300;
   border-radius: 42px;
