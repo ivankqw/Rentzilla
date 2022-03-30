@@ -1,12 +1,11 @@
 <template>
 <div class="container">
-  <h1 class="header">My Rentals</h1>
   <!-- <h3>Welcome back, {{ $store.state.name }}</h3> -->
   <!-- <h3>Your email is {{ $store.state.email }}</h3> -->
-
+  <br>
   <h2 class="header">Rental Properties</h2>
   <br /><br />
-
+  <div class="text-left">
   <button
     type="button"
     id="newRentalBtn"
@@ -16,6 +15,7 @@
   >
     + New Rental
   </button>
+  </div>
   <br />
 
   <RentalAddModal ref="rentalModal" />
@@ -414,7 +414,6 @@ export default {
   position: relative;
   height: 37px;
   width: 200px;
-  left: 5%;
 
   background: #ffb300;
   border-radius: 42px;

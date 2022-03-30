@@ -1,9 +1,12 @@
 <template>
   <div class="container">
-    <h1 class="header">My Expenses</h1>
+    <br>
+    <h2 class="header">My Expenses</h2>
     <!-- <h3> Welcome back, {{$store.state.name}} </h3>
   <h3> Your email is {{$store.state.email}} </h3> -->
-
+    <br>
+    <br>
+    <div class="text-left"> 
     <button
       id="newExpenseBtn"
       type="button"
@@ -13,6 +16,7 @@
     >
       + New Expense
     </button>
+    </div>
     <br />
 
     <div class="table-responsive" id="expensestable">
@@ -20,17 +24,25 @@
         <thead>
           <tr class="table-light">
             <th>#</th>
+            <th>Postal Code</th>
             <th>Address</th>
+
+            <th>Unit Number</th>
+
             <th>Type of Expense</th>
             <th>Cost</th>
             <th>Date of Expense</th>
+
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(expense, i) in expenses" :key="i">
             <td>{{ i + 1 }}</td>
-            <td>{{ expense.fullAddress }}</td>
+            <td>{{ expense.fullAddress.split(",")[2].substring(2) }}</td>
+            <td>{{ expense.fullAddress.split(",")[0] }}</td>
+            <td>{{ expense.fullAddress.split(",")[1].substring(1) }}</td>
+
             <td>{{ expense.expenseType }}</td>
             <td>{{ expense.expenseCost }}</td>
             <td>{{ expense.expenseDate }}</td>
@@ -179,11 +191,20 @@ export default {
 
 <style scoped>
 h1 {
+  /* My Rental Properties */
+
   font-style: normal;
   font-weight: 700;
   font-size: 40px;
   line-height: 50px;
+
   color: #000000;
+}
+
+h2 {
+  float: left;
+  font-weight: bold;
+  margin-left: 30px;
 }
 
 #newExpenseBtn {
@@ -197,7 +218,6 @@ h1 {
   height: 37px;
   width: 200px;
   left: 5%;
-
   background: #ffb300;
   border-radius: 42px;
 }
