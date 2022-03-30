@@ -1,180 +1,188 @@
 <template>
-<div class="container">
-  <h1 class="header">My Rentals</h1>
-  <!-- <h3>Welcome back, {{ $store.state.name }}</h3> -->
-  <!-- <h3>Your email is {{ $store.state.email }}</h3> -->
+  <div class="container">
+    <h1 class="header">My Rentals</h1>
+    <!-- <h3>Welcome back, {{ $store.state.name }}</h3> -->
+    <!-- <h3>Your email is {{ $store.state.email }}</h3> -->
 
-  <h2 class="header">Rental Properties</h2>
-  <br /><br />
+    <h2 class="header">Rental Properties</h2>
+    <br /><br />
 
-  <button
-    type="button"
-    id="newRentalBtn"
-    class="btn btn-warning"
-    data-bs-toggle="modal"
-    data-bs-target="#newRentalModal"
-  >
-    + New Rental
-  </button>
-  <br />
+    <button
+      type="button"
+      id="newRentalBtn"
+      class="btn btn-warning"
+      data-bs-toggle="modal"
+      data-bs-target="#newRentalModal"
+    >
+      + New Rental
+    </button>
+    <br />
 
-  <RentalAddModal ref="rentalModal" />
+    <RentalAddModal ref="rentalModal" />
 
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr class="table-light">
-          <th>#</th>
-          <th>Postal Code</th>
-          <th>Address</th>
-          <th>Unit Number</th>
-          <th>Purchase Price</th>
-          <th>View Tenant Details</th>
-          <th>Edit Rental Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(rental, i) in rentals" :key="i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ rental.postalCode }}</td>
-          <td>{{ rental.address }}</td>
-          <td>{{ rental.unitNumber }}</td>
-          <td>{{ rental.purchasePrice }}</td>
-          <td>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr class="table-light">
+            <th>#</th>
+            <th>Postal Code</th>
+            <th>Address</th>
+            <th>Unit Number</th>
+            <th>Purchase Price</th>
+            <th>View Tenant Details</th>
+            <th>Edit Rental Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(rental, i) in rentals" :key="i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ rental.postalCode }}</td>
+            <td>{{ rental.address }}</td>
+            <td>{{ rental.unitNumber }}</td>
+            <td>{{ rental.purchasePrice }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#tenantsModal"
+                @click="this.showTenantDetails(i)"
+              >
+                View
+              </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                @click="this.editRentalDetails(i)"
+              >
+                Edit
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="tenantsModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Tenants</h5>
             <button
               type="button"
-              class="btn btn-primary btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#tenantsModal"
-              @click="this.showTenantDetails(i)"
-            >
-              View
-            </button>
-          </td>
-          <td>
-            <button
-              type="button"
-              class="btn btn-primary btn-sm"
-              @click="this.editRentalDetails(i)"
-            >
-              Edit
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Modal -->
-  <div
-    class="modal fade"
-    id="tenantsModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Tenants</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">          
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr class="table-light">
-                  
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Contract Start Date</th>
-                  <th>Contract End Date</th>
-                  <th>Monthly Rent</th>
-                  <th>Next Payment Date</th>
-                  <th>Outstanding rental (months)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(tenant, i) in this.currTenantsArrayClean" :key="i">
-          
-                  <td>{{ tenant.firstName }}</td>
-                  <td>{{ tenant.lastName }}</td>
-                  <td>{{ tenant.contractStartDate }}</td>
-                  <td>{{ tenant.contractEndDate }}</td>
-                  <td>{{ "$" +  tenant.monthlyRent }}</td>
-                  <td>{{ tenant.nextPaymentDate }}</td>
-                  <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
-                  
-                </tr>
-              </tbody>
-            </table>
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="table-light">
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Contract Start Date</th>
+                    <th>Contract End Date</th>
+                    <th>Monthly Rent</th>
+                    <th>Next Payment Date</th>
+                    <th>Outstanding rental (months)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(tenant, i) in this.currTenantsArrayClean"
+                    :key="i"
+                  >
+                    <td>{{ tenant.firstName }}</td>
+                    <td>{{ tenant.lastName }}</td>
+                    <td>{{ tenant.contractStartDate }}</td>
+                    <td>{{ tenant.contractEndDate }}</td>
+                    <td>{{ "$" + tenant.monthlyRent }}</td>
+                    <td>{{ tenant.nextPaymentDate }}</td>
+                    <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <RentalEditModal
-    @edited="change"
-    :key="refreshEdit"
-    ref="rentalEditModal"
-    :postalCode="this.postalCode"
-    :address="this.address"
-    :unitNumber="this.unitNumber"
-    :purchasePrice="this.purchasePrice"
-    :firstName1="this.firstName1"
-    :lastName1="this.lastName1"
-    :contractStartDate1="this.contractStartDate1"
-    :contractEndDate1="this.contractEndDate1"
-    :monthlyRent1="this.monthlyRent1"
-    :firstName2="this.firstName2"
-    :lastName2="this.lastName2"
-    :contractStartDate2="this.contractStartDate2"
-    :contractEndDate2="this.contractEndDate2"
-    :monthlyRent2="this.monthlyRent2"
-    :firstName3="this.firstName3"
-    :lastName3="this.lastName3"
-    :contractStartDate3="this.contractStartDate3"
-    :contractEndDate3="this.contractEndDate3"
-    :monthlyRent3="this.monthlyRent3"
-    :firstName4="this.firstName4"
-    :lastName4="this.lastName4"
-    :contractStartDate4="this.contractStartDate4"
-    :contractEndDate4="this.contractEndDate4"
-    :monthlyRent4="this.monthlyRent4"
-    :firstName5="this.firstName5"
-    :lastName5="this.lastName5"
-    :contractStartDate5="this.contractStartDate5"
-    :contractEndDate5="this.contractEndDate5"
-    :monthlyRent5="this.monthlyRent5"
-    :index="this.index"
-    :numTenants="this.numTenantsForCurrentEditRental"
-  />
+    <RentalEditModal
+      @edited="change"
+      :key="refreshEdit"
+      ref="rentalEditModal"
+      :postalCode="this.postalCode"
+      :address="this.address"
+      :unitNumber="this.unitNumber"
+      :purchasePrice="this.purchasePrice"
+      :firstName1="this.firstName1"
+      :lastName1="this.lastName1"
+      :contractStartDate1="this.contractStartDate1"
+      :contractEndDate1="this.contractEndDate1"
+      :monthlyRent1="this.monthlyRent1"
+      :firstName2="this.firstName2"
+      :lastName2="this.lastName2"
+      :contractStartDate2="this.contractStartDate2"
+      :contractEndDate2="this.contractEndDate2"
+      :monthlyRent2="this.monthlyRent2"
+      :firstName3="this.firstName3"
+      :lastName3="this.lastName3"
+      :contractStartDate3="this.contractStartDate3"
+      :contractEndDate3="this.contractEndDate3"
+      :monthlyRent3="this.monthlyRent3"
+      :firstName4="this.firstName4"
+      :lastName4="this.lastName4"
+      :contractStartDate4="this.contractStartDate4"
+      :contractEndDate4="this.contractEndDate4"
+      :monthlyRent4="this.monthlyRent4"
+      :firstName5="this.firstName5"
+      :lastName5="this.lastName5"
+      :contractStartDate5="this.contractStartDate5"
+      :contractEndDate5="this.contractEndDate5"
+      :monthlyRent5="this.monthlyRent5"
+      :index="this.index"
+      :numTenants="this.numTenantsForCurrentEditRental"
+    />
 
-  <h2 class="header">Rent</h2>
-  <br /><br />
-  <table id="outstandingRentTable" class="auto-index">
-    <tr id="outstandingRentTableHeader">
-      <th>#</th>
-      <th>Tenant Name</th>
-      <th>Monthly Rent</th>
-      <th>Months Overdue</th>
-    </tr>
-  </table>
+    <h2 class="header">Rent</h2>
+    <br /><br />
+    <table id="outstandingRentTable" class="auto-index">
+      <tr id="outstandingRentTableHeader">
+        <th>#</th>
+        <th>Tenant Name</th>
+        <th>Monthly Rent</th>
+        <th>Months Overdue</th>
+      </tr>
+      <tbody>
+        <tr v-for="(tenant, i) in this.outstandingRents" :key="i">
+          <td></td>
+          <td>{{ tenant.firstName + " " + tenant.lastName }}</td>
+          <td>{{ "$" + tenant.monthlyRent }}</td>
+          <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -191,12 +199,10 @@ export default {
   name: "MyRentals",
   computed: {
     currTenantsArrayClean() {
-      return this.currTenants.filter(
-        function (tenant) {
-          return tenant.firstName !== "";
-        }
-      )
-    }
+      return this.currTenants.filter(function (tenant) {
+        return tenant.firstName !== "";
+      });
+    },
   },
   mixins: [rentalMixin],
   components: {
@@ -223,14 +229,14 @@ export default {
       vu.postalCode = currRental.postalCode;
       vu.unitNumber = currRental.unitNumber;
       vu.purchasePrice = currRental.purchasePrice;
-      
+
       this.numTenantsForCurrentEditRental = 0;
       for (let x of currRental.tenants) {
         if (x.firstName) {
-          this.numTenantsForCurrentEditRental += 1
+          this.numTenantsForCurrentEditRental += 1;
         }
       }
-      
+
       switch (currRental.tenants.length) {
         case 1:
           vu.firstName1 = currRental.tenants[0].firstName;
@@ -367,10 +373,13 @@ export default {
       currTenants: [],
 
       numTenantsForCurrentEditRental: 0,
+
+      outstandingRents: [],
     };
   },
   async mounted() {
     await this.updateUnpaid();
+    await this.fetchOutstanding();
   },
 
   created() {
@@ -397,11 +406,10 @@ export default {
     },
     change() {
       this.refreshEdit += 1;
-    }
+    },
   },
 };
 </script>
-
 
 <style scoped>
 #newRentalBtn {
