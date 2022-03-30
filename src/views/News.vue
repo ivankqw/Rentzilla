@@ -1,37 +1,31 @@
 <template>
   <div class="container" style="margin-top: 20px">
-    <nav
-      class="navbar navbar-light bg-light justify-content-center"
-      style="text-align: center"
+    <button
+      class="btn btn-outline-warning"
+      type="button"
+      id="generalNews"
+      v-on:click="getGeneralNews()"
     >
-      <form class="form-inline">
-        <button
-          class="btn btn-outline-warning"
-          type="button"
-          id="generalNews"
-          v-on:click="getGeneralNews()"
-        >
-          General
-        </button>
+      General
+    </button>
 
-        <button
-          class="btn btn-outline-success"
-          type="button"
-          id="bizNews"
-          v-on:click="getBizNews()"
-        >
-          Business
-        </button>
-        <button
-          class="btn btn-outline-danger"
-          type="button"
-          id="healthNews"
-          v-on:click="getHealthNews()"
-        >
-          Health
-        </button>
-      </form>
-    </nav>
+    <button
+      class="btn btn-outline-success"
+      type="button"
+      id="bizNews"
+      v-on:click="getBizNews()"
+    >
+      Business
+    </button>
+    <button
+      class="btn btn-outline-danger"
+      type="button"
+      id="healthNews"
+      v-on:click="getHealthNews()"
+    >
+      Health
+    </button>
+
     <br />
     <h2 id="firstHeader" style="text-align: left">Top General News</h2>
     <div class="row row-cols-1 row-cols-md-3 g-4" id="top-content">

@@ -1,35 +1,42 @@
 <template>
   <div class="container">
-    <img src="@/assets/hdb.jpg" alt="..." />
-
-    <div class="mx-0 mx-sm-auto">
-      <div class="card">
-        <div class="card-header"></div>
-        <div class="modal-body">
-          <div class="text-center">
-            <i class="far fa-file-alt fa-4x mb-3 text-primary"></i>
-            <h2>Your opinion matters</h2>
-            <form id="myForm">
-              <!-- Message input -->
-              <div class="form-outline mb-4">
-                <textarea
-                  class="form-control"
-                  id="feedback"
-                  rows="4"
-                  placeholder="Please enter your feedback here"
-                  v-model="feedback"
-                ></textarea>
+    <div class="row">
+      <div class="col">
+        <img src="@/assets/hdb.jpg" class="img-fluid" alt="..." />
+      </div>
+      <div class="col">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="card">
+              <div class="card-header"></div>
+              <div class="modal-body">
+                <div class="text-center">
+                  <i class="far fa-file-alt fa-4x mb-3 text-primary"></i>
+                  <h2>Your opinion matters</h2>
+                  <form id="myForm">
+                    <!-- Message input -->
+                    <div class="form-outline mb-4">
+                      <textarea
+                        class="form-control"
+                        id="feedback"
+                        rows="4"
+                        placeholder="Please enter your feedback here"
+                        v-model="feedback"
+                      ></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="card-footer text-end">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    v-on:click="submitFeedback()"
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
-            </form>
-          </div>
-          <div class="card-footer text-end">
-            <button
-              type="button"
-              class="btn btn-primary"
-              v-on:click="submitFeedback()"
-            >
-              Submit
-            </button>
+            </div>
           </div>
         </div>
       </div>
