@@ -7,28 +7,38 @@
     <br />
     <br />
     <div class="text-left">
-      <button
-        id="newExpenseBtn"
-        type="button"
-        class="btn btn-warning"
-        data-bs-toggle="modal"
-        data-bs-target="#newExpenseModal"
-      >
-        + New Expense
-      </button>
-      <br>
-      <div class="filter"> 
-      <form id="filterForm">
-        <label for="filterStart" class="form-label">Start Date:</label>
-        <input id="filterStart" @input="onFilterStartInput" type="date" />
-        <label for="filterEnd" class="form-label">End Date:</label>
-        <input id="filterEnd" @input="onFilterEndInput" type="date" />
-        <button type="button" class="btn btn-warning" @click="clearFilter">
-        Clear filter
-      </button>
-      </form>
+      <br />
+      <div class="filter">
+        <form id="filterForm" class="row">
+          <div class="col align-self-center">
+            <button
+              id="newExpenseBtn"
+              type="button"
+              class="btn btn-warning"
+              data-bs-toggle="modal"
+              data-bs-target="#newExpenseModal"
+            >
+              + New Expense
+            </button>
+          </div>
+          <div class="col"> </div>
+          <div class="col"> </div>
+          
+          <div class="col"> 
+            <label for="filterStart" class="form-label">Start Date:</label>
+            <input id="filterStart" @input="onFilterStartInput" type="date" />
+          </div>
+          <div class="col">
+            <label for="filterEnd" class="form-label">End Date:</label>
+            <input id="filterEnd" @input="onFilterEndInput" type="date" />
+          </div>
+          <div class="col-md-2 align-self-center">
+            <button type="button" class="btn btn-warning" @click="clearFilter">
+              Clear filter
+            </button>
+          </div>
+        </form>
       </div>
-      
     </div>
     <br />
 
@@ -229,7 +239,7 @@ export default {
     clearFilter() {
       this.filterStartDate = "";
       this.filterEndDate = "";
-      document.getElementById("filterForm").reset()
+      document.getElementById("filterForm").reset();
     },
   },
 };
@@ -270,9 +280,7 @@ h2 {
 
 .filter {
   display: flex;
-  flex-direction: row;
   justify-content: center;
-  align-items: center;
 }
 
 #cancelbtn {
