@@ -1,21 +1,34 @@
 <template>
   <div class="container">
-    <br>
+    <br />
     <h2 class="header">My Expenses</h2>
     <!-- <h3> Welcome back, {{$store.state.name}} </h3>
   <h3> Your email is {{$store.state.email}} </h3> -->
-    <br>
-    <br>
-    <div class="text-left"> 
-    <button
-      id="newExpenseBtn"
-      type="button"
-      class="btn btn-warning"
-      data-bs-toggle="modal"
-      data-bs-target="#newExpenseModal"
-    >
-      + New Expense
-    </button>
+    <br />
+    <br />
+    <div class="text-left">
+      <button
+        id="newExpenseBtn"
+        type="button"
+        class="btn btn-warning"
+        data-bs-toggle="modal"
+        data-bs-target="#newExpenseModal"
+      >
+        + New Expense
+      </button>
+      <br>
+      <div class="filter"> 
+      <form id="filterForm">
+        <label for="filterStart" class="form-label">Start Date:</label>
+        <input id="filterStart" @input="onFilterStartInput" type="date" />
+        <label for="filterEnd" class="form-label">End Date:</label>
+        <input id="filterEnd" @input="onFilterEndInput" type="date" />
+        <button type="button" class="btn btn-warning" @click="clearFilter">
+        Clear filter
+      </button>
+      </form>
+      </div>
+      
     </div>
     <br />
 
@@ -37,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(expense, i) in expenses" :key="i">
+          <tr v-for="(expense, i) in this.filteredExpenses" :key="i">
             <td>{{ i + 1 }}</td>
             <td>{{ expense.fullAddress.split(",")[2].substring(2) }}</td>
             <td>{{ expense.fullAddress.split(",")[0] }}</td>
@@ -81,10 +94,10 @@ import { getAuth } from "firebase/auth";
 import ExpenseEditModal from "../components/ExpenseEditModal.vue";
 import ExpenseAddModal from "../components/ExpenseAddModal.vue";
 import { ref } from "vue";
+import moment from "moment";
 
 export default {
   name: "MyExpenses",
-  computed: {},
   components: {
     ExpenseEditModal,
     ExpenseAddModal,
@@ -148,6 +161,9 @@ export default {
       expenses: {},
 
       rentals: {},
+
+      filterStartDate: "",
+      filterEndDate: "",
     };
   },
   async mounted() {
@@ -186,6 +202,36 @@ export default {
       }
     );
   },
+
+  computed: {
+    filteredExpenses() {
+      if (!this.filterStartDate || !this.filterEndDate) {
+        return this.expenses;
+      }
+      return this.expenses.filter((exp) =>
+        moment(exp.expenseDate).isBetween(
+          moment(this.filterStartDate),
+          moment(this.filterEndDate)
+        )
+      );
+    },
+  },
+
+  methods: {
+    onFilterStartInput(e) {
+      this.filterStartDate = e.target.value;
+    },
+
+    onFilterEndInput(e) {
+      this.filterEndDate = e.target.value;
+    },
+
+    clearFilter() {
+      this.filterStartDate = "";
+      this.filterEndDate = "";
+      document.getElementById("filterForm").reset()
+    },
+  },
 };
 </script>
 
@@ -220,6 +266,13 @@ h2 {
   left: 5%;
   background: #ffb300;
   border-radius: 42px;
+}
+
+.filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #cancelbtn {

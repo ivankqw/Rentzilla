@@ -21,7 +21,7 @@
     <RentalAddModal ref="rentalModal" />
 
     <div class="table-responsive">
-      <table class="table table-hover">
+      <table class="table table-striped table-hover">
         <thead>
           <tr class="table-light">
             <th>#</th>
@@ -86,7 +86,7 @@
           </div>
           <div class="modal-body">
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table table-striped table-hover">
                 <thead>
                   <tr class="table-light">
                     <th>First Name</th>
