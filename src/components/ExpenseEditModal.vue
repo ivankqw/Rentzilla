@@ -14,7 +14,13 @@
         <div class="modal-body">
           <form id="editExpenseForm">
             <div class="mb-3">
-              <h5 :v-text="fullAddress">Rental Address: {{fullAddress}}</h5>
+              <!-- <h5 :v-text="fullAddress">Rental Address: {{fullAddress}}</h5> -->
+              <label for="fullAddress" >Rental Address</label> 
+              <!-- <button type="button" class="btn btn-primary" @click="testbutton">test button</button> -->
+              <select class="form-control" name="fullAddress" id="fullAddress" :value="fullAddress" @input="onFullAddressChange">
+                  <!-- <option hidden>Click to select</option> -->
+                  <option v-for="rental in rentals" :key="rental.address">{{rental.address}}, {{rental.unitNumber}}, S{{rental.postalCode}}</option>
+              </select>
               <br>
               <label for="expenseType">Type of Expense</label> 
               <select class="form-control" id="expenseType" :value="expenseType" @input="onExpenseTypeChange">
@@ -94,7 +100,6 @@ export default {
   props: [
     "index",
     "fullAddress",
-    // "postalCode",
     "expenseType",
     "expenseCost",
     "expenseDate",
@@ -121,6 +126,21 @@ export default {
       modalEle
     }
   },
+  async mounted() {
+    const auth = getAuth();
+    const userEmail = auth.currentUser.email;
+    const ref = doc(db, "Expenses", userEmail);
+    const docSnap = await getDoc(ref);
+    const expenses = docSnap.data().expenses; // JSON.parse(JSON.stringify(docSnap.data().expenses));
+    this.expenses = expenses;
+    console.log("mounted expenses:", expenses);
+
+    const rentalRef = doc(db, "Rentals", userEmail);
+    const rentalDocSnap = await getDoc(rentalRef);
+    const rentals = rentalDocSnap.data().rentals;
+    this.rentals = rentals;
+    console.log("mounted rentals:", rentals);
+  },
 
   data() {
     return {
@@ -135,16 +155,23 @@ export default {
 
 
   methods: {
+    testbutton() {
+      console.log("TEST BUTTON");
+    },
 
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
       console.log('onPostalCodeChange, event.target.value=', event.target.value);
       
     },
+    onFullAddressChange(event) {
+      this.myFullAddress = event.target.value;
+      console.log('onFullAddressChange, event.target.value=', event.target.value);
+      console.log('this.myFullAddress=', this.myFullAddress);      
+    },
     onExpenseTypeChange(event) {
       this.myExpenseType = event.target.value;
       console.log('onExpenseTypeChange, event.target.value=', event.target.value);
-
     },
     onExpenseCostChange(event) {
       this.myExpenseCost = event.target.value;
@@ -178,16 +205,15 @@ export default {
       console.log("expenseCost is ", this.$parent.expenseCost);
       console.log("expenseDate is ", this.$parent.expenseDate);
 
-      this.myFullAddress = this.$parent.fullAddress;
       // if user did not edit the data, populate it with the original (parent) data
       if (this.myIndex == "") {
         this.myIndex = this.$parent.index;
         console.log("*");
       }
-      // if (this.myPostalCode == "") {
-      //   this.myPostalCode = this.$parent.postalCode;
-      //   console.log("**");
-      // }
+      if (this.myFullAddress == "") {
+        this.myFullAddress = this.$parent.myFullAddress;
+        console.log("** this.myFullAddress=", this.myFullAddress);
+      }
       if (this.myExpenseType == "") {
         this.myExpenseType = this.$parent.expenseType;
         console.log("***");        
@@ -199,8 +225,9 @@ export default {
       if (this.myExpenseDate == "") {
         this.myExpenseDate = this.$parent.expenseDate;
         console.log("*****");        
-
       }
+      console.log("fullAddress is now ", this.myFullAddress);
+
       console.log('before: expenses[index]=', expenses[index]);
 
 
@@ -242,8 +269,6 @@ export default {
       */
 
     },
-
-    
 
     async deleteExpense(index) {
       const auth = getAuth();
