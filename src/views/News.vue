@@ -1,7 +1,5 @@
 <template>
   <div class="container" style="margin-top: 20px">
-    <h2 id="firstHeader" style="text-align: left; float: left">Latest News</h2>
-
     <nav
       class="navbar navbar-light bg-light justify-content-center"
       style="text-align: center"
@@ -15,6 +13,7 @@
         >
           General
         </button>
+
         <button
           class="btn btn-outline-success"
           type="button"
@@ -34,6 +33,7 @@
       </form>
     </nav>
     <br />
+    <h2 id="firstHeader" style="text-align: left">Top General News</h2>
     <div class="row row-cols-1 row-cols-md-3 g-4" id="top-content">
       <div v-for="(article, index) in articlesTop" :key="index" class="col">
         <a :href="article.url" target="_blank">
@@ -114,7 +114,7 @@ export default {
         .then((json) => json.articles)
         .then((articles) => {
           this.articlesTop = Array.from(articles).slice(0, 3);
-          this.articlesBottom = Array.from(articles).slice(2);
+          this.articlesBottom = Array.from(articles).slice(3);
           console.log(articles);
         });
     } catch (error) {
@@ -127,21 +127,32 @@ export default {
     },
 
     async getGeneralNews() {
-      this.$router.push("/news");
+      document.getElementById("firstHeader").innerHTML = "Top General News";
+      document.getElementById("secondHeader").innerHTML = "More General News";
+
+      var newsApiKey;
+      try {
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi"));
+        newsApiKey = newsApiKey.data().key;
+        var url = `https://newsapi.org/v2/top-headlines?country=sg&category=general&apiKey=${newsApiKey}`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((json) => json.articles)
+          .then((articles) => {
+            this.articlesTop = Array.from(articles).slice(0, 3);
+
+            this.articlesBottom = Array.from(articles).slice(3);
+            console.log(articles);
+          });
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     async getBizNews() {
-      var topNews = document.getElementById("top-content");
-      if (topNews) {
-        topNews.remove();
-      }
-
-      var firstHeader = document.getElementById("firstHeader");
-      if (firstHeader) {
-        firstHeader.remove();
-      }
-
-      document.getElementById("secondHeader").innerHTML = "Business News";
+      document.getElementById("firstHeader").innerHTML = "Top Business News";
+      document.getElementById("secondHeader").innerHTML = "More Business News";
 
       var newsApiKey;
       try {
@@ -153,7 +164,9 @@ export default {
           .then((response) => response.json())
           .then((json) => json.articles)
           .then((articles) => {
-            this.articlesBottom = Array.from(articles).slice(2);
+            this.articlesTop = Array.from(articles).slice(0, 3);
+
+            this.articlesBottom = Array.from(articles).slice(3);
             console.log(articles);
           });
       } catch (error) {
@@ -162,17 +175,8 @@ export default {
     },
 
     async getHealthNews() {
-      var topNews = document.getElementById("top-content");
-      if (topNews) {
-        topNews.remove();
-      }
-
-      var firstHeader = document.getElementById("firstHeader");
-      if (firstHeader) {
-        firstHeader.remove();
-      }
-
-      document.getElementById("secondHeader").innerHTML = "Health News";
+      document.getElementById("firstHeader").innerHTML = "Top Health News";
+      document.getElementById("secondHeader").innerHTML = "More Health News";
 
       var newsApiKey;
       try {
@@ -184,6 +188,8 @@ export default {
           .then((response) => response.json())
           .then((json) => json.articles)
           .then((articles) => {
+            this.articlesTop = Array.from(articles).slice(0, 3);
+
             this.articlesBottom = Array.from(articles).slice(2);
             console.log(articles);
           });

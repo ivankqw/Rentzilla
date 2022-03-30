@@ -1,63 +1,65 @@
 <template>
-
-  <h1 class="header">My Expenses</h1>
-  <!-- <h3> Welcome back, {{$store.state.name}} </h3>
+  <div class="container">
+    <h1 class="header">My Expenses</h1>
+    <!-- <h3> Welcome back, {{$store.state.name}} </h3>
   <h3> Your email is {{$store.state.email}} </h3> -->
 
-  <button id="newExpenseBtn"
-    type="button"
-    class="btn btn-warning"
-    data-bs-toggle="modal"
-    data-bs-target="#newExpenseModal"
-  >
-    + New Expense
-  </button>
-  <br />
+    <button
+      id="newExpenseBtn"
+      type="button"
+      class="btn btn-warning"
+      data-bs-toggle="modal"
+      data-bs-target="#newExpenseModal"
+    >
+      + New Expense
+    </button>
+    <br />
 
-  <div class="table-responsive" id="expensestable">
-    <table class="table table-striped table-hover">
-    <thead>
-      <tr class="table-light">
-        <th>#</th>
-        <th>Address</th>
-        <th>Type of Expense</th>
-        <th>Cost</th>
-        <th>Date of Expense</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr v-for="(expense, i) in expenses" :key="i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ expense.fullAddress }}</td>
-          <td>{{ expense.expenseType }}</td>
-          <td>{{ expense.expenseCost }}</td>
-          <td>{{ expense.expenseDate }}</td>
-          <td>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="this.editExpenseDetails(i)"
-            >
-              Manage
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive" id="expensestable">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr class="table-light">
+            <th>#</th>
+            <th>Address</th>
+            <th>Type of Expense</th>
+            <th>Cost</th>
+            <th>Date of Expense</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(expense, i) in expenses" :key="i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ expense.fullAddress }}</td>
+            <td>{{ expense.expenseType }}</td>
+            <td>{{ expense.expenseCost }}</td>
+            <td>{{ expense.expenseDate }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="this.editExpenseDetails(i)"
+              >
+                Manage
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ExpenseAddModal ref="expenseModal" />
+
+    <!-- need to add in address and unit num -->
+    <ExpenseEditModal
+      ref="expenseEditModal"
+      :index="this.index"
+      :fullAddress="this.fullAddress"
+      :expenseType="this.expenseType"
+      :expenseCost="this.expenseCost"
+      :expenseDate="this.expenseDate"
+    />
   </div>
-
-  <ExpenseAddModal ref="expenseModal"/>
-
-<!-- need to add in address and unit num -->
-  <ExpenseEditModal
-    ref="expenseEditModal"
-    :index="this.index" 
-    :fullAddress="this.fullAddress"
-    :expenseType="this.expenseType"
-    :expenseCost="this.expenseCost"
-    :expenseDate="this.expenseDate"
-  />
 </template>
 
 <script>
@@ -70,7 +72,7 @@ import { ref } from "vue";
 
 export default {
   name: "MyExpenses",
-  computed: {}, 
+  computed: {},
   components: {
     ExpenseEditModal,
     ExpenseAddModal,
@@ -91,7 +93,7 @@ export default {
       showExpenseEditModal();
       var currExpense = JSON.parse(JSON.stringify(this.expenses))[id];
       console.log("currExpense=", currExpense);
-      this.index = id; 
+      this.index = id;
       this.fullAddress = currExpense.fullAddress;
       this.expenseType = currExpense.expenseType;
       this.expenseCost = currExpense.expenseCost;
@@ -109,7 +111,7 @@ export default {
       //     this.contractEndDate1 = currRental.tenants[0].contractEndDate;
       //     this.monthlyRent1 = currRental.tenants[0].monthlyRent;
       //     break;
-      // } 
+      // }
     }
 
     return {
@@ -126,7 +128,7 @@ export default {
       index: "", // numbering of expenses in expenses table
       // postalCode: "",
       fullAddress: "",
-      
+
       expenseType: "",
       expenseCost: "",
       expenseDate: "",
@@ -152,25 +154,26 @@ export default {
     this.rentals = rentals;
 
     //wat is thissss
-    onSnapshot(doc(db, "Expenses", userEmail)), (doc) => {
-      console.log('hello')
-      console.log(doc.data())
-      this.expenses = doc.data().expenses;
-      console.log(this.expenses);
-    }
+    onSnapshot(doc(db, "Expenses", userEmail)),
+      (doc) => {
+        console.log("hello");
+        console.log(doc.data());
+        this.expenses = doc.data().expenses;
+        console.log(this.expenses);
+      };
   },
 
   created() {
     const auth = getAuth();
     const userEmail = auth.currentUser.email;
-    onSnapshot(doc(db, "Expenses", userEmail),
-    { includeMetadataChanges: true },
+    onSnapshot(
+      doc(db, "Expenses", userEmail),
+      { includeMetadataChanges: true },
       (doc) => {
         this.expenses = doc.data().expenses;
-      });
+      }
+    );
   },
-
-  
 };
 </script>
 
@@ -182,7 +185,6 @@ h1 {
   line-height: 50px;
   color: #000000;
 }
-
 
 #newExpenseBtn {
   display: flex;
