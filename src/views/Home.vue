@@ -21,6 +21,7 @@ export default {
     const auth = getAuth();
     var accessToken;
     var rentals;
+    var expenses;
 
     (async () => {
       try {
@@ -35,13 +36,24 @@ export default {
       (async () => {
         try {
           rentals = await getDoc(doc(db, "Rentals", auth.currentUser.email));
+          expenses = await getDoc(doc(db, "Expenses", auth.currentUser.email));
           if (!rentals.exists()) {
               await setDoc(doc(db, "Rentals", auth.currentUser.email), {
                 rentals: [],
               })
           }
+          
+          if (!expenses.exists()) {
+            await setDoc(doc(db, "Expenses", auth.currentUser.email), {
+              expenses: [],
+            })
+          }
+          
           rentals = rentals.data().rentals;
           console.log("rentals", rentals);
+
+          expenses = expenses.data().expenses;
+          console.log("expenses", expenses);
 
           //data preprocessing
           //get all unique postal codes
