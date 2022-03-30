@@ -175,7 +175,7 @@
         <th>Months Overdue</th>
       </tr>
       <tbody>
-        <tr v-for="(tenant, i) in this.outstandingRents" :key="i">
+        <tr v-for="(tenant, i) in this.outstandingTenants" :key="i">
           <td></td>
           <td>{{ tenant.firstName + " " + tenant.lastName }}</td>
           <td>{{ "$" + tenant.monthlyRent }}</td>
@@ -203,6 +203,28 @@ export default {
         return tenant.firstName !== "";
       });
     },
+    
+    outstandingTenants() {
+      const allUnpaid = [];
+      try {
+        for (let rental of this.rentals) {
+          // console.log(rental);
+          for (let tenant of rental.tenants) {
+            // console.log(tenant);
+            if (tenant.numberOfMonthsRentalUnpaid > 0) {
+              // console.log("owe money");
+              allUnpaid.push(tenant);
+            }
+          }
+        }
+      } catch (error) {
+        console.log("showOutstanding error", error);
+      }
+
+      // Sort array 
+      //this.outstandingRents = allUnpaid.sort((a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid);
+      return allUnpaid.sort((a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid);
+    }
   },
   mixins: [rentalMixin],
   components: {

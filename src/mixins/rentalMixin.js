@@ -59,7 +59,8 @@ export default {
       }
 
       // Sort array 
-      this.outstandingRents = allUnpaid.sort((a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid);
+      //this.outstandingRents = allUnpaid.sort((a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid);
+      return allUnpaid.sort((a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid);
     }
   },
 };
