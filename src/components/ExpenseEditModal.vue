@@ -1,6 +1,6 @@
 <template>
   <!-- Edit Expense Modal -->
-  <div class="modal" id="expenseEditModal" aria-hidden="true" ref="modalEle">
+  <div class="modal fade" id="expenseEditModal" aria-hidden="true" ref="modalEle">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
