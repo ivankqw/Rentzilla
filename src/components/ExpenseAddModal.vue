@@ -158,6 +158,11 @@ export default {
 
     resetAddExpenseForm() {
       document.getElementById("addExpenseForm").reset();
+      this.fullAddress= ""
+      this.rentalIndex= ""
+      this.expenseType= ""
+      this.expenseCost= ""
+      this.expenseDate= ""
       console.log("form resetted");
     },
 
