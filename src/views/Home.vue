@@ -5,10 +5,39 @@
     <h3>Your email is {{ $store.state.email }}</h3>
     <h2 class="header">My Rental Properties</h2><br><br>
     <div id="mapid"></div>
-
     <br><br>
     <h2 class="header">Overview of revenues and expenses</h2><br><br>
-    <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+
+    <!-- filter -->
+    <div class="text-left">
+    <br />
+      <div class="filter">
+        <form id="filterForm" class="row">
+          <div class="col align-self-center">
+            
+          </div>
+          <div class="col"> </div>
+          <div class="col"> </div>
+          <div class="col"> 
+            <label for="filterStart" class="form-label">Start Date:</label>
+            <input id="filterStart" @input="onFilterStartInput" type="date" />
+          </div>
+          <div class="col">
+            <label for="filterEnd" class="form-label">End Date:</label>
+            <input id="filterEnd" @input="onFilterEndInput" type="date" />
+          </div>
+          <div class="col-md-2 align-self-center">
+            <button type="button" class="btn btn-warning" @click="clearFilter">
+              Clear filter
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- expensesByCategory Pie Chart -->
+    <!-- <div class="row row-cols-3"> -->
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
       <div class="col">
         <div class="card">
           <div class="card-body">
@@ -19,18 +48,30 @@
           </div>
         </div>
       </div>
+    <!-- expensesByRentalProperty Column Chart -->
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Expenses by Rental</h5>
-
+            <h5 class="card-title">Expenses by Rental Properties</h5>
             <div id="expensesByRentalBarChart">
-              <pie-chart :data="expensesByRentalData"></pie-chart>
+              <column-chart :data="expensesByRentalData"></column-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- revenuesByRentalProperty Pie Chart -->
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Revenues by Rental Properties</h5>
+            <div id="revenuesByRentalPieChart">
+              <pie-chart :data="revenuesByRentalData"></pie-chart>
             </div>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -40,6 +81,8 @@ import { onMounted } from "vue";
 import { getDoc, doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
+import moment from "moment";
+
 
 export default {
   name: "Home",
@@ -77,12 +120,11 @@ export default {
           }
 
           rentals = rentals.data().rentals;
-          console.log("rentals", rentals);
+          // console.log("rentals", rentals);
 
           expenses = expenses.data().expenses;
-          console.log("expenses", expenses);
-          console.log("expenseType", expenses[0].expenseType);
-          console.log(auth.currentUser.email, "is current user's email");
+          // console.log("expenses", expenses);
+          // console.log(auth.currentUser.email, "is current user's email");
           //data preprocessing
           //get all unique postal codes
           let uniquePostalCodes = [];
@@ -172,7 +214,6 @@ export default {
       currLatLong: {},
       expenses: [],
       rentals: [],
-      expensesByCategoryChartData: {},
     };
   },
 
@@ -194,11 +235,12 @@ export default {
     },
 
     expensesByRentalData() {
-      var result = {};
+      var result = {}; 
       //get all unique rentals
       let addressSet = new Set(
         this.expenses.map((arrElement) => arrElement.fullAddress)
       );
+      // console.log(addressSet);
       //initialize obj
       for (let address of addressSet) {
         result[address] = 0;
@@ -206,8 +248,45 @@ export default {
       for (let expense of this.expenses) {
         result[expense.fullAddress] += expense.expenseCost;
       }
+      // console.log("result from expenses by rental data", result);
       return result;
     },
+
+    filteredExpenses() {
+      if (!this.filterStartDate || !this.filterEndDate) {
+        return this.expenses;
+      }
+      return this.expenses.filter((exp) =>
+        moment(exp.expenseDate).isBetween(
+          moment(this.filterStartDate),
+          moment(this.filterEndDate)
+        )
+      );
+    },
+
+    revenuesByRentalData() { 
+      var result = {}; 
+      //get all unique rentals
+      let addressSet = new Set(
+        this.rentals.map((arrElement) => arrElement.address)
+      );
+      //initialize obj
+      for (let address of addressSet) {
+        result[address] = 0;
+      }
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          let tenantMonthlyRent = JSON.parse(JSON.stringify(tenant.monthlyRent));
+          if (tenantMonthlyRent) {
+            result[rental.address] += parseInt(tenantMonthlyRent);
+          }
+        }
+      }
+      console.log(result);
+      return result;
+    },
+
+    
   },
 
   components: {},
@@ -226,6 +305,20 @@ export default {
         .catch((error) => console.log("error", error));
       vm.currLatLong = result.LATITUDE;
       return "hello world";
+    },
+
+    onFilterStartInput(e) {
+      this.filterStartDate = e.target.value;
+    },
+
+    onFilterEndInput(e) {
+      this.filterEndDate = e.target.value;
+    },
+
+    clearFilter() {
+      this.filterStartDate = "";
+      this.filterEndDate = "";
+      document.getElementById("filterForm").reset();
     },
   },
 
@@ -255,7 +348,9 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
+
+
 #mapid {
   height: 610px;
 }
