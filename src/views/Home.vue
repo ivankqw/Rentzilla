@@ -6,13 +6,29 @@
     <h4>My Properties</h4>
     <div id="mapid"></div>
 
-  <div id ="expensesByCatergoryPieChart">
-    <pie-chart :data ="expensesByCategoryData"></pie-chart>
-  </div>
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Expenses by Category</h5>
+            <div id="expensesByCatergoryPieChart">
+              <pie-chart :data="expensesByCategoryData"></pie-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Expenses by Rental</h5>
 
-  <div id ="expensesByRentalBarChart">
-    <pie-chart :data ="expensesByRentalData"></pie-chart>
-  </div>
+            <div id="expensesByRentalBarChart">
+              <pie-chart :data="expensesByRentalData"></pie-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,7 +47,7 @@ export default {
     var accessToken;
     var rentals;
     var expenses;
- 
+
     (async () => {
       try {
         accessToken = await getDoc(doc(db, "Admin", "MapBoxToken"));
@@ -48,24 +64,24 @@ export default {
           rentals = await getDoc(doc(db, "Rentals", auth.currentUser.email));
           expenses = await getDoc(doc(db, "Expenses", auth.currentUser.email));
           if (!rentals.exists()) {
-              await setDoc(doc(db, "Rentals", auth.currentUser.email), {
-                rentals: [],
-              })
+            await setDoc(doc(db, "Rentals", auth.currentUser.email), {
+              rentals: [],
+            });
           }
-          
+
           if (!expenses.exists()) {
             await setDoc(doc(db, "Expenses", auth.currentUser.email), {
               expenses: [],
-            })
+            });
           }
-          
+
           rentals = rentals.data().rentals;
           console.log("rentals", rentals);
 
           expenses = expenses.data().expenses;
           console.log("expenses", expenses);
-          console.log("expenseType", expenses[0].expenseType)
-          console.log(auth.currentUser.email, "is current user's email")  
+          console.log("expenseType", expenses[0].expenseType);
+          console.log(auth.currentUser.email, "is current user's email");
           //data preprocessing
           //get all unique postal codes
           let uniquePostalCodes = [];
@@ -155,7 +171,7 @@ export default {
       currLatLong: {},
       expenses: [],
       rentals: [],
-      expensesByCategoryChartData:{},
+      expensesByCategoryChartData: {},
     };
   },
 
@@ -163,30 +179,34 @@ export default {
     expensesByCategoryData() {
       var result = {};
       //get all unique categories
-      let catSet = new Set(this.expenses.map(arrElement => arrElement.expenseType))
-      //initialize obj 
+      let catSet = new Set(
+        this.expenses.map((arrElement) => arrElement.expenseType)
+      );
+      //initialize obj
       for (let cat of catSet) {
-        result[cat] = 0
+        result[cat] = 0;
       }
       for (let expense of this.expenses) {
-        result[expense.expenseType] += expense.expenseCost 
+        result[expense.expenseType] += expense.expenseCost;
       }
-      return result
-    }, 
+      return result;
+    },
 
     expensesByRentalData() {
       var result = {};
       //get all unique rentals
-      let addressSet = new Set(this.expenses.map(arrElement => arrElement.fullAddress))
-      //initialize obj 
+      let addressSet = new Set(
+        this.expenses.map((arrElement) => arrElement.fullAddress)
+      );
+      //initialize obj
       for (let address of addressSet) {
-        result[address] = 0
+        result[address] = 0;
       }
       for (let expense of this.expenses) {
-        result[expense.fullAddress] += expense.expenseCost 
+        result[expense.fullAddress] += expense.expenseCost;
       }
-      return result
-    }
+      return result;
+    },
   },
 
   components: {},
