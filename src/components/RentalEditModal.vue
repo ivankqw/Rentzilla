@@ -1381,7 +1381,7 @@ export default {
         (exp) => parseInt(exp.rentalIndex) !== index
       );
       //decrement the rentalIndex for all the other expenses
-      for (let i = 0; i < newExp.length; i++) {
+      for (let i = 0; index < i < newExp.length; i++) {
         console.log(i)
         newExp[i].rentalIndex = parseInt(newExp[i].rentalIndex) - 1;
         console.log("GM",newExp[i].rentalIndex)
