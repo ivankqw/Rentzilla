@@ -47,4 +47,15 @@ export default {
 a.nav-link.troll {
   color: black !important
   }
+.carousel .carousel-item {
+  height: 500px;
+}
+.carousel-item img {
+  position: absolute;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
 </style>

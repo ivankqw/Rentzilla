@@ -160,19 +160,18 @@ export default {
   color: #2c3e50;
   margin-top: 0px;
 }
-
 .carousel .carousel-item {
   height: 500px;
 }
-
 .carousel-item img {
-  position: absolute;
-  object-fit: cover;
-  top: 0;
-  left: 0;
-  min-height: 500px;
+    position: absolute;
+    object-fit:cover;
+    top: 0;
+    left: 0;
+    min-height: 500px;
+    width: 100% !important;
+    max-width: 100% !important;
 }
-
 a.router-link-active.router-link-exact-active.nav-link {
    border-bottom-style: solid;
   border-bottom-color: white !important;
