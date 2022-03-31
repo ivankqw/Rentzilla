@@ -27,10 +27,11 @@
                 id="postalCode"
                 placeholder="e.g. 123456"
                 v-model="postalCode"
+                @change="retrieveAddress()"
               />
 
-              <label for="address" class="form-label">Address</label>
-              <input
+              <label for="address" class="form-label" >Address</label>
+              <input disabled
                 type="text"
                 class="form-control"
                 id="address"
@@ -375,6 +376,31 @@ export default {
     };
   },
   methods: {
+    async retrieveAddress() {
+
+      var postalFind = this.postalCode;
+      if (String(postalFind).length !== 6) {
+        return
+      }
+      console.log("postalFind", postalFind);
+
+      let result = await fetch(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${postalFind}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
+      )
+        .then((response) => response.text())
+        .then((result) => {
+          console.log(result);
+          if (JSON.parse(result).found == 0) {
+            return "-"
+          }
+          return JSON.parse(result).results[0];
+        })
+        .catch((error) => console.log("error", error));
+      let address = result.ADDRESS;
+      this.address = address;
+      
+    },
+
     closeAddRentalModal() {
       this.resetAddRentalForm();
       var myModalEl = document.getElementById("newRentalModal");
@@ -446,17 +472,17 @@ export default {
         let unit = this.unitNumber;
         try {
           if (unit.split("-").length !== 2) {
-            alert("Please enter a valid unit number");
+            alert("Please enter a valid unit number e.g. 01-01");
             return false;
           } else if (
             !/^\d+$/.test(unit.split("-")[0]) ||
             !/^\d+$/.test(unit.split("-")[1])
           ) {
-            alert("Please enter a valid unit number");
+            alert("Please enter a valid unit number e.g. 01-01");
             return false;
           }
         } catch (error) {
-          alert("Please enter a valid unit number");
+          alert("Please enter a valid unit number e.g. 01-01");
           console.log(error);
           return false;
         }
