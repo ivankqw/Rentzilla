@@ -139,14 +139,6 @@ export default {
       console.log("expenseType=", this.expenseType);
       console.log("expenseCost=", this.expenseCost);
       console.log("expenseDate=", this.expenseDate);
-      // switch (currRental.tenants.length) {
-      //   case 1:
-      //     this.firstName1 = currRental.tenants[0].firstName;
-      //     this.contractStartDate1 = currRental.tenants[0].contractStartDate;
-      //     this.contractEndDate1 = currRental.tenants[0].contractEndDate;
-      //     this.monthlyRent1 = currRental.tenants[0].monthlyRent;
-      //     break;
-      // }
     }
 
     return {
@@ -169,7 +161,6 @@ export default {
       expenseDate: "",
 
       expenses: {},
-
       rentals: {},
 
       filterStartDate: "",

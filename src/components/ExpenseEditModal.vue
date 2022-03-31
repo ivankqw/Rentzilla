@@ -25,7 +25,7 @@
             <div class="mb-3">
               <!-- <h5 :v-text="fullAddress">Rental Address: {{fullAddress}}</h5> -->
               <label for="fullAddress">Rental Address</label>
-              <!-- <button type="button" class="btn btn-primary" @click="testbutton">test button</button> -->
+              <button type="button" class="btn btn-primary" @click="testbutton">test button</button>
               <select
                 class="form-control"
                 name="fullAddress"
@@ -159,6 +159,7 @@ export default {
   },
 
   data() {
+    console.log("data\nthis.fullAddress=", this.fullAddress);
     return {
       myIndex: this.index,
       myFullAddress: this.fullAddress,
@@ -172,6 +173,16 @@ export default {
   methods: {
     testbutton() {
       console.log("TEST BUTTON");
+      console.log("index = ", this.index);
+      console.log("FullAddress = ", this.fullAddress);
+      console.log("ExpenseType = ", this.expenseType);
+      console.log("ExpenseCost = ", this.expenseCost);
+      console.log("ExpenseDate = ", this.expenseDate);
+      console.log("myIndex = ", this.myIndex);
+      console.log("myFullAddress = ", this.myFullAddress);
+      console.log("myExpenseType = ", this.myExpenseType);
+      console.log("myExpenseCost = ", this.myExpenseCost);
+      console.log("myExpenseDate = ", this.myExpenseDate);
     },
 
     onPostalCodeChange(event) {
@@ -221,11 +232,11 @@ export default {
       const docSnap = await getDoc(ref);
       const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
 
-      // console.log("myIndex is ''", this.index == "");
-      // console.log("myPostalCode is ''", this.postalCode == "");
-      // console.log("myExpenseType is ''", this.expenseType == "");
-      // console.log("myExpenseCost is ''", this.myExpenseCost == "");
-      // console.log("myExpenseDate is ''", this.myExpenseDate == "");
+      // console.log("myIndex = ", this.index == "");
+      // console.log("myPostalCode = ", this.postalCode == "");
+      // console.log("myExpenseType = ", this.expenseType == "");
+      // console.log("myExpenseCost = ", this.myExpenseCost == "");
+      // console.log("myExpenseDate = ", this.myExpenseDate == "");
 
       console.log("parents\nindex is ", this.$parent.index);
       console.log("fullAddress is ", this.$parent.fullAddress);
@@ -239,7 +250,7 @@ export default {
         console.log("*");
       }
       if (this.myFullAddress == "") {
-        this.myFullAddress = this.$parent.myFullAddress;
+        this.myFullAddress = this.$parent.fullAddress;
         console.log("** this.myFullAddress=", this.myFullAddress);
       }
       if (this.myExpenseType == "") {
@@ -254,7 +265,16 @@ export default {
         this.myExpenseDate = this.$parent.expenseDate;
         console.log("*****");
       }
-      console.log("fullAddress is now ", this.myFullAddress);
+      console.log("index = ", this.index);
+      console.log("FullAddress = ", this.fullAddress);
+      console.log("ExpenseType = ", this.expenseType);
+      console.log("ExpenseCost = ", this.expenseCost);
+      console.log("ExpenseDate = ", this.expenseDate);
+      console.log("myIndex = ", this.myIndex);
+      console.log("myFullAddress = ", this.myFullAddress);
+      console.log("myExpenseType = ", this.myExpenseType);
+      console.log("myExpenseCost = ", this.myExpenseCost);
+      console.log("myExpenseDate = ", this.myExpenseDate);
 
       console.log("before: expenses[index]=", expenses[index]);
 
