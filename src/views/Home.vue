@@ -11,7 +11,7 @@
   </div>
 
   <div id ="expensesByRentalBarChart">
-    <pie-chart :data ="expensesByRentalBarChart"></pie-chart>
+    <pie-chart :data ="expensesByRentalData"></pie-chart>
   </div>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
     let mymap;
 
     onMounted(() => {
-      //get all user's rentals
+      //mainly to deal with the map generation. data getters are in created()
       (async () => {
         try {
           rentals = await getDoc(doc(db, "Rentals", auth.currentUser.email));
@@ -65,8 +65,7 @@ export default {
           expenses = expenses.data().expenses;
           console.log("expenses", expenses);
           console.log("expenseType", expenses[0].expenseType)
-          console.log(auth.currentUser.email, "is current user's email")
-          
+          console.log(auth.currentUser.email, "is current user's email")  
           //data preprocessing
           //get all unique postal codes
           let uniquePostalCodes = [];
@@ -91,9 +90,6 @@ export default {
               resultObj[rental.postalCode].addresses.push(rental.address);
             }
           }
-          //console.log("unique", uniquePostalCodes);
-          //console.log(resultObj)
-
           var counter = 0;
           for (let [postalCode, values] of Object.entries(resultObj)) {
             console.log(postalCode);
@@ -178,6 +174,19 @@ export default {
       return result
     }, 
 
+    expensesByRentalData() {
+      var result = {};
+      //get all unique rentals
+      let addressSet = new Set(this.expenses.map(arrElement => arrElement.fullAddress))
+      //initialize obj 
+      for (let address of addressSet) {
+        result[address] = 0
+      }
+      for (let expense of this.expenses) {
+        result[expense.fullAddress] += expense.expenseCost 
+      }
+      return result
+    }
   },
 
   components: {},
@@ -195,7 +204,6 @@ export default {
         })
         .catch((error) => console.log("error", error));
       vm.currLatLong = result.LATITUDE;
-      //this.currLatLong.long = result.LONGITUDE
       return "hello world";
     },
   },
