@@ -400,7 +400,7 @@ export default {
         
         console.log("No such document!");
         await setDoc(docRef, {
-          counter: 0,
+          counter: 1,
         });
         return 0;
         
