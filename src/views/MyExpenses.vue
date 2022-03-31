@@ -255,19 +255,26 @@ h2 {
   margin-left: 30px;
 }
 
+
+
 #newExpenseBtn {
+  
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 9px 12px;
+  padding: 1px 12px;
 
   position: relative;
   height: 37px;
   width: 200px;
-  left: 5%;
+
   background: #ffb300;
   border-radius: 42px;
+  font-weight: bold;
+}
+#newExpenseBtn:hover{
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
 .filter {

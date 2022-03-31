@@ -1,7 +1,7 @@
 <template>
   <div class="container" style="margin-top: 20px">
     <button
-      class="btn btn-outline-warning"
+      class="btn btn-outline-warning newsbtn"
       type="button"
       id="generalNews"
       v-on:click="getGeneralNews()"
@@ -10,7 +10,7 @@
     </button>
 
     <button
-      class="btn btn-outline-success"
+      class="btn btn-outline-success newsbtn"
       type="button"
       id="bizNews"
       v-on:click="getBizNews()"
@@ -18,7 +18,7 @@
       Business
     </button>
     <button
-      class="btn btn-outline-danger"
+      class="btn btn-outline-danger newsbtn"
       type="button"
       id="healthNews"
       v-on:click="getHealthNews()"
@@ -199,8 +199,13 @@ export default {
 .card:hover {
   transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+
 }
 
+.newsbtn{
+  margin-left: 5px;
+  margin-right: 5px;
+}
 a {
   color: inherit;
   text-decoration: inherit;

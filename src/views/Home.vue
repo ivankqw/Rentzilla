@@ -7,7 +7,7 @@
     <div id="mapid"></div>
 
     <br><br>
-    <h2 class="header">Overview of revenue and expense</h2><br><br>
+    <h2 class="header">Overview of revenues and expenses</h2><br><br>
     <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
       <div class="col">
         <div class="card">
@@ -117,13 +117,13 @@ export default {
             while (counter < values.addresses.length) {
               currString += "<h5>" + values.addresses[counter] + "</h5>";
               currString +=
-                "<br>" + "Unit Number: " + values.unitNumbers[counter];
+                "" + "Unit Number: " + values.unitNumbers[counter];
               currString +=
                 "<br>" +
                 "Purchase Price: " +
                 values.purchasePrices[counter] +
                 "<br>";
-              var currAllTenantsNames = "";
+              var currAllTenantsNames = "Tenants: ";
               for (let tenant of values.tenants[counter]) {
                 currAllTenantsNames += tenant.firstName
                   ? tenant.firstName +
