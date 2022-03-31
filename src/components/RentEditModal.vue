@@ -167,7 +167,7 @@ export default {
               }
 
               tenant.numberOfMonthsRentalUnpaid -= this.myMonthsPaid;
-              let paymentAmount = tenant.monthlyRent * this.myMonthsPaid;
+              let paymentAmount = parseInt(tenant.monthlyRent) * this.myMonthsPaid;
 
               tenant.revenues.push({paymentDate: this.myPaymentDate, paymentAmount: paymentAmount});
             }

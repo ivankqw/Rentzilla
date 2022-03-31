@@ -181,6 +181,7 @@
         <th>Tenant Name</th>
         <th>Monthly Rent</th>
         <th>Months Overdue</th>
+        <th>Manage Rent</th>
       </tr>
       <tbody>
         <tr v-for="(tenant, i) in this.outstandingTenants" :key="i">
@@ -197,7 +198,7 @@
                 data-bs-target="#rentEditModal"
                 v-on:click="setCurrentTenantId(tenant.tenantID)"
               >
-                Edit
+                Manage
               </button>
             </td>
         </tr>
