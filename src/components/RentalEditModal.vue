@@ -466,8 +466,11 @@ export default {
       myContractStartDate5: null,
       myContractEndDate5: null,
       myMonthlyRent5: null,
+      tenants: {},
     };
   },
+
+  created() {},
 
   setup() {
     let modalEle = ref(null);
@@ -1208,6 +1211,20 @@ export default {
         .catch((error) => console.log("error", error));
       lat = result.LATITUDE;
       long = result.LONGITUDE;
+      var tenants = {};
+      try {
+        await getDoc(ref)
+          .then((x) => {
+            var rentals = [];
+            rentals = x.data().rentals;
+            rentals = rentals[this.index];
+            tenants = rentals.tenants;
+            console.log("tenants", tenants);
+          })
+          .catch((error) => console.log("get", error));
+      } catch (e) {
+        console.log("create err", e);
+      }
 
       const docData = {
         postalCode: postalFind,
@@ -1243,7 +1260,9 @@ export default {
                 : this.contractStartDate1,
               1
             ),
+            tenantID: tenants[0].tenantID,
             numberOfMonthsRentalUnpaid: 0,
+            revenues: tenants[0].revenues,
           },
           {
             firstName:
@@ -1268,7 +1287,9 @@ export default {
                 : this.contractStartDate2,
               1
             ),
+            tenantID: tenants[1].tenantID,
             numberOfMonthsRentalUnpaid: 0,
+            revenues: tenants[1].revenues,
           },
           {
             firstName:
@@ -1293,7 +1314,9 @@ export default {
                 : this.contractStartDate3,
               1
             ),
+            tenantID: tenants[2].tenantID,
             numberOfMonthsRentalUnpaid: 0,
+            revenues: tenants[2].revenues,
           },
           {
             firstName:
@@ -1318,7 +1341,9 @@ export default {
                 : this.contractStartDate4,
               1
             ),
+            tenantID: tenants[3].tenantID,
             numberOfMonthsRentalUnpaid: 0,
+            revenues: tenants[3].revenues,
           },
           {
             firstName:
@@ -1343,7 +1368,9 @@ export default {
                 : this.contractStartDate5,
               1
             ),
+            tenantID: tenants[4].tenantID,
             numberOfMonthsRentalUnpaid: 0,
+            revenues: tenants[4].revenues,
           },
         ],
       };
@@ -1397,7 +1424,7 @@ export default {
       newExp = newExp.expenses.filter(
         (exp) => parseInt(exp.rentalIndex) !== index
       );
-      //decrement the rentalIndex for all the other expenses      
+      //decrement the rentalIndex for all the other expenses
       for (let i = 0; i < newExp.length; i++) {
         if (newExp[i].rentalIndex > index) {
           newExp[i].rentalIndex = newExp[i].rentalIndex - 1;

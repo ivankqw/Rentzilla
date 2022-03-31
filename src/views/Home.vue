@@ -43,7 +43,7 @@
           <div class="card-body">
             <h5 class="card-title">Expenses by Category</h5>
             <div id="expensesByCatergoryPieChart">
-              <pie-chart :data="expensesByCategoryData"></pie-chart>
+              <pie-chart :data="expensesByCategoryData" :donut="true" ></pie-chart>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
           <div class="card-body">
             <h5 class="card-title">Expenses by Rental Properties</h5>
             <div id="expensesByRentalBarChart">
-              <column-chart :data="expensesByRentalData"></column-chart>
+              <column-chart :data="expensesByRentalData" :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"></column-chart>
             </div>
           </div>
         </div>
@@ -219,6 +219,7 @@ export default {
 
   computed: {
     expensesByCategoryData() {
+      this.filteredExpenses;
       var result = {};
       //get all unique categories
       let catSet = new Set(
@@ -232,6 +233,18 @@ export default {
         result[expense.expenseType] += expense.expenseCost;
       }
       return result;
+    },
+
+    filteredExpenses() {
+      if (!this.filterStartDate || !this.filterEndDate) {
+        return this.expenses;
+      }
+      return this.expenses.filter((exp) =>
+        moment(exp.expenseDate).isBetween(
+          moment(this.filterStartDate),
+          moment(this.filterEndDate)
+        )
+      );
     },
 
     expensesByRentalData() {
@@ -252,17 +265,7 @@ export default {
       return result;
     },
 
-    filteredExpenses() {
-      if (!this.filterStartDate || !this.filterEndDate) {
-        return this.expenses;
-      }
-      return this.expenses.filter((exp) =>
-        moment(exp.expenseDate).isBetween(
-          moment(this.filterStartDate),
-          moment(this.filterEndDate)
-        )
-      );
-    },
+    
 
     revenuesByRentalData() { 
       var result = {}; 
@@ -276,9 +279,12 @@ export default {
       }
       for (let rental of this.rentals) {
         for (let tenant of rental.tenants) {
-          let tenantMonthlyRent = JSON.parse(JSON.stringify(tenant.monthlyRent));
-          if (tenantMonthlyRent) {
-            result[rental.address] += parseInt(tenantMonthlyRent);
+          for (let tenantRevenues of tenant.revenues) {
+            let tenantRevenuesPaymentAmount = JSON.parse(JSON.stringify(tenantRevenues.paymentAmount));
+            if (tenantRevenuesPaymentAmount) {
+              result[rental.address] += parseInt(tenantRevenuesPaymentAmount);
+
+            }
           }
         }
       }
