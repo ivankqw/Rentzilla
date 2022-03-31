@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <img src="@/assets/hdb.jpg" class="img-fluid" alt="..." />
+        <img src="@/assets/hdb.jpg" class="img-fluid some" alt="..."/>
       </div>
       <div class="col" >
         <br /><br /><br />
@@ -105,14 +105,6 @@ export default {
 </script>
 
 <style>
-img {
-  height: auto;
-  max-width: 40%;
-  background-repeat: no-repeat;
-  background-position: left left;
-  background-size: cover;
-  float: left;
-}
 #feedbackForm {
   margin-left: 80px;
 }

@@ -1380,7 +1380,13 @@ export default {
       newExp = newExp.expenses.filter(
         (exp) => parseInt(exp.rentalIndex) !== index
       );
-      setDoc(doc(db, "Expenses", userEmail), {
+      //decrement the rentalIndex for all the other expenses
+      for (let i = 0; i < newExp.length; i++) {
+        console.log(i)
+        newExp[i].rentalIndex = parseInt(newExp[i].rentalIndex) - 1;
+        console.log("GM",newExp[i].rentalIndex)
+      }
+      await setDoc(doc(db, "Expenses", userEmail), {
         expenses: newExp,
       })
         .then(() => {
@@ -1389,7 +1395,7 @@ export default {
         .catch((error) => {
           console.log("Error", error);
         });
-      this.updateUnpaid();
+      
     },
   },
 };
