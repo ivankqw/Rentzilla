@@ -167,7 +167,10 @@
       :numTenants="this.numTenantsForCurrentEditRental"
     />
 
-    <RentEditModal ref="rentEditModal" />
+    <RentEditModal ref="rentEditModal" 
+    :tenantId="this.tenantId"
+    :monthsPaid="this.monthsPaid"
+    :paymentDate="this.paymentDate"/>
 
     <h2 class="header">Outstanding Rent</h2>
     <br /><br />
@@ -192,6 +195,7 @@
                 class="btn btn-primary btn-sm"
                 data-bs-toggle="modal"
                 data-bs-target="#rentEditModal"
+                v-on:click="setCurrentTenantId(tenant.tenantID)"
               >
                 Edit
               </button>
@@ -422,6 +426,10 @@ export default {
       currTenants: [],
 
       numTenantsForCurrentEditRental: 0,
+
+      tenantId: 0,
+      monthsPaid: 0,
+      paymentDate: "",
     };
   },
   async mounted() {
@@ -454,6 +462,10 @@ export default {
     change() {
       this.refreshEdit += 1;
     },
+
+    setCurrentTenantId(id) {
+      this.tenantId = id;
+    }
   },
 };
 </script>
