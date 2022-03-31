@@ -35,7 +35,7 @@
                 type="text"
                 class="form-control"
                 id="address"
-                placeholder="e.g. Blk 123 Road A"
+                placeholder="-"
                 v-model="address"
               />
 
@@ -379,25 +379,29 @@ export default {
     async retrieveAddress() {
 
       var postalFind = this.postalCode;
-      if (String(postalFind).length !== 6) {
+      if (String(postalFind).length === 0) {
         return
-      }
-      console.log("postalFind", postalFind);
-
-      let result = await fetch(
+      } else if (String(postalFind).length === 6) {
+let result = await fetch(
         `https://developers.onemap.sg/commonapi/search?searchVal=${postalFind}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
       )
         .then((response) => response.text())
         .then((result) => {
           console.log(result);
           if (JSON.parse(result).found == 0) {
-            return "-"
+            return ""
           }
           return JSON.parse(result).results[0];
         })
         .catch((error) => console.log("error", error));
-      let address = result.ADDRESS;
-      this.address = address;
+      
+      this.address = result ? (result.BLK_NO + " " + result.ROAD_NAME +" "  ) : "Invalid Postal Code";
+      } else {
+        this.address = "-"
+      }
+      
+
+      
       
     },
 

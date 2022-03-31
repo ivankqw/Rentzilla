@@ -35,7 +35,7 @@
               />
 
               <label for="address" class="form-label">Address</label>
-              <input
+              <input disabled
                 type="text"
                 class="form-control"
                 id="address"
