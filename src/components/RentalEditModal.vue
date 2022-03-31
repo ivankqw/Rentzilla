@@ -35,7 +35,8 @@
               />
 
               <label for="address" class="form-label">Address</label>
-              <input disabled
+              <input
+                disabled
                 type="text"
                 class="form-control"
                 id="address"
@@ -499,10 +500,8 @@ export default {
         } else if (String(this.myPostalCode) !== String(this.postalCode)) {
           postalCodeChanged = true;
         }
-        
       }
 
-      
       if (this.myAddress !== null) {
         if (!this.myAddress) {
           alert("Please enter a valid address");
@@ -536,10 +535,14 @@ export default {
         }
         if (this.myUnitNumber !== this.unitNumber) {
           unitNumberChanged = true;
-          }
+        }
       }
 
-      console.log("postal code / unit num changed:", postalCodeChanged ? "yes" : "no", unitNumberChanged ? "yes" : "no")
+      console.log(
+        "postal code / unit num changed:",
+        postalCodeChanged ? "yes" : "no",
+        unitNumberChanged ? "yes" : "no"
+      );
       if (this.myPurchasePrice !== null) {
         if (!this.myPurchasePrice) {
           alert("Please enter a valid purchase price");
@@ -959,45 +962,67 @@ export default {
       }
 
       // check no duplicate addresses using postal code and unit number
-      async function findDuplicateRentals(originalPostalCode, originalUnitNumber, newPostalCode, newUnitNumber) {
-        console.log(originalPostalCode, originalUnitNumber, newPostalCode, newUnitNumber);
+      async function findDuplicateRentals(
+        originalPostalCode,
+        originalUnitNumber,
+        newPostalCode,
+        newUnitNumber
+      ) {
+        console.log(
+          originalPostalCode,
+          originalUnitNumber,
+          newPostalCode,
+          newUnitNumber
+        );
         const auth = getAuth();
         const userEmail = auth.currentUser.email;
         const ref = doc(db, "Rentals", userEmail);
         const docSnap = await getDoc(ref);
         let rentals = docSnap.data().rentals;
-        
+
         // as of now no duplicates in rentals
-        rentals = rentals.filter((rental) => !(rental.postalCode == originalPostalCode && rental.unitNumber == originalUnitNumber));
+        rentals = rentals.filter(
+          (rental) =>
+            !(
+              rental.postalCode == originalPostalCode &&
+              rental.unitNumber == originalUnitNumber
+            )
+        );
         // rentals filtered to no more current rental
-        console.log(rentals)
+        console.log(rentals);
 
         if (newPostalCode) {
           // postal code changed
-          rentals = rentals.filter((rental) => rental.postalCode == newPostalCode);
+          rentals = rentals.filter(
+            (rental) => rental.postalCode == newPostalCode
+          );
           if (rentals.length === 0) {
             return false;
           } else if (rentals.length === 1) {
-            if (rentals[0].unitNumber === 'x') {
+            if (rentals[0].unitNumber === "x") {
               // Same postal code but already marked as landed
               return true;
             } else {
               // Same postal code, not landed, so check for duplicate unit num
-              return rentals[0].unitNumber == newPostalCode
+              return rentals[0].unitNumber == newPostalCode;
             }
           }
         } else {
           // postal code not changed
           if (newUnitNumber) {
-            rentals = rentals.filter((rental) => rental.postalCode == originalPostalCode);
-            if (newUnitNumber === 'x') {
+            rentals = rentals.filter(
+              (rental) => rental.postalCode == originalPostalCode
+            );
+            if (newUnitNumber === "x") {
               if (rentals.length > 0) {
                 return true;
               } else {
-                return false
+                return false;
               }
             } else {
-              rentals = rentals.filter((rental) => rental.unitNumber == newUnitNumber);
+              rentals = rentals.filter(
+                (rental) => rental.unitNumber == newUnitNumber
+              );
               if (rentals.length > 0) {
                 return true;
               } else {
@@ -1005,11 +1030,8 @@ export default {
               }
             }
           }
-          
-          
         }
-        
-        
+
         // if (postalCodeChanged) {
         //   if (this.myPostalCode === 'x')
         // }
@@ -1020,18 +1042,17 @@ export default {
         // } else if (rentals.length == 1) {
         //   if (!postalCodeChanged) {
         //     if (
-        //       (rentals[0].unitNumber === "x" && unitNumber !== 'x') || 
+        //       (rentals[0].unitNumber === "x" && unitNumber !== 'x') ||
         //       (rentals[0].unitNumber !== "x" && unitNumber === 'x')
         //       ) {
         //       console.log("")
-        //     } else { 
+        //     } else {
         //       return rentals[0].unitNumber == unitNumber;
         //     }
         //   } else {
         //     return rentals[0].unitNumber == unitNumber;
         //   }
-         
-          
+
         // } else {
         //   // rentals now all same postal code
         //   // more than one rental with same postal code
@@ -1047,25 +1068,21 @@ export default {
         // }
       }
 
-        
-        let duplicatesPresent = await findDuplicateRentals(
-          this.postalCode, 
-          this.unitNumber, 
-          postalCodeChanged ? this.myPostalCode : null,
-          unitNumberChanged ? this.myUnitNumber : null
-          );
-        if (duplicatesPresent) {
+      let duplicatesPresent = await findDuplicateRentals(
+        this.postalCode,
+        this.unitNumber,
+        postalCodeChanged ? this.myPostalCode : null,
+        unitNumberChanged ? this.myUnitNumber : null
+      );
+      if (duplicatesPresent) {
         alert(
           "Duplicate rental found with postal code " +
             (postalCodeChanged ? this.myPostalCode : this.postalCode) +
             " and unit number " +
-            (unitNumberChanged ? this.myUnitNumber :  this.unitNumber)
+            (unitNumberChanged ? this.myUnitNumber : this.unitNumber)
         );
         return false;
       }
-      
-      
-      
 
       return true;
     },
@@ -1380,11 +1397,11 @@ export default {
       newExp = newExp.expenses.filter(
         (exp) => parseInt(exp.rentalIndex) !== index
       );
-      //decrement the rentalIndex for all the other expenses
-      for (let i = 0; index < i < newExp.length; i++) {
-        console.log(i)
-        newExp[i].rentalIndex = parseInt(newExp[i].rentalIndex) - 1;
-        console.log("GM",newExp[i].rentalIndex)
+      //decrement the rentalIndex for all the other expenses      
+      for (let i = 0; i < newExp.length; i++) {
+        if (newExp[i].rentalIndex > index) {
+          newExp[i].rentalIndex = newExp[i].rentalIndex - 1;
+        }
       }
       await setDoc(doc(db, "Expenses", userEmail), {
         expenses: newExp,
@@ -1395,7 +1412,6 @@ export default {
         .catch((error) => {
           console.log("Error", error);
         });
-      
     },
   },
 };
