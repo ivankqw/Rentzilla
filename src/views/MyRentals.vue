@@ -167,6 +167,8 @@
       :numTenants="this.numTenantsForCurrentEditRental"
     />
 
+    <RentEditModal ref="rentEditModal" />
+
     <h2 class="header">Outstanding Rent</h2>
     <br /><br />
     <div class="table-responsive">
@@ -183,6 +185,17 @@
           <td>{{ tenant.firstName + " " + tenant.lastName }}</td>
           <td>{{ "$" + tenant.monthlyRent }}</td>
           <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
+          <td>
+              <button
+              id="editPaymentBtn"
+                type="button"
+                class="btn btn-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#rentEditModal"
+              >
+                Edit
+              </button>
+            </td>
         </tr>
       </tbody>
     </table>
@@ -196,6 +209,7 @@ import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import RentalEditModal from "../components/RentalEditModal.vue";
 import RentalAddModal from "../components/RentalAddModal.vue";
+import RentEditModal from "../components/RentEditModal";
 import { ref } from "vue";
 import rentalMixin from "../mixins/rentalMixin";
 
@@ -235,6 +249,7 @@ export default {
   components: {
     RentalEditModal,
     RentalAddModal,
+    RentEditModal,
   },
 
   setup() {
@@ -246,6 +261,11 @@ export default {
     let rentalAddModal = ref(null);
     function showRentalAddModal() {
       rentalAddModal.value.show();
+    }
+
+    let rentEditModal = ref(null);
+    function showRentEditModal() {
+      rentEditModal.value.show();
     }
 
     function editRentalDetails(id) {
@@ -353,6 +373,8 @@ export default {
       showRentalEditModal,
       showRentalAddModal,
       editRentalDetails,
+      showRentEditModal,
+      rentEditModal,
     };
   },
 
