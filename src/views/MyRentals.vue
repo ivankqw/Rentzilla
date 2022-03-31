@@ -14,8 +14,10 @@
       data-bs-toggle="modal"
       data-bs-target="#newRentalModal"
     >
-      + New Rental
+     <strong>+ New Rental</strong> 
     </button>
+
+
     <br />
 
     <RentalAddModal ref="rentalModal" />
@@ -39,7 +41,7 @@
             <td>{{ rental.postalCode }}</td>
             <td>{{ rental.address }}</td>
             <td>{{ rental.unitNumber }}</td>
-            <td>{{ rental.purchasePrice }}</td>
+            <td>${{ rental.purchasePrice }}</td>
             <td>
               <button
                 type="button"
@@ -436,6 +438,7 @@ export default {
 
 <style scoped>
 #newRentalBtn {
+  
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -449,6 +452,10 @@ export default {
   background: #ffb300;
   border-radius: 42px;
 }
+#newRentalBtn:hover{
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
 
 #rentalTableHeader,
 #outstandingRentTableHeader {
