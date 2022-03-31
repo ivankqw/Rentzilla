@@ -561,6 +561,16 @@ export default {
           numTenantsRemaining--;
         } else if (
           !this.firstName1 &&
+          this.myFirstName1 &&
+          this.myLastName1 &&
+          this.myContractStartDate1 &&
+          this.myContractEndDate1 &&
+          this.myMonthlyRent1
+        ) {
+          console.log("tenant added");
+          numTenantsRemaining++;
+        } else if (
+          !this.firstName1 &&
           !this.myFirstName1 &&
           !this.myLastName1 &&
           !this.myContractStartDate1 &&
@@ -629,6 +639,16 @@ export default {
           // tenant
           console.log("tenant 2 deleted");
           numTenantsRemaining--;
+        } else if (
+          !this.firstName2 &&
+          this.myFirstName2 &&
+          this.myLastName2 &&
+          this.myContractStartDate2 &&
+          this.myContractEndDate2 &&
+          this.myMonthlyRent2
+        ) {
+          console.log("tenant added");
+          numTenantsRemaining++;
         } else if (
           !this.firstName2 &&
           !this.myFirstName2 &&
@@ -701,6 +721,16 @@ export default {
           numTenantsRemaining--;
         } else if (
           !this.firstName3 &&
+          this.myFirstName3 &&
+          this.myLastName3 &&
+          this.myContractStartDate3 &&
+          this.myContractEndDate3 &&
+          this.myMonthlyRent3
+        ) {
+          console.log("tenant added");
+          numTenantsRemaining++;
+        } else if (
+          !this.firstName3 &&
           !this.myFirstName3 &&
           !this.myLastName3 &&
           !this.myContractStartDate3 &&
@@ -771,6 +801,16 @@ export default {
           numTenantsRemaining--;
         } else if (
           !this.firstName4 &&
+          this.myFirstName4 &&
+          this.myLastName4 &&
+          this.myContractStartDate4 &&
+          this.myContractEndDate4&&
+          this.myMonthlyRent4
+        ) {
+          console.log("tenant added");
+          numTenantsRemaining++;
+        } else if (
+          !this.firstName4 &&
           !this.myFirstName4 &&
           !this.myLastName4 &&
           !this.myContractStartDate4 &&
@@ -839,6 +879,16 @@ export default {
           // tenant
           console.log("tenant 5 deleted");
           numTenantsRemaining--;
+        } else if (
+          !this.firstName5 &&
+          this.myFirstName5 &&
+          this.myLastName5 &&
+          this.myContractStartDate5 &&
+          this.myContractEndDate5 &&
+          this.myMonthlyRent5
+        ) {
+          console.log("tenant added");
+          numTenantsRemaining++;
         } else if (
           !this.firstName5 &&
           !this.myFirstName5 &&
@@ -1196,16 +1246,21 @@ export default {
         .catch((error) => {
           console.log("Error", error);
         });
-      //delete all expenses related 
+      //delete all expenses related
       var newExp;
       await getDoc(doc(db, "Expenses", userEmail))
-      .then((x) => {newExp = x.data(); console.log(newExp);})
-      .catch((err) => console.log("get expense", err))
-      newExp = newExp.expenses.filter(exp => parseInt(exp.rentalIndex) !== index)
+        .then((x) => {
+          newExp = x.data();
+          console.log(newExp);
+        })
+        .catch((err) => console.log("get expense", err));
+      newExp = newExp.expenses.filter(
+        (exp) => parseInt(exp.rentalIndex) !== index
+      );
       setDoc(doc(db, "Expenses", userEmail), {
         expenses: newExp,
       })
-      .then(() => {
+        .then(() => {
           console.log("updated expenses!", newExp);
         })
         .catch((error) => {
