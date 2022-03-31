@@ -165,11 +165,11 @@
       :numTenants="this.numTenantsForCurrentEditRental"
     />
 
-    <h2 class="header">Rent</h2>
+    <h2 class="header">Outstanding Rent</h2>
     <br /><br />
     <div class="table-responsive">
-    <table id="outstandingRentTable" class="table table-hover auto-index">
-      <tr id="outstandingRentTableHeader">
+    <table class="table table-striped table-hover">
+      <tr id="outstandingRentTableHeader" class="table-light">
         <th>#</th>
         <th>Tenant Name</th>
         <th>Monthly Rent</th>
@@ -448,16 +448,6 @@ export default {
 
   background: #ffb300;
   border-radius: 42px;
-}
-
-#rentalTable,
-#outstandingRentTable {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  height: 50px;
-  left: 58px;
-  top: 170px;
 }
 
 #rentalTableHeader,

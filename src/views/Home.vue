@@ -1,11 +1,13 @@
 <template>
   <div class="container">
-    <h1>Ths is the home page</h1>
+    <h1 class="header">Home Page</h1>
     <h3>Welcome back, {{ $store.state.name }}</h3>
     <h3>Your email is {{ $store.state.email }}</h3>
-    <h4>My Properties</h4>
+    <h2 class="header">My Rental Properties</h2><br><br>
     <div id="mapid"></div>
 
+    <br><br>
+    <h2 class="header">Overview of revenue and expense</h2><br><br>
     <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
       <div class="col">
         <div class="card">
@@ -256,5 +258,22 @@ export default {
 <style>
 #mapid {
   height: 610px;
+}
+
+h1 {
+  /* My Rental Properties */
+
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 50px;
+
+  color: #000000;
+}
+
+h2 {
+  float: left;
+  font-weight: bold;
+  margin-left: 30px;
 }
 </style>

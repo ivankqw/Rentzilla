@@ -33,7 +33,8 @@
             <input id="filterEnd" @input="onFilterEndInput" type="date" />
           </div>
           <div class="col-md-2 align-self-center">
-            <button type="button" class="btn btn-warning" @click="clearFilter">
+            
+            <button type="button" class="btn btn-outline-secondary" @click="clearFilter" style="margin-top: 22px">
               Clear filter
             </button>
           </div>
@@ -56,7 +57,7 @@
             <th>Cost</th>
             <th>Date of Expense</th>
 
-            <th></th>
+            <th>Manage Expense</th>
           </tr>
         </thead>
         <tbody>
@@ -67,12 +68,12 @@
             <td>{{ expense.unitNumber }}</td>
 
             <td>{{ expense.expenseType }}</td>
-            <td>{{ expense.expenseCost }}</td>
+            <td>${{ expense.expenseCost }}</td>
             <td>{{ expense.expenseDate }}</td>
             <td>
               <button
                 type="button"
-                class="btn btn-primary"
+                class="btn btn-primary btn-sm"
                 @click="this.editExpenseDetails(i)"
               >
                 Manage
@@ -282,13 +283,13 @@ h2 {
   background: #187a22;
 }
 
-#expensestable {
+/* #expensestable {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
   left: 58px;
   top: 170px;
-}
+} */
 
 #tableheader {
   background: #e9ecef;

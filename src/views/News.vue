@@ -26,8 +26,8 @@
       Health
     </button>
 
-    <br />
-    <h2 id="firstHeader" style="text-align: left">Top General News</h2>
+    <br /><br>
+    <h2 id="firstHeader" style="text-align: left">Top General News</h2><br><br><br>
     <div class="row row-cols-1 row-cols-md-3 g-4" id="top-content">
       <div v-for="(article, index) in articlesTop" :key="index" class="col">
         <a :href="article.url" target="_blank">
@@ -46,7 +46,7 @@
       </div>
     </div>
     <br />
-    <h2 id="secondHeader" style="text-align: left">Other News</h2>
+    <h2 id="secondHeader" style="text-align: left">Other News</h2><br><br><br>
     <div
       class="row row-cols-1 row-cols-md-1 g-4 align-items-stretch"
       id="bottom-content"
