@@ -8,6 +8,8 @@ import store from "./store/index.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPhone, faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import VueChartKick from 'vue-chartkick';
+import "chartkick/chart.js"
 
 library.add(faPhone);
 library.add(faCircle);
@@ -27,5 +29,6 @@ initializeApp(firebaseConfig);
 createApp(App)
   .use(store)
   .use(router)
+  .use(VueChartKick)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");

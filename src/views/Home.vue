@@ -3,14 +3,23 @@
     <h1>Ths is the home page</h1>
     <h3>Welcome back, {{ $store.state.name }}</h3>
     <h3>Your email is {{ $store.state.email }}</h3>
+    <h4>My Properties</h4>
     <div id="mapid"></div>
+
+  <div id ="expensesByCatergoryPieChart">
+    <pie-chart :data ="expensesByCategoryChartData"></pie-chart>
+  </div>
+
+  <div id ="expensesByRentalBarChart">
+    <pie-chart :data ="expensesByRentalBarChart"></pie-chart>
+  </div>
   </div>
 </template>
 
 <script>
 import leaflet from "leaflet";
 import { onMounted } from "vue";
-import { getDoc, doc, setDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 
@@ -31,6 +40,7 @@ export default {
       }
     })();
     let mymap;
+
     onMounted(() => {
       //get all user's rentals
       (async () => {
@@ -54,6 +64,20 @@ export default {
 
           expenses = expenses.data().expenses;
           console.log("expenses", expenses);
+          console.log("expenseType", expenses[0].expenseType)
+          console.log(auth.currentUser.email, "is current user's email")
+          // this.updatedData(auth.currentUser.email);
+          // get all expense categories
+          let uniqueExpenseTypes = [];
+          let expensesByCatergoryData = {};
+          for (let expense of expenses) {
+            if (!uniqueExpenseTypes.includes(expense.expenseType)) {
+              uniqueExpenseTypes.push(expense.expenseType);
+              expensesByCatergoryData[expense.expenseType] = expense.expenseCost;
+              console.log(expensesByCatergoryData);
+            }
+          }
+         
 
           //data preprocessing
           //get all unique postal codes
@@ -145,6 +169,7 @@ export default {
   data() {
     return {
       currLatLong: {},
+      expensesByCategoryChartData:{},
     };
   },
 
@@ -166,6 +191,34 @@ export default {
       //this.currLatLong.long = result.LONGITUDE
       return "hello world";
     },
+
+    // async updatedData(currUserEmail){
+    //   var docs = null;
+
+    //   docs = await getDocs(collection(db, "Expenses", currUserEmail));
+    //   // var expensesByCategory = new Map();
+    //   docs.forEach((doc) => console.log(doc))
+    //   console.log(currUserEmail);
+    //   // onSnapshot(
+    //   //   doc(db, "Expenses", currUserEmail ),
+    //   // { includeMetadataChanges: true },
+    //   // (doc) => {
+    //   //   this.expenses = doc.data().expenses;
+    //   // }
+    
+    // },
+  },
+
+  created() {
+    const auth = getAuth();
+    const userEmail = auth.currentUser.email;
+    onSnapshot(
+      doc(db, "Expenses", userEmail),
+      { includeMetadataChanges: true },
+      (doc) => {
+        this.expenses = doc.data().expenses;
+      }
+    );
   },
 };
 </script>
