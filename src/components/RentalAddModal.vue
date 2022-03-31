@@ -791,6 +791,7 @@ export default {
             nextPaymentDate: this.addMonths(this.contractStartDate1, 1),
             numberOfMonthsRentalUnpaid: 0,
             tenantID: await this.generateTenantID(),
+            revenues: [],
           },
           {
             firstName: this.firstName2,
@@ -801,6 +802,7 @@ export default {
             nextPaymentDate: this.addMonths(this.contractStartDate2, 1),
             numberOfMonthsRentalUnpaid: 0,
             tenantID: await this.generateTenantID(),
+            revenues: [],
           },
           {
             firstName: this.firstName3,
@@ -811,6 +813,7 @@ export default {
             nextPaymentDate: this.addMonths(this.contractStartDate3, 1),
             numberOfMonthsRentalUnpaid: 0,
             tenantID: await this.generateTenantID(),
+            revenues: [],
           },
           {
             firstName: this.firstName4,
@@ -821,6 +824,7 @@ export default {
             nextPaymentDate: this.addMonths(this.contractStartDate4, 1),
             numberOfMonthsRentalUnpaid: 0,
             tenantID: await this.generateTenantID(),
+            revenues: [],
           },
           {
             firstName: this.firstName5,
@@ -831,6 +835,7 @@ export default {
             nextPaymentDate: this.addMonths(this.contractStartDate5, 1),
             numberOfMonthsRentalUnpaid: 0,
             tenantID: await this.generateTenantID(),
+            revenues: [],
           },
         ],
       };
