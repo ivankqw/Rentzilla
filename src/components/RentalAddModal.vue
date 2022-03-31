@@ -30,8 +30,9 @@
                 @change="retrieveAddress()"
               />
 
-              <label for="address" class="form-label" >Address</label>
-              <input disabled
+              <label for="address" class="form-label">Address</label>
+              <input
+                disabled
                 type="text"
                 class="form-control"
                 id="address"
@@ -39,7 +40,9 @@
                 v-model="address"
               />
 
-              <label for="unitNumber" class="form-label">Unit Number (Enter 'x' if no unit number)</label>
+              <label for="unitNumber" class="form-label"
+                >Unit Number (Enter 'x' if no unit number)</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -375,34 +378,59 @@ export default {
       rentals: {},
     };
   },
-  methods: {
-    async retrieveAddress() {
+  mounted() {
+  },
 
+  methods: {
+    async generateTenantID() {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+
+      const docRef = doc(db, "TenantCounterID", userEmail);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        let currentCounter = docSnap.data().counter;
+        console.log("Tenant ID:", currentCounter);
+        await setDoc(docRef, {
+          counter: currentCounter + 1,
+        });
+        return currentCounter;
+      } else {
+        
+        console.log("No such document!");
+        await setDoc(docRef, {
+          counter: 0,
+        });
+        return 0;
+        
+      }
+    },
+
+    async retrieveAddress() {
       var postalFind = this.postalCode;
       if (String(postalFind).length === 0) {
-        return
+        return;
       } else if (String(postalFind).length === 6) {
-let result = await fetch(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${postalFind}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
-      )
-        .then((response) => response.text())
-        .then((result) => {
-          console.log(result);
-          if (JSON.parse(result).found == 0) {
-            return ""
-          }
-          return JSON.parse(result).results[0];
-        })
-        .catch((error) => console.log("error", error));
-      
-      this.address = result ? (result.BLK_NO + " " + result.ROAD_NAME +" "  ) : "Invalid Postal Code";
-      } else {
-        this.address = "-"
-      }
-      
+        let result = await fetch(
+          `https://developers.onemap.sg/commonapi/search?searchVal=${postalFind}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
+        )
+          .then((response) => response.text())
+          .then((result) => {
+            console.log(result);
+            if (JSON.parse(result).found == 0) {
+              return "";
+            }
+            return JSON.parse(result).results[0];
+          })
+          .catch((error) => console.log("error", error));
 
-      
-      
+        this.address = result
+          ? result.BLK_NO + " " + result.ROAD_NAME + " "
+          : "Invalid Postal Code";
+      } else {
+        this.address = "-";
+      }
     },
 
     closeAddRentalModal() {
@@ -459,7 +487,7 @@ let result = await fetch(
 
     async validateRentalForm() {
       // Validation of inputs property details
-      
+
       if (String(this.postalCode).length !== 6) {
         alert("Please enter a valid postal code");
         return false;
@@ -472,7 +500,6 @@ let result = await fetch(
         alert("Please enter a valid unit number");
         return false;
       } else if (this.unitNumber.toLowerCase() !== "x") {
-      
         let unit = this.unitNumber;
         try {
           if (unit.split("-").length !== 2) {
@@ -682,11 +709,11 @@ let result = await fetch(
         let rentals = docSnap.data().rentals;
 
         rentals = rentals.filter((rental) => rental.postalCode == postalCode);
-        
+
         if (rentals.length == 0) {
           return false;
         } else if (rentals.length == 1) {
-          if (rentals[0].unitNumber === 'x') {
+          if (rentals[0].unitNumber === "x") {
             // Landed
             return true;
           } else {
@@ -695,7 +722,7 @@ let result = await fetch(
           }
         } else {
           // rentals now all same postal code
-          rentals = rentals.filter((rental) => rental.unitNumber == unitNumber)
+          rentals = rentals.filter((rental) => rental.unitNumber == unitNumber);
           if (rentals.length >= 1) {
             return true;
           } else {
@@ -703,9 +730,17 @@ let result = await fetch(
           }
         }
       }
-      let duplicatesPresent = await findDuplicateRentals(this.postalCode, this.unitNumber)
+      let duplicatesPresent = await findDuplicateRentals(
+        this.postalCode,
+        this.unitNumber
+      );
       if (duplicatesPresent) {
-        alert("Duplicate rental found with postal code " + this.postalCode + " and unit number " + this.unitNumber)
+        alert(
+          "Duplicate rental found with postal code " +
+            this.postalCode +
+            " and unit number " +
+            this.unitNumber
+        );
         return false;
       }
       return true;
@@ -716,7 +751,7 @@ let result = await fetch(
       if (!valid) {
         return;
       }
-      console.log("saving rental")
+      console.log("saving rental");
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Rentals", userEmail);
@@ -729,7 +764,9 @@ let result = await fetch(
         .then((response) => response.text())
         .then((result) => {
           console.log(result);
-          if (JSON.parse(result).found == 0) { alert("Please enter a valid postal code"); }
+          if (JSON.parse(result).found == 0) {
+            alert("Please enter a valid postal code");
+          }
           return JSON.parse(result).results[0];
         })
         .catch((error) => alert("postal code error", error));
@@ -753,6 +790,7 @@ let result = await fetch(
             monthlyRent: this.monthlyRent1,
             nextPaymentDate: this.addMonths(this.contractStartDate1, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
           {
             firstName: this.firstName2,
@@ -762,6 +800,7 @@ let result = await fetch(
             monthlyRent: this.monthlyRent2,
             nextPaymentDate: this.addMonths(this.contractStartDate2, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
           {
             firstName: this.firstName3,
@@ -771,6 +810,7 @@ let result = await fetch(
             monthlyRent: this.monthlyRent3,
             nextPaymentDate: this.addMonths(this.contractStartDate3, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
           {
             firstName: this.firstName4,
@@ -780,6 +820,7 @@ let result = await fetch(
             monthlyRent: this.monthlyRent4,
             nextPaymentDate: this.addMonths(this.contractStartDate4, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
           {
             firstName: this.firstName5,
@@ -789,6 +830,7 @@ let result = await fetch(
             monthlyRent: this.monthlyRent5,
             nextPaymentDate: this.addMonths(this.contractStartDate5, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
         ],
       };
