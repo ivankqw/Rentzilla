@@ -23,17 +23,27 @@
         <div class="modal-body">
           <form id="editRentForm">
             <div class="mb-3">
-              <label for="monthsPaid">Enter the number of months of rent paid:</label>
-              <input 
-              type="number" 
-              class="form-control" 
-              placeholder="1" 
-              v-model="monthsPaid" />
-              <br>
-              <label for="paymentDate" >Date of Payment:</label> 
-              <input id="paymentDate" class="form-control" type="date" v-model="paymentDate"/>
+              <label for="monthsPaid"
+                >Enter the number of months of rent paid:</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                placeholder="1"
+                @change="onMonthsPaidChange"
+                value="myMonthsPaid"
+              />
+              <br />
+              <label for="paymentDate">Date of Payment:</label>
+              <input
+                id="paymentDate"
+                class="form-control"
+                type="date"
+                @change="onPaymentDateChange"
+                value="myPaymentDate"
+              />
             </div>
-              
+
             <div class="modal-footer">
               <button
                 type="button"
@@ -47,13 +57,12 @@
               <button
                 type="button"
                 class="btn btn-success"
-                v-on:click="savePayment()"
+                v-on:click="savePayment(this.tenantId)"
                 data-bs-dismiss="modal fade"
                 style="margin-right: 10px"
               >
                 Confirm
               </button>
-              
             </div>
           </form>
         </div>
@@ -64,7 +73,6 @@
 
 <script>
 import { getAuth } from "firebase/auth";
-// import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ref, onMounted } from "vue";
@@ -73,7 +81,7 @@ import { Modal } from "bootstrap";
 export default {
   name: "RentEditModal",
 
-//   props: ["index", "fullAddress", "expenseType", "expenseCost", "expenseDate"],
+  props: ["tenantId", "monthsPaid", "paymentDate"],
 
   setup() {
     let modalEle = ref(null);
@@ -84,8 +92,6 @@ export default {
     function show() {
       thisModalObj.show();
     }
-
-
 
     return {
       show,
@@ -111,24 +117,33 @@ export default {
     };
   },
 
-  methods: {
-      resetEditRentForm() {
-          document.getElementById("editRentForm").reset();
-      this.monthsPaid= ""
-      this.paymentDate= ""
-      console.log("form resetted");
+//   computed: {
+//       getPaymentAmount () {
+//           const auth = getAuth();
+//           const userEmail = auth.currentUser.email;
+//           const rentalRef = doc(db, "Rentals", userEmail);
+//           const tenantDocSnap = await getDoc(rentalRef, this.);
+//       }
+//   }
 
-      },
+  methods: {
+    resetEditRentForm() {
+      document.getElementById("editRentForm").reset();
+      this.myMonthsPaid = "";
+      this.myPaymentDate = "";
+      console.log("form resetted");
+    },
 
     async savePayment(tenantId) {
       console.log("CLICKED SAVE PAYMENT");
+      console.log("tenantId is " + tenantId);
 
-      if (!this.monthsPaid) {
-          alert("Please enter a valid number of months");
-          return;
-      } else if (!this.paymentDate) {
-          alert("Please enter a valid date");
-          return;
+      if (!this.myMonthsPaid) {
+        alert("Please enter a valid number of months");
+        return;
+      } else if (!this.myPaymentDate) {
+        alert("Please enter a valid date");
+        return;
       }
 
       const auth = getAuth();
@@ -136,6 +151,7 @@ export default {
       const ref = doc(db, "Rentals", userEmail);
       const docSnap = await getDoc(ref);
       const rentals = JSON.parse(JSON.stringify(docSnap.data().rentals));
+      console.log(rentals);
 
       try {
         for (let rental of rentals) {
@@ -144,25 +160,40 @@ export default {
             // console.log(tenant);
             if (tenant.tenantID == tenantId) {
               // console.log("owe money");
-              tenant.numberOfMonthsRentalUnpaid -= this.monthsPaid;
+
+              if (this.myMonthsPaid > tenant.numberOfMonthsRentalUnpaid || this.myMonthsPaid < 0) {
+                  alert("Please enter a valid number of months");
+                  return;
+              }
+
+              tenant.numberOfMonthsRentalUnpaid -= this.myMonthsPaid;
+              let paymentAmount = tenant.monthlyRent * this.myMonthsPaid;
+
+              tenant.revenues.push({paymentDate: this.myPaymentDate, paymentAmount: paymentAmount});
             }
           }
         }
       } catch (error) {
-        console.log("savePayment error", error)
+        console.log("savePayment error", error);
       }
 
+      console.log(rentals);
       await updateDoc(ref, { rentals: rentals });
-      console.log("updated number of months rental unpaid!");
-      
+      console.log("updated outstanding rent!");
+
       // close the modal
       var myModalEl = document.getElementById("rentEditModal");
       var modal = Modal.getInstance(myModalEl);
       modal.hide();
- 
     },
 
-    
+    onMonthsPaidChange(event) {
+      this.myMonthsPaid = event.target.value;
+    },
+
+    onPaymentDateChange(event) {
+      this.myPaymentDate = event.target.value;
+    },
   },
 };
 </script>
