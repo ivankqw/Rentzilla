@@ -7,7 +7,7 @@
     <div id="mapid"></div>
 
   <div id ="expensesByCatergoryPieChart">
-    <pie-chart :data ="expensesByCategoryChartData"></pie-chart>
+    <pie-chart :data ="expensesByCategoryData"></pie-chart>
   </div>
 
   <div id ="expensesByRentalBarChart">
@@ -31,7 +31,7 @@ export default {
     var accessToken;
     var rentals;
     var expenses;
-
+ 
     (async () => {
       try {
         accessToken = await getDoc(doc(db, "Admin", "MapBoxToken"));
@@ -66,19 +66,7 @@ export default {
           console.log("expenses", expenses);
           console.log("expenseType", expenses[0].expenseType)
           console.log(auth.currentUser.email, "is current user's email")
-          // this.updatedData(auth.currentUser.email);
-          // get all expense categories
-          let uniqueExpenseTypes = [];
-          let expensesByCatergoryData = {};
-          for (let expense of expenses) {
-            if (!uniqueExpenseTypes.includes(expense.expenseType)) {
-              uniqueExpenseTypes.push(expense.expenseType);
-              expensesByCatergoryData[expense.expenseType] = expense.expenseCost;
-              console.log(expensesByCatergoryData);
-            }
-          }
-         
-
+          
           //data preprocessing
           //get all unique postal codes
           let uniquePostalCodes = [];
@@ -169,8 +157,27 @@ export default {
   data() {
     return {
       currLatLong: {},
+      expenses: [],
+      rentals: [],
       expensesByCategoryChartData:{},
     };
+  },
+
+  computed: {
+    expensesByCategoryData() {
+      var result = {};
+      //get all unique categories
+      let catSet = new Set(this.expenses.map(arrElement => arrElement.expenseType))
+      //initialize obj 
+      for (let cat of catSet) {
+        result[cat] = 0
+      }
+      for (let expense of this.expenses) {
+        result[expense.expenseType] += expense.expenseCost 
+      }
+      return result
+    }, 
+
   },
 
   components: {},
@@ -191,22 +198,6 @@ export default {
       //this.currLatLong.long = result.LONGITUDE
       return "hello world";
     },
-
-    // async updatedData(currUserEmail){
-    //   var docs = null;
-
-    //   docs = await getDocs(collection(db, "Expenses", currUserEmail));
-    //   // var expensesByCategory = new Map();
-    //   docs.forEach((doc) => console.log(doc))
-    //   console.log(currUserEmail);
-    //   // onSnapshot(
-    //   //   doc(db, "Expenses", currUserEmail ),
-    //   // { includeMetadataChanges: true },
-    //   // (doc) => {
-    //   //   this.expenses = doc.data().expenses;
-    //   // }
-    
-    // },
   },
 
   created() {
@@ -217,6 +208,13 @@ export default {
       { includeMetadataChanges: true },
       (doc) => {
         this.expenses = doc.data().expenses;
+      }
+    );
+    onSnapshot(
+      doc(db, "Rentals", userEmail),
+      { includeMetadataChanges: true },
+      (doc) => {
+        this.rentals = doc.data().rentals;
       }
     );
   },
