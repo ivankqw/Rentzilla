@@ -2,17 +2,20 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <img src="@/assets/hdb.jpg" class="img-fluid" alt="..." />
+        <img src="@/assets/hdb.jpg" class="img-fluid some" alt="..."/>
       </div>
-      <div class="col">
-        <div class="container">
+      <div class="col" >
+        <br /><br /><br />
+        <br /><br /><br />
+        <br /><br /><br />
+        <br /><br /><br />
+        <br /><br /><br />
+        <div class="row" id="feedbackForm">
           <div class="row align-items-center">
-            <div class="card">
-              <div class="card-header"></div>
-              <div class="modal-body">
+            <div class="card" >
+              <div class="card-body">
                 <div class="text-center">
-                  <i class="far fa-file-alt fa-4x mb-3 text-primary"></i>
-                  <h2>Your opinion matters</h2>
+                  <h2>Your Opinion Matters.</h2>
                   <form id="myForm">
                     <!-- Message input -->
                     <div class="form-outline mb-4">
@@ -20,16 +23,16 @@
                         class="form-control"
                         id="feedback"
                         rows="4"
-                        placeholder="Please enter your feedback here"
+                        placeholder="Please enter your feedback here..."
                         v-model="feedback"
                       ></textarea>
                     </div>
                   </form>
                 </div>
-                <div class="card-footer text-end">
+                <div class="text-right">
                   <button
                     type="button"
-                    class="btn btn-primary"
+                    class="btn btn-primary float-end"
                     v-on:click="submitFeedback()"
                   >
                     Submit
@@ -60,7 +63,13 @@ export default {
 
   methods: {
     async submitFeedback() {
-      console.log("Creating Document");
+
+      if (String(this.feedback).length == 0) {
+        alert("Please ensure you have written something before submitting");
+        return false;
+      }
+
+      
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Feedbacks", userEmail);
@@ -68,10 +77,7 @@ export default {
         feedback: this.feedback,
       };
 
-      if (String(this.feedback).length == 0) {
-        alert("Please ensure you have written something before submitting");
-        return false;
-      }
+      
 
       try {
         await updateDoc(ref, {
@@ -99,12 +105,7 @@ export default {
 </script>
 
 <style>
-img {
-  height: auto;
-  max-width: 40%;
-  background-repeat: no-repeat;
-  background-position: left left;
-  background-size: cover;
-  float: left;
+#feedbackForm {
+  margin-left: 80px;
 }
 </style>

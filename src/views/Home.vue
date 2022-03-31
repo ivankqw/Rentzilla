@@ -1,10 +1,9 @@
 <template>
   <div class="container">
-    <br>
-    <h1 class="header">Home</h1>
+    <h1 class="header">Home Page</h1>
     <h3>Welcome back, {{ $store.state.name }}</h3>
     <h3>Your email is {{ $store.state.email }}</h3>
-    <h4>My Properties</h4>
+    <h2 class="header">My Rental Properties</h2><br><br>
     <div id="mapid"></div>
     <br />
     <h4> Breakdown </h4>
@@ -39,6 +38,9 @@
     <!-- expensesByCategory Pie Chart -->
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
     <!-- <div class="row row-cols-3"> -->
+    <br><br>
+    <h2 class="header">Overview of revenues and expenses</h2><br><br>
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
       <div class="col">
         <div class="card">
           <div class="card-body">
@@ -115,7 +117,6 @@ export default {
               rentals: [],
             });
           }
-
           if (!expenses.exists()) {
             await setDoc(doc(db, "Expenses", auth.currentUser.email), {
               expenses: [],
@@ -162,13 +163,13 @@ export default {
             while (counter < values.addresses.length) {
               currString += "<h5>" + values.addresses[counter] + "</h5>";
               currString +=
-                "<br>" + "Unit Number: " + values.unitNumbers[counter];
+                "" + "Unit Number: " + values.unitNumbers[counter];
               currString +=
                 "<br>" +
                 "Purchase Price: " +
                 values.purchasePrices[counter] +
                 "<br>";
-              var currAllTenantsNames = "";
+              var currAllTenantsNames = "Tenants: ";
               for (let tenant of values.tenants[counter]) {
                 currAllTenantsNames += tenant.firstName
                   ? tenant.firstName +
@@ -325,22 +326,26 @@ export default {
   },
 
   created() {
-    const auth = getAuth();
-    const userEmail = auth.currentUser.email;
-    onSnapshot(
-      doc(db, "Expenses", userEmail),
-      { includeMetadataChanges: true },
-      (doc) => {
-        this.expenses = doc.data().expenses;
-      }
-    );
-    onSnapshot(
-      doc(db, "Rentals", userEmail),
-      { includeMetadataChanges: true },
-      (doc) => {
-        this.rentals = doc.data().rentals;
-      }
-    );
+    try {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      onSnapshot(
+        doc(db, "Expenses", userEmail),
+        { includeMetadataChanges: true },
+        (doc) => {
+          this.expenses = doc.data().expenses;
+        }
+      );
+      onSnapshot(
+        doc(db, "Rentals", userEmail),
+        { includeMetadataChanges: true },
+        (doc) => {
+          this.rentals = doc.data().rentals;
+        }
+      );
+    } catch (err) {
+      console.log("created error", err);
+    }
   },
 };
 </script>
@@ -351,5 +356,22 @@ export default {
 
 #mapid {
   height: 610px;
+}
+
+h1 {
+  /* My Rental Properties */
+
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 50px;
+
+  color: #000000;
+}
+
+h2 {
+  float: left;
+  font-weight: bold;
+  margin-left: 30px;
 }
 </style>

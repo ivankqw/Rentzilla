@@ -26,6 +26,7 @@
                 />
               </div>
               <br />
+              <div class="justify-content-center text-center">
               <button
                 type="submit"
                 value="Login"
@@ -33,7 +34,8 @@
               >
                 Log In
               </button>
-              <p class="forgot-password text-right mt-2 mb-4">
+              </div>
+              <p class="justify-content-center text-center mt-2 mb-4">
                 Don't have an account?
                 <router-link to="/signup">Sign Up</router-link>
               </p>
@@ -72,10 +74,10 @@ export default {
 </script>
 
 <style scoped>
+
 .carousel .carousel-item {
   height: 500px;
 }
-
 .carousel-item img {
   position: absolute;
   object-fit: cover;

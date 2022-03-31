@@ -14,8 +14,10 @@
       data-bs-toggle="modal"
       data-bs-target="#newRentalModal"
     >
-      + New Rental
+     <strong>+ New Rental</strong> 
     </button>
+
+
     <br />
 
     <RentalAddModal ref="rentalModal" />
@@ -39,7 +41,7 @@
             <td>{{ rental.postalCode }}</td>
             <td>{{ rental.address }}</td>
             <td>{{ rental.unitNumber }}</td>
-            <td>{{ rental.purchasePrice }}</td>
+            <td>${{ rental.purchasePrice }}</td>
             <td>
               <button
                 type="button"
@@ -165,11 +167,11 @@
       :numTenants="this.numTenantsForCurrentEditRental"
     />
 
-    <h2 class="header">Rent</h2>
+    <h2 class="header">Outstanding Rent</h2>
     <br /><br />
     <div class="table-responsive">
-    <table id="outstandingRentTable" class="table table-hover auto-index">
-      <tr id="outstandingRentTableHeader">
+    <table class="table table-striped table-hover">
+      <tr id="outstandingRentTableHeader" class="table-light">
         <th>#</th>
         <th>Tenant Name</th>
         <th>Monthly Rent</th>
@@ -436,6 +438,7 @@ export default {
 
 <style scoped>
 #newRentalBtn {
+  
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -449,16 +452,10 @@ export default {
   background: #ffb300;
   border-radius: 42px;
 }
-
-#rentalTable,
-#outstandingRentTable {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  height: 50px;
-  left: 58px;
-  top: 170px;
+#newRentalBtn:hover{
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
+
 
 #rentalTableHeader,
 #outstandingRentTableHeader {

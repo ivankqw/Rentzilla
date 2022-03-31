@@ -4,7 +4,13 @@
     style="background-color: #123b79"
   >
     <div class="container-fluid">
-      <a class="navbar-brand mb-0 h1" href="#" style="color: white">
+      <a
+        class="navbar-brand mb-0 h1"
+        href="#"
+        style="
+          color: white;
+        "
+      >
         <img
           class="d-inline-block align-bottom"
           src="./assets/rentzilla_logo.png"
@@ -24,36 +30,39 @@
       >
         <span class="navbar-toggler-icon" style="border-color: white"> </span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav" v-if=$store.state.email>
+      <div
+        class="collapse navbar-collapse"
+        id="navbarNav"
+        v-if="$store.state.email"
+      >
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <router-link to="/" class="nav-link" style="color: white"
+            <router-link to="/" class="nav-link"
               >Home</router-link
             >
           </li>
           <li class="nav-item active">
-            <router-link to="/my-rentals" class="nav-link" style="color: white"
+            <router-link to="/my-rentals" class="nav-link"
               >My Rentals</router-link
             >
           </li>
           <li class="nav-item active">
-            <router-link to="/my-expenses" class="nav-link" style="color: white"
+            <router-link to="/my-expenses" class="nav-link" 
               >My Expenses</router-link
             >
           </li>
           <li class="nav-item active">
-            <router-link to="/news" class="nav-link" style="color: white"
+            <router-link to="/news" class="nav-link" 
               >News</router-link
             >
           </li>
           <li class="nav-item active">
-            <router-link to="/contact" class="nav-link" style="color: white"
+            <router-link to="/contact" class="nav-link"
               >Contact Us</router-link
             >
           </li>
-          <li class="nav-item d-lg-none d-xl-none" v-if=$store.state.email>
+          <li class="nav-item d-lg-none d-xl-none" v-if="$store.state.email">
             <button
-            
               class="btn btn-outline-dark"
               style="color: white"
               @click="$store.dispatch('logout')"
@@ -66,14 +75,17 @@
     </div>
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item mt-2 px-3" v-if=$store.state.email style="color:white">
-            <font-awesome-icon icon="circle" style="color:green"/>
-          {{$store.state.name}}
+        <li
+          class="nav-item mt-2 px-3"
+          v-if="$store.state.email"
+          style="color: white"
+        >
+          <font-awesome-icon icon="circle" style="color: green" />
+          {{ $store.state.name }}
         </li>
-        <li class="nav-item px-2" v-if=$store.state.email>
+        <li class="nav-item px-2" v-if="$store.state.email">
           <button
             class="btn btn-outline-dark"
-  
             style="color: white"
             @click="$store.dispatch('logout')"
           >
@@ -87,7 +99,7 @@
     id="carouselExampleControls"
     class="carousel slide"
     data-bs-ride="carousel"
-    v-if=!$store.state.email
+    v-if="!$store.state.email"
   >
     <div class="carousel-inner">
       <div class="carousel-item active img-fluid">
@@ -131,7 +143,7 @@ export default {
   setup() {
     const store = useStore();
     onBeforeMount(() => {
-      store.dispatch('fetchUser');
+      store.dispatch("fetchUser");
     });
   },
 
@@ -148,18 +160,24 @@ export default {
   color: #2c3e50;
   margin-top: 0px;
 }
-
-
 .carousel .carousel-item {
   height: 500px;
 }
-
 .carousel-item img {
     position: absolute;
     object-fit:cover;
     top: 0;
     left: 0;
     min-height: 500px;
+    width: 100% !important;
+    max-width: 100% !important;
 }
+a.router-link-active.router-link-exact-active.nav-link {
+   border-bottom-style: solid;
+  border-bottom-color: white !important;
+  }
 
+a.nav-link {
+  color: white !important
+  }
 </style>

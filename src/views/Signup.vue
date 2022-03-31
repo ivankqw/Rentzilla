@@ -35,10 +35,12 @@
                 />
               </div>
               <br />
+              <div class="justify-content-center text-center">
               <button type="submit" class="btn btn-dark btn-lg btn-block">
                 Sign Up
               </button>
-              <p class="text-right mt-2 mb-4">
+              </div>
+              <p class="justify-content-center text-center mt-2 mb-4">
                 Already have an account?
                 <router-link to="/login">Log In</router-link>
               </p>
@@ -77,4 +79,16 @@ export default {
 </script>
 
 <style>
+.carousel .carousel-item {
+  height: 500px;
+}
+.carousel-item img {
+  position: absolute;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  
+}
 </style>

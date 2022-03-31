@@ -27,18 +27,22 @@
                 id="postalCode"
                 placeholder="e.g. 123456"
                 v-model="postalCode"
+                @change="retrieveAddress()"
               />
 
               <label for="address" class="form-label">Address</label>
               <input
+                disabled
                 type="text"
                 class="form-control"
                 id="address"
-                placeholder="e.g. Blk 123 Road A"
+                placeholder="-"
                 v-model="address"
               />
 
-              <label for="unitNumber" class="form-label">Unit Number (Enter 'x' if no unit number)</label>
+              <label for="unitNumber" class="form-label"
+                >Unit Number (Enter 'x' if no unit number)</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -374,7 +378,61 @@ export default {
       rentals: {},
     };
   },
+  mounted() {
+  },
+
   methods: {
+    async generateTenantID() {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+
+      const docRef = doc(db, "TenantCounterID", userEmail);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        let currentCounter = docSnap.data().counter;
+        console.log("Tenant ID:", currentCounter);
+        await setDoc(docRef, {
+          counter: currentCounter + 1,
+        });
+        return currentCounter;
+      } else {
+        
+        console.log("No such document!");
+        await setDoc(docRef, {
+          counter: 0,
+        });
+        return 0;
+        
+      }
+    },
+
+    async retrieveAddress() {
+      var postalFind = this.postalCode;
+      if (String(postalFind).length === 0) {
+        return;
+      } else if (String(postalFind).length === 6) {
+        let result = await fetch(
+          `https://developers.onemap.sg/commonapi/search?searchVal=${postalFind}&returnGeom=Y&getAddrDetails=Y&pageNum=1`
+        )
+          .then((response) => response.text())
+          .then((result) => {
+            console.log(result);
+            if (JSON.parse(result).found == 0) {
+              return "";
+            }
+            return JSON.parse(result).results[0];
+          })
+          .catch((error) => console.log("error", error));
+
+        this.address = result
+          ? result.BLK_NO + " " + result.ROAD_NAME + " "
+          : "Invalid Postal Code";
+      } else {
+        this.address = "-";
+      }
+    },
+
     closeAddRentalModal() {
       this.resetAddRentalForm();
       var myModalEl = document.getElementById("newRentalModal");
@@ -429,7 +487,7 @@ export default {
 
     async validateRentalForm() {
       // Validation of inputs property details
-      
+
       if (String(this.postalCode).length !== 6) {
         alert("Please enter a valid postal code");
         return false;
@@ -442,21 +500,20 @@ export default {
         alert("Please enter a valid unit number");
         return false;
       } else if (this.unitNumber.toLowerCase() !== "x") {
-      
         let unit = this.unitNumber;
         try {
           if (unit.split("-").length !== 2) {
-            alert("Please enter a valid unit number");
+            alert("Please enter a valid unit number e.g. 01-01");
             return false;
           } else if (
             !/^\d+$/.test(unit.split("-")[0]) ||
             !/^\d+$/.test(unit.split("-")[1])
           ) {
-            alert("Please enter a valid unit number");
+            alert("Please enter a valid unit number e.g. 01-01");
             return false;
           }
         } catch (error) {
-          alert("Please enter a valid unit number");
+          alert("Please enter a valid unit number e.g. 01-01");
           console.log(error);
           return false;
         }
@@ -652,11 +709,11 @@ export default {
         let rentals = docSnap.data().rentals;
 
         rentals = rentals.filter((rental) => rental.postalCode == postalCode);
-        
+
         if (rentals.length == 0) {
           return false;
         } else if (rentals.length == 1) {
-          if (rentals[0].unitNumber === 'x') {
+          if (rentals[0].unitNumber === "x") {
             // Landed
             return true;
           } else {
@@ -665,7 +722,7 @@ export default {
           }
         } else {
           // rentals now all same postal code
-          rentals = rentals.filter((rental) => rental.unitNumber == unitNumber)
+          rentals = rentals.filter((rental) => rental.unitNumber == unitNumber);
           if (rentals.length >= 1) {
             return true;
           } else {
@@ -673,9 +730,17 @@ export default {
           }
         }
       }
-      let duplicatesPresent = await findDuplicateRentals(this.postalCode, this.unitNumber)
+      let duplicatesPresent = await findDuplicateRentals(
+        this.postalCode,
+        this.unitNumber
+      );
       if (duplicatesPresent) {
-        alert("Duplicate rental found with postal code " + this.postalCode + " and unit number " + this.unitNumber)
+        alert(
+          "Duplicate rental found with postal code " +
+            this.postalCode +
+            " and unit number " +
+            this.unitNumber
+        );
         return false;
       }
       return true;
@@ -686,7 +751,7 @@ export default {
       if (!valid) {
         return;
       }
-      console.log("saving rental")
+      console.log("saving rental");
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Rentals", userEmail);
@@ -699,7 +764,9 @@ export default {
         .then((response) => response.text())
         .then((result) => {
           console.log(result);
-          if (JSON.parse(result).found == 0) { alert("Please enter a valid postal code"); }
+          if (JSON.parse(result).found == 0) {
+            alert("Please enter a valid postal code");
+          }
           return JSON.parse(result).results[0];
         })
         .catch((error) => alert("postal code error", error));
@@ -723,6 +790,7 @@ export default {
             monthlyRent: this.monthlyRent1,
             nextPaymentDate: this.addMonths(this.contractStartDate1, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
           {
             firstName: this.firstName2,
@@ -732,6 +800,7 @@ export default {
             monthlyRent: this.monthlyRent2,
             nextPaymentDate: this.addMonths(this.contractStartDate2, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
           {
             firstName: this.firstName3,
@@ -741,6 +810,7 @@ export default {
             monthlyRent: this.monthlyRent3,
             nextPaymentDate: this.addMonths(this.contractStartDate3, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
           {
             firstName: this.firstName4,
@@ -750,6 +820,7 @@ export default {
             monthlyRent: this.monthlyRent4,
             nextPaymentDate: this.addMonths(this.contractStartDate4, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
           {
             firstName: this.firstName5,
@@ -759,6 +830,7 @@ export default {
             monthlyRent: this.monthlyRent5,
             nextPaymentDate: this.addMonths(this.contractStartDate5, 1),
             numberOfMonthsRentalUnpaid: 0,
+            tenantID: await this.generateTenantID(),
           },
         ],
       };
