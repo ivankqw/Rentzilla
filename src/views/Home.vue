@@ -120,11 +120,11 @@ export default {
           }
 
           rentals = rentals.data().rentals;
-          console.log("rentals", rentals);
+          // console.log("rentals", rentals);
 
           expenses = expenses.data().expenses;
-          console.log("expenses", expenses);
-          console.log(auth.currentUser.email, "is current user's email");
+          // console.log("expenses", expenses);
+          // console.log(auth.currentUser.email, "is current user's email");
           //data preprocessing
           //get all unique postal codes
           let uniquePostalCodes = [];
@@ -240,7 +240,7 @@ export default {
       let addressSet = new Set(
         this.expenses.map((arrElement) => arrElement.fullAddress)
       );
-      console.log(addressSet);
+      // console.log(addressSet);
       //initialize obj
       for (let address of addressSet) {
         result[address] = 0;
@@ -248,7 +248,7 @@ export default {
       for (let expense of this.expenses) {
         result[expense.fullAddress] += expense.expenseCost;
       }
-      console.log("result from expenses by rental data", result);
+      // console.log("result from expenses by rental data", result);
       return result;
     },
 
@@ -274,14 +274,15 @@ export default {
       for (let address of addressSet) {
         result[address] = 0;
       }
-  
       for (let rental of this.rentals) {
         for (let tenant of rental.tenants) {
-          
-          result[rental.address] += tenant.monthlyRent;
-          console.log(result);
+          let tenantMonthlyRent = JSON.parse(JSON.stringify(tenant.monthlyRent));
+          if (tenantMonthlyRent) {
+            result[rental.address] += parseInt(tenantMonthlyRent);
+          }
         }
       }
+      console.log(result);
       return result;
     },
 
