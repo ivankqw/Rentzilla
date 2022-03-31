@@ -1,21 +1,44 @@
 <template>
   <div class="container">
-    <br>
+    <br />
     <h2 class="header">My Expenses</h2>
     <!-- <h3> Welcome back, {{$store.state.name}} </h3>
   <h3> Your email is {{$store.state.email}} </h3> -->
-    <br>
-    <br>
-    <div class="text-left"> 
-    <button
-      id="newExpenseBtn"
-      type="button"
-      class="btn btn-warning"
-      data-bs-toggle="modal"
-      data-bs-target="#newExpenseModal"
-    >
-      + New Expense
-    </button>
+    <br />
+    <br />
+    <div class="text-left">
+      <br />
+      <div class="filter">
+        <form id="filterForm" class="row">
+          <div class="col align-self-center">
+            <button
+              id="newExpenseBtn"
+              type="button"
+              class="btn btn-warning"
+              data-bs-toggle="modal"
+              data-bs-target="#newExpenseModal"
+            >
+              + New Expense
+            </button>
+          </div>
+          <div class="col"> </div>
+          <div class="col"> </div>
+          
+          <div class="col"> 
+            <label for="filterStart" class="form-label">Start Date:</label>
+            <input id="filterStart" @input="onFilterStartInput" type="date" />
+          </div>
+          <div class="col">
+            <label for="filterEnd" class="form-label">End Date:</label>
+            <input id="filterEnd" @input="onFilterEndInput" type="date" />
+          </div>
+          <div class="col-md-2 align-self-center">
+            <button type="button" class="btn btn-warning" @click="clearFilter">
+              Clear filter
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
     <br />
 
@@ -37,7 +60,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(expense, i) in expenses" :key="i">
+          <tr v-for="(expense, i) in this.filteredExpenses" :key="i">
             <td>{{ i + 1 }}</td>
             <td>{{ expense.fullAddress.split(",")[2].substring(2) }}</td>
             <td>{{ expense.fullAddress.split(",")[0] }}</td>
@@ -81,10 +104,10 @@ import { getAuth } from "firebase/auth";
 import ExpenseEditModal from "../components/ExpenseEditModal.vue";
 import ExpenseAddModal from "../components/ExpenseAddModal.vue";
 import { ref } from "vue";
+import moment from "moment";
 
 export default {
   name: "MyExpenses",
-  computed: {},
   components: {
     ExpenseEditModal,
     ExpenseAddModal,
@@ -116,14 +139,6 @@ export default {
       console.log("expenseType=", this.expenseType);
       console.log("expenseCost=", this.expenseCost);
       console.log("expenseDate=", this.expenseDate);
-      // switch (currRental.tenants.length) {
-      //   case 1:
-      //     this.firstName1 = currRental.tenants[0].firstName;
-      //     this.contractStartDate1 = currRental.tenants[0].contractStartDate;
-      //     this.contractEndDate1 = currRental.tenants[0].contractEndDate;
-      //     this.monthlyRent1 = currRental.tenants[0].monthlyRent;
-      //     break;
-      // }
     }
 
     return {
@@ -146,8 +161,10 @@ export default {
       expenseDate: "",
 
       expenses: {},
-
       rentals: {},
+
+      filterStartDate: "",
+      filterEndDate: "",
     };
   },
   async mounted() {
@@ -186,6 +203,36 @@ export default {
       }
     );
   },
+
+  computed: {
+    filteredExpenses() {
+      if (!this.filterStartDate || !this.filterEndDate) {
+        return this.expenses;
+      }
+      return this.expenses.filter((exp) =>
+        moment(exp.expenseDate).isBetween(
+          moment(this.filterStartDate),
+          moment(this.filterEndDate)
+        )
+      );
+    },
+  },
+
+  methods: {
+    onFilterStartInput(e) {
+      this.filterStartDate = e.target.value;
+    },
+
+    onFilterEndInput(e) {
+      this.filterEndDate = e.target.value;
+    },
+
+    clearFilter() {
+      this.filterStartDate = "";
+      this.filterEndDate = "";
+      document.getElementById("filterForm").reset();
+    },
+  },
 };
 </script>
 
@@ -220,6 +267,11 @@ h2 {
   left: 5%;
   background: #ffb300;
   border-radius: 42px;
+}
+
+.filter {
+  display: flex;
+  justify-content: center;
 }
 
 #cancelbtn {
