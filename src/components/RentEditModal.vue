@@ -29,7 +29,7 @@
               <input
                 type="number"
                 class="form-control"
-                placeholder="1"
+                placeholder="e.g. 1"
                 @change="onMonthsPaidChange"
                 value="myMonthsPaid"
               />
