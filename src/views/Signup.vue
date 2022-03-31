@@ -35,10 +35,12 @@
                 />
               </div>
               <br />
+              <div class="justify-content-center text-center">
               <button type="submit" class="btn btn-dark btn-lg btn-block">
                 Sign Up
               </button>
-              <p class="text-right mt-2 mb-4">
+              </div>
+              <p class="justify-content-center text-center mt-2 mb-4">
                 Already have an account?
                 <router-link to="/login">Log In</router-link>
               </p>
