@@ -5,8 +5,8 @@
     <h3>Your email is {{ $store.state.email }}</h3>
     <h2 class="header">My Rental Properties</h2><br><br>
     <div id="mapid"></div>
-    <br />
-    <h4> Breakdown </h4>
+    <br><br>
+    <h2 class="header">Overview of revenues and expenses</h2><br><br>
 
     <!-- filter -->
     <div class="text-left">
@@ -36,11 +36,8 @@
     </div>
 
     <!-- expensesByCategory Pie Chart -->
-    <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
     <!-- <div class="row row-cols-3"> -->
-    <br><br>
-    <h2 class="header">Overview of revenues and expenses</h2><br><br>
-    <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
       <div class="col">
         <div class="card">
           <div class="card-body">
@@ -75,7 +72,6 @@
       </div>
     </div>
 
-    </div>
   </div>
 </template>
 
