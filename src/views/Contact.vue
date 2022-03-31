@@ -5,14 +5,17 @@
         <img src="@/assets/hdb.jpg" class="img-fluid" alt="..." />
       </div>
       <div class="col">
-        <div class="container">
+        <br /><br /><br />
+        <br /><br /><br />
+        <br /><br /><br />
+        <br /><br /><br />
+        <br /><br /><br />
+        <div class="row">
           <div class="row align-items-center">
             <div class="card">
-              <div class="card-header"></div>
-              <div class="modal-body">
+              <div class="card-body">
                 <div class="text-center">
-                  <i class="far fa-file-alt fa-4x mb-3 text-primary"></i>
-                  <h2>Your opinion matters</h2>
+                  <h2>Your Opinion Matters.</h2>
                   <form id="myForm">
                     <!-- Message input -->
                     <div class="form-outline mb-4">
@@ -26,10 +29,10 @@
                     </div>
                   </form>
                 </div>
-                <div class="card-footer text-end">
+                <div class="text-right">
                   <button
                     type="button"
-                    class="btn btn-primary"
+                    class="btn btn-primary float-end"
                     v-on:click="submitFeedback()"
                   >
                     Submit

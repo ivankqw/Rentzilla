@@ -75,7 +75,6 @@ export default {
 .carousel .carousel-item {
   height: 500px;
 }
-
 .carousel-item img {
   position: absolute;
   object-fit: cover;

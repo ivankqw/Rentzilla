@@ -5,7 +5,7 @@
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item">
             <a
-              class="nav-link active"
+              class="nav-link active troll"
               data-bs-toggle="tab"
               aria-current="true"
               href="#about"
@@ -13,7 +13,7 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#video">Video</a>
+            <a class="nav-link troll" data-bs-toggle="tab" href="#video">Video</a>
           </li>
         </ul>
       </div>
@@ -44,4 +44,18 @@ export default {
 </script>
 
 <style>
+a.nav-link.troll {
+  color: black !important
+  }
+.carousel .carousel-item {
+  height: 500px;
+}
+.carousel-item img {
+  position: absolute;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
 </style>

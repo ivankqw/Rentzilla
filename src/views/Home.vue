@@ -68,7 +68,6 @@ export default {
               rentals: [],
             });
           }
-
           if (!expenses.exists()) {
             await setDoc(doc(db, "Expenses", auth.currentUser.email), {
               expenses: [],
@@ -229,22 +228,26 @@ export default {
   },
 
   created() {
-    const auth = getAuth();
-    const userEmail = auth.currentUser.email;
-    onSnapshot(
-      doc(db, "Expenses", userEmail),
-      { includeMetadataChanges: true },
-      (doc) => {
-        this.expenses = doc.data().expenses;
-      }
-    );
-    onSnapshot(
-      doc(db, "Rentals", userEmail),
-      { includeMetadataChanges: true },
-      (doc) => {
-        this.rentals = doc.data().rentals;
-      }
-    );
+    try {
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      onSnapshot(
+        doc(db, "Expenses", userEmail),
+        { includeMetadataChanges: true },
+        (doc) => {
+          this.expenses = doc.data().expenses;
+        }
+      );
+      onSnapshot(
+        doc(db, "Rentals", userEmail),
+        { includeMetadataChanges: true },
+        (doc) => {
+          this.rentals = doc.data().rentals;
+        }
+      );
+    } catch (err) {
+      console.log("created error", err);
+    }
   },
 };
 </script>
