@@ -161,7 +161,7 @@ export default {
             if (tenant.tenantID == tenantId) {
               // console.log("owe money");
 
-              if (this.myMonthsPaid > tenant.numberOfMonthsRentalUnpaid || this.myMonthsPaid < 0) {
+              if (this.myMonthsPaid > tenant.numberOfMonthsRentalUnpaid || this.myMonthsPaid <= 0) {
                   alert("Please enter a valid number of months");
                   return;
               }
