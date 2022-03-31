@@ -62,9 +62,9 @@
         <tbody>
           <tr v-for="(expense, i) in this.filteredExpenses" :key="i">
             <td>{{ i + 1 }}</td>
-            <td>{{ expense.fullAddress.split(",")[2].substring(2) }}</td>
-            <td>{{ expense.fullAddress.split(",")[0] }}</td>
-            <td>{{ expense.fullAddress.split(",")[1].substring(1) }}</td>
+            <td>{{ expense.postalCode }}</td>
+            <td>{{ expense.address }}</td>
+            <td>{{ expense.unitNumber }}</td>
 
             <td>{{ expense.expenseType }}</td>
             <td>{{ expense.expenseCost }}</td>

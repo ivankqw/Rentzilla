@@ -125,6 +125,9 @@ export default {
       expenseType: "",
       expenseCost: "",
       expenseDate: "",
+      address: "",
+      unitNumber: "",
+      postalCode: "",
 
       expenses: {},
 
@@ -149,6 +152,9 @@ export default {
         // console.log("currRental = ", currRental);
 
         if (currFullAdd == fullAddress) {
+          this.address = currRental.address
+          this.unitNumber = currRental.unitNumber
+          this.postalCode = currRental.postalCode
           return rentalId;
         }
       }
@@ -170,16 +176,6 @@ export default {
     async saveExpense() {
       console.log("CLICKED + ADD EXPENSE")
       
-      const auth = getAuth();
-      const userEmail = auth.currentUser.email;
-      const ref = doc(db, "Expenses", userEmail);
-      const docData = {
-        fullAddress: this.fullAddress,
-        rentalIndex: this.rentalIndex,
-        expenseType: this.expenseType,
-        expenseCost: this.expenseCost,
-        expenseDate: this.expenseDate,
-      };
 
       // Validation of inputs property details
       if (!this.fullAddress) {
@@ -198,7 +194,22 @@ export default {
 
       console.log("fullAddress = ", this.fullAddress);
 
-      docData.rentalIndex = this.getRentalIndex(this.fullAddress);
+      this.rentalIndex = this.getRentalIndex(this.fullAddress);
+
+      
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+      const ref = doc(db, "Expenses", userEmail);
+      const docData = {
+        fullAddress: this.fullAddress,
+        rentalIndex: this.rentalIndex,
+        expenseType: this.expenseType,
+        expenseCost: this.expenseCost,
+        expenseDate: this.expenseDate,
+        address: this.address,
+        unitNumber: this.unitNumber,
+        postalCode: this.postalCode,
+      };
       
       console.log("docData: ", docData);
       try {
