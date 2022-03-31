@@ -44,7 +44,9 @@
                 @change="onAddressChange"
               />
 
-              <label for="unitNumber" class="form-label">Unit Number</label>
+              <label for="unitNumber" class="form-label"
+                >Unit Number (Enter 'x' if no unit number)</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -487,15 +489,20 @@ export default {
   },
 
   methods: {
-    validateEditRentalForm() {
+    async validateEditRentalForm() {
       // Validate property details
+      let postalCodeChanged = false;
       if (this.myPostalCode !== null) {
         if (String(this.myPostalCode).length !== 6) {
           alert("Please enter a valid postal code");
           return false;
+        } else if (String(this.myPostalCode) !== String(this.postalCode)) {
+          postalCodeChanged = true;
         }
+        
       }
 
+      
       if (this.myAddress !== null) {
         if (!this.myAddress) {
           alert("Please enter a valid address");
@@ -503,6 +510,7 @@ export default {
         }
       }
 
+      let unitNumberChanged = false;
       if (this.myUnitNumber !== null) {
         if (!this.myUnitNumber) {
           alert("Please enter a valid unit number");
@@ -511,23 +519,27 @@ export default {
           let unit = this.myUnitNumber;
           try {
             if (unit.split("-").length !== 2) {
-              alert("Please enter a valid unit number");
+              alert("Please enter a valid unit number e.g. 01-01");
               return false;
             } else if (
               !/^\d+$/.test(unit.split("-")[0]) ||
               !/^\d+$/.test(unit.split("-")[1])
             ) {
-              alert("Please enter a valid unit number");
+              alert("Please enter a valid unit number e.g. 01-01");
               return false;
             }
           } catch (error) {
-            alert("Please enter a valid unit number");
+            alert("Please enter a valid unit number e.g. 01-01");
             console.log(error);
             return false;
           }
         }
+        if (this.myUnitNumber !== this.unitNumber) {
+          unitNumberChanged = true;
+          }
       }
 
+      console.log("postal code / unit num changed:", postalCodeChanged ? "yes" : "no", unitNumberChanged ? "yes" : "no")
       if (this.myPurchasePrice !== null) {
         if (!this.myPurchasePrice) {
           alert("Please enter a valid purchase price");
@@ -804,7 +816,7 @@ export default {
           this.myFirstName4 &&
           this.myLastName4 &&
           this.myContractStartDate4 &&
-          this.myContractEndDate4&&
+          this.myContractEndDate4 &&
           this.myMonthlyRent4
         ) {
           console.log("tenant added");
@@ -940,11 +952,121 @@ export default {
           }
         }
       }
-
+      // ensure that there is at least one tenant when rental form is saved
       if (numTenantsRemaining < 1) {
         alert("Please ensure that there is at least one tenant");
         return false;
       }
+
+      // check no duplicate addresses using postal code and unit number
+      async function findDuplicateRentals(originalPostalCode, originalUnitNumber, newPostalCode, newUnitNumber) {
+        console.log(originalPostalCode, originalUnitNumber, newPostalCode, newUnitNumber);
+        const auth = getAuth();
+        const userEmail = auth.currentUser.email;
+        const ref = doc(db, "Rentals", userEmail);
+        const docSnap = await getDoc(ref);
+        let rentals = docSnap.data().rentals;
+        
+        // as of now no duplicates in rentals
+        rentals = rentals.filter((rental) => !(rental.postalCode == originalPostalCode && rental.unitNumber == originalUnitNumber));
+        // rentals filtered to no more current rental
+        console.log(rentals)
+
+        if (newPostalCode) {
+          // postal code changed
+          rentals = rentals.filter((rental) => rental.postalCode == newPostalCode);
+          if (rentals.length === 0) {
+            return false;
+          } else if (rentals.length === 1) {
+            if (rentals[0].unitNumber === 'x') {
+              // Same postal code but already marked as landed
+              return true;
+            } else {
+              // Same postal code, not landed, so check for duplicate unit num
+              return rentals[0].unitNumber == newPostalCode
+            }
+          }
+        } else {
+          // postal code not changed
+          if (newUnitNumber) {
+            rentals = rentals.filter((rental) => rental.postalCode == originalPostalCode);
+            if (newUnitNumber === 'x') {
+              if (rentals.length > 0) {
+                return true;
+              } else {
+                return false
+              }
+            } else {
+              rentals = rentals.filter((rental) => rental.unitNumber == newUnitNumber);
+              if (rentals.length > 0) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+          }
+          
+          
+        }
+        
+        
+        // if (postalCodeChanged) {
+        //   if (this.myPostalCode === 'x')
+        // }
+
+        // // now rentals all same postal code
+        // if (rentals.length == 0) {
+        //   return false;
+        // } else if (rentals.length == 1) {
+        //   if (!postalCodeChanged) {
+        //     if (
+        //       (rentals[0].unitNumber === "x" && unitNumber !== 'x') || 
+        //       (rentals[0].unitNumber !== "x" && unitNumber === 'x')
+        //       ) {
+        //       console.log("")
+        //     } else { 
+        //       return rentals[0].unitNumber == unitNumber;
+        //     }
+        //   } else {
+        //     return rentals[0].unitNumber == unitNumber;
+        //   }
+         
+          
+        // } else {
+        //   // rentals now all same postal code
+        //   // more than one rental with same postal code
+        //   if (postalCode === 'x') {
+        //     return true;
+        //   }
+        //   rentals = rentals.filter((rental) => rental.unitNumber == unitNumber);
+        //   if (rentals.length >= 1) {
+        //     return true;
+        //   } else {
+        //     return false;
+        //   }
+        // }
+      }
+
+        
+        let duplicatesPresent = await findDuplicateRentals(
+          this.postalCode, 
+          this.unitNumber, 
+          postalCodeChanged ? this.myPostalCode : null,
+          unitNumberChanged ? this.myUnitNumber : null
+          );
+        if (duplicatesPresent) {
+        alert(
+          "Duplicate rental found with postal code " +
+            (postalCodeChanged ? this.myPostalCode : this.postalCode) +
+            " and unit number " +
+            (unitNumberChanged ? this.myUnitNumber :  this.unitNumber)
+        );
+        return false;
+      }
+      
+      
+      
+
       return true;
     },
 
@@ -1036,6 +1158,7 @@ export default {
       this.myMonthlyRent5 = event.target.value;
     },
     async saveRental() {
+      // Validate edit rental form
       let valid = await this.validateEditRentalForm();
       if (!valid) {
         alert(

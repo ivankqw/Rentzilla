@@ -446,17 +446,17 @@ export default {
         let unit = this.unitNumber;
         try {
           if (unit.split("-").length !== 2) {
-            alert("Please enter a valid unit number");
+            alert("Please enter a valid unit number e.g. 01-01");
             return false;
           } else if (
             !/^\d+$/.test(unit.split("-")[0]) ||
             !/^\d+$/.test(unit.split("-")[1])
           ) {
-            alert("Please enter a valid unit number");
+            alert("Please enter a valid unit number e.g. 01-01");
             return false;
           }
         } catch (error) {
-          alert("Please enter a valid unit number");
+          alert("Please enter a valid unit number e.g. 01-01");
           console.log(error);
           return false;
         }
