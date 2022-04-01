@@ -3,22 +3,22 @@
     <h1 class="header">Home Page</h1>
     <h3>Welcome back, {{ $store.state.name }}</h3>
     <h3>Your email is {{ $store.state.email }}</h3>
-    <h2 class="header">My Rental Properties</h2><br><br>
+    <h2 class="header">My Rental Properties</h2>
+    <br /><br />
     <div id="mapid"></div>
-    <br><br>
-    <h2 class="header">Overview of revenues and expenses</h2><br><br>
+    <br /><br />
+    <h2 class="header">Overview of revenues and expenses</h2>
+    <br /><br />
 
     <!-- filter -->
     <div class="text-left">
-    <br />
+      <br />
       <div class="filter">
         <form id="filterForm" class="row">
-          <div class="col align-self-center">
-            
-          </div>
-          <div class="col"> </div>
-          <div class="col"> </div>
-          <div class="col"> 
+          <div class="col align-self-center"></div>
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col">
             <label for="filterStart" class="form-label">Start Date:</label>
             <input id="filterStart" @input="onFilterStartInput" type="date" />
           </div>
@@ -43,18 +43,24 @@
           <div class="card-body">
             <h5 class="card-title">Expenses by Category</h5>
             <div id="expensesByCatergoryPieChart">
-              <pie-chart :data="expensesByCategoryData" :donut="true" ></pie-chart>
+              <pie-chart
+                :data="expensesByCategoryData"
+                :donut="true"
+              ></pie-chart>
             </div>
           </div>
         </div>
       </div>
-    <!-- expensesByRentalProperty Column Chart -->
+      <!-- expensesByRentalProperty Column Chart -->
       <div class="col">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Expenses by Rental Properties</h5>
             <div id="expensesByRentalBarChart">
-              <column-chart :data="expensesByRentalData" :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"></column-chart>
+              <column-chart
+                :data="expensesByRentalData"
+                :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"
+              ></column-chart>
             </div>
           </div>
         </div>
@@ -71,7 +77,11 @@
         </div>
       </div>
     </div>
-
+    <h4>revenue against time</h4>
+    <line-chart :data="revenueAgainstTimeData">TIMESERIES</line-chart>
+    <br>
+    <h4>cumulative revenue against time</h4>
+    <line-chart :data="cumulativeRevenueAgainstTimeData">TIMESERIES</line-chart>
   </div>
 </template>
 
@@ -82,7 +92,6 @@ import { getDoc, doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import moment from "moment";
-
 
 export default {
   name: "Home",
@@ -158,8 +167,7 @@ export default {
             let currString = "";
             while (counter < values.addresses.length) {
               currString += "<h5>" + values.addresses[counter] + "</h5>";
-              currString +=
-                "" + "Unit Number: " + values.unitNumbers[counter];
+              currString += "" + "Unit Number: " + values.unitNumbers[counter];
               currString +=
                 "<br>" +
                 "Purchase Price: " +
@@ -214,16 +222,27 @@ export default {
       currLatLong: {},
       expenses: [],
       rentals: [],
+      filterStartDate: "",
+      filterEndDate: "",
     };
   },
 
   computed: {
     expensesByCategoryData() {
-      this.filteredExpenses;
+      let expenses = this.expenses;
+      if (this.filterStartDate && this.filterEndDate) {
+        console.log("hi");
+        expenses = this.expenses.filter((exp) =>
+          moment(exp.expenseDate).isBetween(
+            moment(this.filterStartDate),
+            moment(this.filterEndDate)
+          )
+        );
+      }
       var result = {};
       //get all unique categories
       let catSet = new Set(
-        this.expenses.map((arrElement) => arrElement.expenseType)
+        expenses.map((arrElement) => arrElement.expenseType)
       );
       //initialize obj
       for (let cat of catSet) {
@@ -235,23 +254,21 @@ export default {
       return result;
     },
 
-    filteredExpenses() {
-      if (!this.filterStartDate || !this.filterEndDate) {
-        return this.expenses;
-      }
-      return this.expenses.filter((exp) =>
-        moment(exp.expenseDate).isBetween(
-          moment(this.filterStartDate),
-          moment(this.filterEndDate)
-        )
-      );
-    },
-
     expensesByRentalData() {
-      var result = {}; 
+      let expenses = this.expenses;
+      if (this.filterStartDate && this.filterEndDate) {
+        console.log("hi");
+        expenses = this.expenses.filter((exp) =>
+          moment(exp.expenseDate).isBetween(
+            moment(this.filterStartDate),
+            moment(this.filterEndDate)
+          )
+        );
+      }
+      var result = {};
       //get all unique rentals
       let addressSet = new Set(
-        this.expenses.map((arrElement) => arrElement.fullAddress)
+        expenses.map((arrElement) => arrElement.fullAddress)
       );
       // console.log(addressSet);
       //initialize obj
@@ -265,10 +282,8 @@ export default {
       return result;
     },
 
-    
-
-    revenuesByRentalData() { 
-      var result = {}; 
+    revenuesByRentalData() {
+      var result = {};
       //get all unique rentals
       let addressSet = new Set(
         this.rentals.map((arrElement) => arrElement.address)
@@ -280,10 +295,27 @@ export default {
       for (let rental of this.rentals) {
         for (let tenant of rental.tenants) {
           for (let tenantRevenues of tenant.revenues) {
-            let tenantRevenuesPaymentAmount = JSON.parse(JSON.stringify(tenantRevenues.paymentAmount));
-            if (tenantRevenuesPaymentAmount) {
+            if (
+              this.filterStartDate &&
+              this.filterEndDate &&
+              moment(tenantRevenues.paymentDate).isBetween(
+                moment(this.filterStartDate),
+                moment(this.filterEndDate)
+              )
+            ) {
+              let tenantRevenuesPaymentAmount = JSON.parse(
+                JSON.stringify(tenantRevenues.paymentAmount)
+              );
+              if (tenantRevenuesPaymentAmount) {
+                result[rental.address] += parseInt(tenantRevenuesPaymentAmount);
+              }
+            } else if (this.filterStartDate && this.filterEndDate) {
+              continue;
+            } else {
+              let tenantRevenuesPaymentAmount = JSON.parse(
+                JSON.stringify(tenantRevenues.paymentAmount)
+              );
               result[rental.address] += parseInt(tenantRevenuesPaymentAmount);
-
             }
           }
         }
@@ -292,7 +324,70 @@ export default {
       return result;
     },
 
-    
+    revenueAgainstTimeData() {
+      // {time, }
+      var result = {};
+      // initalise all dates to 0 payment amount
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          for (let tenantRevenues of tenant.revenues) {
+            let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
+            result[tenantRevenuePaymentDate] = 0;
+          }
+        }
+      }
+      console.log("initalised result:", result);
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          for (let tenantRevenues of tenant.revenues) {
+            let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
+            result[tenantRevenuePaymentDate] += tenantRevenues.paymentAmount;
+          }
+        }
+      }
+      console.log("unsorted", result);
+      return result;      
+    },
+
+    cumulativeRevenueAgainstTimeData() {
+      // {time, }
+      var result = {};
+      // initalise all dates to 0 payment amount
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          for (let tenantRevenues of tenant.revenues) {
+            let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
+            result[tenantRevenuePaymentDate] = 0;
+          }
+        }
+      }
+      console.log("initalised result:", result);
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          for (let tenantRevenues of tenant.revenues) {
+            let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
+            result[tenantRevenuePaymentDate] += tenantRevenues.paymentAmount;
+          }
+        }
+      }
+      console.log("unsorted", result);
+
+      let sortedResult = Object.keys(result)
+        .sort()
+        .reduce(function (acc, key) {
+          acc[key] = result[key];
+          return acc;
+        }, {});
+      
+      var cumulativeRevenue = 0;
+      for (const [key, value] of Object.entries(sortedResult)) {
+        console.log(`${key}: ${value}`);
+        cumulativeRevenue += value;
+        sortedResult[key] = cumulativeRevenue;
+      }
+      console.log(sortedResult);
+      return sortedResult;      
+    },
   },
 
   components: {},
@@ -355,8 +450,6 @@ export default {
 
 
 <style scoped>
-
-
 #mapid {
   height: 610px;
 }
