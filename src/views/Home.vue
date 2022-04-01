@@ -233,10 +233,8 @@ export default {
       if (this.filterStartDate && this.filterEndDate) {
         console.log("hi");
         expenses = this.expenses.filter((exp) =>
-          moment(exp.expenseDate).isBetween(
-            moment(this.filterStartDate),
-            moment(this.filterEndDate)
-          )
+          moment(exp.expenseDate).isSameOrAfter(moment(this.filterStartDate)) && 
+          moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
         );
       }
       var result = {};
@@ -259,10 +257,8 @@ export default {
       if (this.filterStartDate && this.filterEndDate) {
         console.log("hi");
         expenses = this.expenses.filter((exp) =>
-          moment(exp.expenseDate).isBetween(
-            moment(this.filterStartDate),
-            moment(this.filterEndDate)
-          )
+          moment(exp.expenseDate).isSameOrAfter(moment(this.filterStartDate)) && 
+          moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
         );
       }
       var result = {};
@@ -298,10 +294,8 @@ export default {
             if (
               this.filterStartDate &&
               this.filterEndDate &&
-              moment(tenantRevenues.paymentDate).isBetween(
-                moment(this.filterStartDate),
-                moment(this.filterEndDate)
-              )
+              (moment(tenantRevenues.paymentDate).isSameOrAfter(moment(this.filterStartDate)) &&
+              moment(tenantRevenues.paymentDate).isSameOrBefore(moment(this.filterEndDate)))
             ) {
               let tenantRevenuesPaymentAmount = JSON.parse(
                 JSON.stringify(tenantRevenues.paymentAmount)
