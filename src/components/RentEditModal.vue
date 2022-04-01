@@ -44,6 +44,11 @@
               />
             </div>
 
+            <div id="confirmPaymentDetails">
+              test
+              {{paymentDetails}}
+            </div>
+
             <div class="modal-footer">
               <button
                 type="button"
@@ -114,6 +119,7 @@ export default {
     return {
       myMonthsPaid: this.monthsPaid,
       myPaymentDate: this.paymentDate,
+      paymentDetails: ""
     };
   },
 

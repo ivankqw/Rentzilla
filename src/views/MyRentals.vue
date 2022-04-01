@@ -117,20 +117,22 @@
                     <tr>
                       <td colspan="7">
                         <div id="tenantPaymentsHistoryTable">
-<table style="width: 100%">
-                          <thead>
-                            <tr class="table-light">
-                              <th>Payment Date</th>
-                              <th>Amount Paid</th>
+                          <table style="width: 100%" v-if="tenant.revenues.length>0">
+                            <thead>
+                              <tr class="table-light">
+                                <th>Payment Date</th>
+                                <th>Amount Paid</th>
+                              </tr>
+                            </thead>
+                            <tr
+                              v-for="(revenue, i) in tenant.revenues"
+                              :key="i"
+                            >
+                              <td>{{ revenue.paymentDate }}</td>
+                              <td>${{ revenue.paymentAmount }}</td>
                             </tr>
-                          </thead>
-                          <tr v-for="(revenue, i) in tenant.revenues" :key="i">
-                            <td>{{ revenue.paymentDate }}</td>
-                            <td>${{ revenue.paymentAmount }}</td>
-                          </tr>
-                        </table>
+                          </table>
                         </div>
-                        
                       </td>
                     </tr>
                   </template>
@@ -495,11 +497,11 @@ export default {
 </script>
 
 <style scoped>
-#tenantPaymentsHistoryTable{
-  overflow:hidden;
-    overflow-y: scroll;
-    /* height: 100px; */
-    max-height: 100px;
+#tenantPaymentsHistoryTable {
+  overflow: hidden;
+  overflow-y: scroll;
+  /* height: 100px; */
+  max-height: 100px;
 }
 #newRentalBtn {
   display: flex;
