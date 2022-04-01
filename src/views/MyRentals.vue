@@ -87,7 +87,7 @@
           </div>
           <div class="modal-body">
             <div class="table-responsive">
-              <table class="table table-striped table-hover">
+              <table class="table table-hover">
                 <thead>
                   <tr class="table-light">
                     <th>First Name</th>
@@ -114,10 +114,10 @@
                       <td>{{ tenant.nextPaymentDate }}</td>
                       <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="tenant.revenues.length>0">
                       <td colspan="7">
                         <div id="tenantPaymentsHistoryTable">
-                          <table style="width: 100%" v-if="tenant.revenues.length>0">
+                          <table style="width: 100%" >
                             <thead>
                               <tr class="table-light">
                                 <th>Payment Date</th>
