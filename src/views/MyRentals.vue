@@ -14,9 +14,8 @@
       data-bs-toggle="modal"
       data-bs-target="#newRentalModal"
     >
-     <strong>+ New Rental</strong> 
+      <strong>+ New Rental</strong>
     </button>
-
 
     <br />
 
@@ -67,7 +66,7 @@
       </table>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal for view tenant details -->
     <div
       class="modal fade"
       id="tenantsModal"
@@ -100,19 +99,41 @@
                     <th>Outstanding rental (months)</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  <tr
+                  <template
                     v-for="(tenant, i) in this.currTenantsArrayClean"
                     :key="i"
                   >
-                    <td>{{ tenant.firstName }}</td>
-                    <td>{{ tenant.lastName }}</td>
-                    <td>{{ tenant.contractStartDate }}</td>
-                    <td>{{ tenant.contractEndDate }}</td>
-                    <td>{{ "$" + tenant.monthlyRent }}</td>
-                    <td>{{ tenant.nextPaymentDate }}</td>
-                    <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
-                  </tr>
+                    <tr>
+                      <td>{{ tenant.firstName }}</td>
+                      <td>{{ tenant.lastName }}</td>
+                      <td>{{ tenant.contractStartDate }}</td>
+                      <td>{{ tenant.contractEndDate }}</td>
+                      <td>{{ "$" + tenant.monthlyRent }}</td>
+                      <td>{{ tenant.nextPaymentDate }}</td>
+                      <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="7">
+                        <div id="tenantPaymentsHistoryTable">
+<table style="width: 100%">
+                          <thead>
+                            <tr class="table-light">
+                              <th>Payment Date</th>
+                              <th>Amount Paid</th>
+                            </tr>
+                          </thead>
+                          <tr v-for="(revenue, i) in tenant.revenues" :key="i">
+                            <td>{{ revenue.paymentDate }}</td>
+                            <td>${{ revenue.paymentAmount }}</td>
+                          </tr>
+                        </table>
+                        </div>
+                        
+                      </td>
+                    </tr>
+                  </template>
                 </tbody>
               </table>
             </div>
@@ -167,31 +188,33 @@
       :numTenants="this.numTenantsForCurrentEditRental"
     />
 
-    <RentEditModal ref="rentEditModal" 
-    :tenantId="this.tenantId"
-    :monthsPaid="this.monthsPaid"
-    :paymentDate="this.paymentDate"/>
+    <RentEditModal
+      ref="rentEditModal"
+      :tenantId="this.tenantId"
+      :monthsPaid="this.monthsPaid"
+      :paymentDate="this.paymentDate"
+    />
 
     <h2 class="header">Outstanding Rent</h2>
     <br /><br />
     <div class="table-responsive">
-    <table class="table table-striped table-hover">
-      <tr id="outstandingRentTableHeader" class="table-light">
-        <th>#</th>
-        <th>Tenant Name</th>
-        <th>Monthly Rent</th>
-        <th>Months Overdue</th>
-        <th>Manage Rent</th>
-      </tr>
-      <tbody>
-        <tr v-for="(tenant, i) in this.outstandingTenants" :key="i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ tenant.firstName + " " + tenant.lastName }}</td>
-          <td>{{ "$" + tenant.monthlyRent }}</td>
-          <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
-          <td>
+      <table class="table table-striped table-hover">
+        <tr id="outstandingRentTableHeader" class="table-light">
+          <th>#</th>
+          <th>Tenant Name</th>
+          <th>Monthly Rent</th>
+          <th>Months Overdue</th>
+          <th>Manage Rent</th>
+        </tr>
+        <tbody>
+          <tr v-for="(tenant, i) in this.outstandingTenants" :key="i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ tenant.firstName + " " + tenant.lastName }}</td>
+            <td>{{ "$" + tenant.monthlyRent }}</td>
+            <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
+            <td>
               <button
-              id="editPaymentBtn"
+                id="editPaymentBtn"
                 type="button"
                 class="btn btn-primary btn-sm"
                 data-bs-toggle="modal"
@@ -201,10 +224,10 @@
                 Manage
               </button>
             </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -466,14 +489,19 @@ export default {
 
     setCurrentTenantId(id) {
       this.tenantId = id;
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
+#tenantPaymentsHistoryTable{
+  overflow:hidden;
+    overflow-y: scroll;
+    /* height: 100px; */
+    max-height: 100px;
+}
 #newRentalBtn {
-  
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -487,10 +515,9 @@ export default {
   background: #ffb300;
   border-radius: 42px;
 }
-#newRentalBtn:hover{
+#newRentalBtn:hover {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
-
 
 #rentalTableHeader,
 #outstandingRentTableHeader {
