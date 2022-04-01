@@ -494,6 +494,7 @@ export default {
 
   methods: {
     async validateEditRentalForm() {
+      let deletedTenants = [];
       // Validate property details
       let postalCodeChanged = false;
       if (this.myPostalCode !== null) {
@@ -577,6 +578,7 @@ export default {
           // tenant
           console.log("tenant 1 deleted");
           numTenantsRemaining--;
+          deletedTenants.push(1);
         } else if (
           !this.firstName1 &&
           this.myFirstName1 &&
@@ -657,6 +659,7 @@ export default {
           // tenant
           console.log("tenant 2 deleted");
           numTenantsRemaining--;
+          deletedTenants.push(2);
         } else if (
           !this.firstName2 &&
           this.myFirstName2 &&
@@ -737,6 +740,7 @@ export default {
           // tenant
           console.log("tenant 3 deleted");
           numTenantsRemaining--;
+          deletedTenants.push(3);
         } else if (
           !this.firstName3 &&
           this.myFirstName3 &&
@@ -817,6 +821,7 @@ export default {
           // tenant
           console.log("tenant 4 deleted");
           numTenantsRemaining--;
+          deletedTenants.push(4);
         } else if (
           !this.firstName4 &&
           this.myFirstName4 &&
@@ -897,6 +902,7 @@ export default {
           // tenant
           console.log("tenant 5 deleted");
           numTenantsRemaining--;
+          deletedTenants.push(5);
         } else if (
           !this.firstName5 &&
           this.myFirstName5 &&
@@ -1087,7 +1093,10 @@ export default {
         return false;
       }
 
-      return true;
+      return {
+        validated: true,
+        deletedTenants: deletedTenants
+      };
     },
 
     onPostalCodeChange(event) {
@@ -1185,6 +1194,9 @@ export default {
           "Please re-enter valid details for rental ID " + (this.index + 1)
         );
         return;
+      } else {
+        var deletedTenants = valid.deletedTenants;
+        
       }
 
       this.$emit("edited");
@@ -1262,7 +1274,7 @@ export default {
             ),
             tenantID: tenants[0].tenantID,
             numberOfMonthsRentalUnpaid: 0,
-            revenues: tenants[0].revenues,
+            revenues: deletedTenants.includes(1) ? [] : tenants[0].revenues,
           },
           {
             firstName:
@@ -1289,7 +1301,7 @@ export default {
             ),
             tenantID: tenants[1].tenantID,
             numberOfMonthsRentalUnpaid: 0,
-            revenues: tenants[1].revenues,
+            revenues:  deletedTenants.includes(2) ? [] :tenants[1].revenues,
           },
           {
             firstName:
@@ -1316,7 +1328,7 @@ export default {
             ),
             tenantID: tenants[2].tenantID,
             numberOfMonthsRentalUnpaid: 0,
-            revenues: tenants[2].revenues,
+            revenues: deletedTenants.includes(3) ? [] : tenants[2].revenues,
           },
           {
             firstName:
@@ -1343,7 +1355,7 @@ export default {
             ),
             tenantID: tenants[3].tenantID,
             numberOfMonthsRentalUnpaid: 0,
-            revenues: tenants[3].revenues,
+            revenues: deletedTenants.includes(4) ? [] : tenants[3].revenues,
           },
           {
             firstName:
@@ -1370,7 +1382,7 @@ export default {
             ),
             tenantID: tenants[4].tenantID,
             numberOfMonthsRentalUnpaid: 0,
-            revenues: tenants[4].revenues,
+            revenues: deletedTenants.includes(5 ) ? [] :tenants[4].revenues,
           },
         ],
       };
