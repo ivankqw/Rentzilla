@@ -87,7 +87,7 @@
           </div>
           <div class="modal-body">
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table">
                 <thead>
                   <tr class="table-light">
                     <th>First Name</th>
@@ -97,6 +97,7 @@
                     <th>Monthly Rent</th>
                     <th>Next Payment Date</th>
                     <th>Outstanding rental (months)</th>
+                    <th>View Rental Payment History</th>
                   </tr>
                 </thead>
 
@@ -113,28 +114,55 @@
                       <td>{{ "$" + tenant.monthlyRent }}</td>
                       <td>{{ tenant.nextPaymentDate }}</td>
                       <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
-                    </tr>
-                    <tr v-if="tenant.revenues.length>0">
-                      <td colspan="7">
-                        <div id="tenantPaymentsHistoryTable">
-                          <table style="width: 100%" >
-                            <thead>
-                              <tr class="table-light">
-                                <th>Payment Date</th>
-                                <th>Amount Paid</th>
-                              </tr>
-                            </thead>
-                            <tr
-                              v-for="(revenue, i) in tenant.revenues"
-                              :key="i"
-                            >
-                              <td>{{ revenue.paymentDate }}</td>
-                              <td>${{ revenue.paymentAmount }}</td>
-                            </tr>
-                          </table>
+                      <td>
+                        <div class="text-align-center">
+                          <input
+                            type="checkbox"
+                            class="btn-check"
+                            v-bind:id="'btn-check-outlined' + i"
+                            autocomplete="off"
+                          />
+                          <label
+                            class="btn btn-outline-primary btn-sm"
+                            v-bind:for="'btn-check-outlined' + i"
+                            @click="toggleTenantHistory(i)"
+                            >View</label
+                          >
                         </div>
                       </td>
                     </tr>
+                    <tr
+                      v-if="tenant.revenues.length > 0 && tenantHistoryShow[i]"
+                    >
+                      <td colspan="7">
+                        <div id="tenantPaymentsHistoryTable">
+                          <div class="table-responsive">
+                            <table style="width: 100%" class="table">
+                              <thead>
+                                <tr class="table-active">
+                                  <th scope="col">Date</th>
+                                  <th scope="col">Amount Paid</th>
+                                </tr>
+                              </thead>
+                              <tr
+                                v-for="(revenue, i) in tenant.revenues"
+                                :key="i"
+                                scope="row"
+                                class="table-primary"
+                              >
+                                <td>{{ revenue.paymentDate }}</td>
+                                <td>${{ revenue.paymentAmount }}</td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <div
+                      v-if="tenant.revenues.length == 0 && tenantHistoryShow[i]"
+                    >
+                      <strong> No payment history </strong>
+                    </div>
                   </template>
                 </tbody>
               </table>
@@ -456,6 +484,8 @@ export default {
       tenantId: 0,
       monthsPaid: 0,
       paymentDate: "",
+
+      tenantHistoryShow: [false, false, false, false, false],
     };
   },
   async mounted() {
@@ -491,6 +521,10 @@ export default {
 
     setCurrentTenantId(id) {
       this.tenantId = id;
+    },
+
+    toggleTenantHistory(i) {
+      this.tenantHistoryShow[i] = !this.tenantHistoryShow[i];
     },
   },
 };
