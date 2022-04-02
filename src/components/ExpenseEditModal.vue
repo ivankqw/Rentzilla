@@ -25,7 +25,7 @@
             <div class="mb-3">
               <!-- <h5 :v-text="fullAddress">Rental Address: {{fullAddress}}</h5> -->
               <label for="fullAddress">Rental Address</label>
-              <button type="button" class="btn btn-primary" @click="testbutton">test button</button>
+              <!--  <button type="button" class="btn btn-primary" @click="testbutton">test button</button> -->
               <select
                 class="form-control"
                 name="fullAddress"

@@ -26,11 +26,11 @@
           
           <div class="col"> 
             <label for="filterStart" class="form-label">Start Date:</label>
-            <input id="filterStart" @input="onFilterStartInput" type="date" />
+            <input id="filterStart" class="form-control" @input="onFilterStartInput" type="date" />
           </div>
           <div class="col">
             <label for="filterEnd" class="form-label">End Date:</label>
-            <input id="filterEnd" @input="onFilterEndInput" type="date" />
+            <input id="filterEnd" class="form-control" @input="onFilterEndInput" type="date" />
           </div>
           <div class="col-md-2 align-self-center">
             
@@ -44,7 +44,7 @@
     <br />
 
     <div class="table-responsive" id="expensestable">
-      <table class="table table-striped table-hover">
+      <table class="table table-striped">
         <thead>
           <tr class="table-light">
             <th>#</th>

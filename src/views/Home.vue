@@ -20,11 +20,11 @@
           <div class="col"></div>
           <div class="col">
             <label for="filterStart" class="form-label">Start Date:</label>
-            <input id="filterStart" @input="onFilterStartInput" type="date" />
+            <input id="filterStart" @input="onFilterStartInput" type="date" class="form-control"/>
           </div>
           <div class="col">
             <label for="filterEnd" class="form-label">End Date:</label>
-            <input id="filterEnd" @input="onFilterEndInput" type="date" />
+            <input id="filterEnd" @input="onFilterEndInput" type="date" class="form-control"/>
           </div>
           <div class="col-md-2 align-self-center">
             <button type="button" class="btn btn-warning" @click="clearFilter">

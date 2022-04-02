@@ -44,10 +44,12 @@
               />
             </div>
 
+            <!---
             <div id="confirmPaymentDetails">
               test
               {{paymentDetails}}
             </div>
+            --->
 
             <div class="modal-footer">
               <button

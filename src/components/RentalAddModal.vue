@@ -87,7 +87,8 @@
                 id="contractStartDate1"
                 name="contractStartDate"
                 v-model="contractStartDate1"
-              /><br />
+                class="form-control"
+              />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
@@ -96,6 +97,7 @@
                 id="contractEndDate1"
                 name="contractEndDate"
                 v-model="contractEndDate1"
+                class="form-control"
               />
               <input
                 type="number"
@@ -130,7 +132,8 @@
                 id="contractStartDate2"
                 name="contractStartDate"
                 v-model="contractStartDate2"
-              /><br />
+                class="form-control"
+              />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
@@ -139,6 +142,7 @@
                 id="contractEndDate2"
                 name="contractEndDate"
                 v-model="contractEndDate2"
+                class="form-control"
               />
               <input
                 type="number"
@@ -173,7 +177,8 @@
                 id="contractStartDate3"
                 name="contractStartDate"
                 v-model="contractStartDate3"
-              /><br />
+                class="form-control"
+              />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
@@ -182,6 +187,7 @@
                 id="contractEndDate3"
                 name="contractEndDate"
                 v-model="contractEndDate3"
+                class="form-control"
               />
               <input
                 type="number"
@@ -215,8 +221,9 @@
                 type="date"
                 id="contractStartDate4"
                 name="contractStartDate"
+                class="form-control"
                 v-model="contractStartDate4"
-              /><br />
+              />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
@@ -224,6 +231,7 @@
                 type="date"
                 id="contractEndDate4"
                 name="contractEndDate"
+                class="form-control"
                 v-model="contractEndDate4"
               />
               <input
@@ -243,6 +251,7 @@
                 id="firstName5"
                 placeholder="First Name"
                 v-model="firstName5"
+                
               />
               <input
                 type="text"
@@ -259,7 +268,8 @@
                 id="contractStartDate5"
                 name="contractStartDate"
                 v-model="contractStartDate5"
-              /><br />
+                class="form-control"
+              />
               <label for="contractEndDate" class="form-label"
                 >Contract End Date:</label
               >
@@ -268,6 +278,7 @@
                 id="contractEndDate5"
                 name="contractEndDate"
                 v-model="contractEndDate5"
+                class="form-control"
               />
               <input
                 type="number"

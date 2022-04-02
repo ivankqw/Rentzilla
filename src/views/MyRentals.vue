@@ -22,7 +22,7 @@
     <RentalAddModal ref="rentalModal" />
 
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-striped">
         <thead>
           <tr class="table-light">
             <th>#</th>
@@ -228,7 +228,7 @@
     <h2 class="header">Outstanding Rent</h2>
     <br /><br />
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-striped">
         <tr id="outstandingRentTableHeader" class="table-light">
           <th>#</th>
           <th>Tenant Name</th>
