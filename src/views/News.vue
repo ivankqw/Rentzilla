@@ -30,16 +30,16 @@
     <h2 id="firstHeader" style="text-align: left">Top General News</h2><br><br><br>
     <div class="row row-cols-1 row-cols-md-3 g-4" id="top-content">
       <div v-for="(article, index) in articlesTop" :key="index" class="col">
-        <a :href="article.url" target="_blank">
+        <a :href="article.link" target="_blank">
           <div class="card h-100">
             <img
-              :src="article.urlToImage"
+              :src="article.media"
               class="card-img-top"
               @error="replaceByDefault(e)"
             />
             <div class="card-body">
-              <h5 class="card-title">{{ article.title }}</h5>
-              <p class="card-text">{{ article.description }}</p>
+              <h5 class="card-title"><strong>{{ article.title }}</strong></h5>
+              <p class="card-text">{{ article.excerpt }}</p>
             </div>
           </div>
         </a>
@@ -56,20 +56,20 @@
         :key="index"
         class="card h-100"
       >
-        <a :href="article.url" target="_blank">
+        <a :href="article.link" target="_blank">
           <div class="row g-0">
             <div class="col-md-3">
               <img
-                :src="article.urlToImage"
+                :src="article.media"
                 class="img-fluid rounded-start"
                 alt="..."
               />
             </div>
             <div class="col-md-9">
               <div class="card-body">
-                <h5 class="card-title">{{ article.title }}</h5>
+                <h5 class="card-title"><strong>{{ article.title }}</strong></h5>
                 <p class="card-text">
-                  {{ article.description }}
+                  {{ article.summary }}
                 </p>
                 <p class="card-text">
                   <small class="text-muted">Last updated 3 mins ago</small>
@@ -99,11 +99,11 @@ export default {
   async created() {
     var newsApiKey;
     try {
-      newsApiKey = await getDoc(doc(db, "Admin", "NewsApi"));
+      newsApiKey = await getDoc(doc(db, "Admin", "NewsApi3"));
       newsApiKey = newsApiKey.data().key;
-      var url = `https://newsapi.org/v2/top-headlines?country=sg&category=general&apiKey=${newsApiKey}`;
+      var url = `https://api.newscatcherapi.com/v2/latest_headlines?countries=SG&topic=news&lang=en&sources=channelnewsasia.com`;
 
-      fetch(url)
+      fetch(url, {headers: {'x-api-key': newsApiKey}})
         .then((response) => response.json())
         .then((json) => json.articles)
         .then((articles) => {
@@ -126,11 +126,11 @@ export default {
 
       var newsApiKey;
       try {
-        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi"));
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi3"));
         newsApiKey = newsApiKey.data().key;
-        var url = `https://newsapi.org/v2/top-headlines?country=sg&category=general&apiKey=${newsApiKey}`;
+        var url = `https://api.newscatcherapi.com/v2/latest_headlines?countries=SG&topic=news&lang=en&sources=channelnewsasia.com`;
 
-        fetch(url)
+        fetch(url, {headers: {'x-api-key': newsApiKey}})
           .then((response) => response.json())
           .then((json) => json.articles)
           .then((articles) => {
@@ -150,11 +150,11 @@ export default {
 
       var newsApiKey;
       try {
-        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi"));
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi3"));
         newsApiKey = newsApiKey.data().key;
-        var url = `https://newsapi.org/v2/top-headlines?country=sg&category=business&apiKey=${newsApiKey}`;
+        var url = `https://api.newscatcherapi.com/v2/latest_headlines?countries=SG&topic=business&lang=en&sources=channelnewsasia.com`;
 
-        fetch(url)
+        fetch(url, {headers: {'x-api-key': newsApiKey}})
           .then((response) => response.json())
           .then((json) => json.articles)
           .then((articles) => {
@@ -174,11 +174,11 @@ export default {
 
       var newsApiKey;
       try {
-        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi"));
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi3"));
         newsApiKey = newsApiKey.data().key;
-        var url = `https://newsapi.org/v2/top-headlines?country=sg&category=health&apiKey=${newsApiKey}`;
+        var url = `https://api.newscatcherapi.com/v2/latest_headlines?countries=SG&topic=science&lang=en&sources=channelnewsasia.com`;
 
-        fetch(url)
+        fetch(url, {headers: {'x-api-key': newsApiKey}})
           .then((response) => response.json())
           .then((json) => json.articles)
           .then((articles) => {
