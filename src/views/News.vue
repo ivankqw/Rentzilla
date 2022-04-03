@@ -30,16 +30,16 @@
     <h2 id="firstHeader" style="text-align: left">Top General News</h2><br><br><br>
     <div class="row row-cols-1 row-cols-md-3 g-4" id="top-content">
       <div v-for="(article, index) in articlesTop" :key="index" class="col">
-        <a :href="article.link" target="_blank">
+        <a :href="article.url" target="_blank">
           <div class="card h-100">
             <img
-              :src="article.media"
+              :src="article.image"
               class="card-img-top"
               @error="replaceByDefault(e)"
             />
             <div class="card-body">
               <h5 class="card-title"><strong>{{ article.title }}</strong></h5>
-              <p class="card-text">{{ article.excerpt }}</p>
+              <p class="card-text">{{ article.description }}</p>
             </div>
           </div>
         </a>
@@ -56,11 +56,11 @@
         :key="index"
         class="card h-100"
       >
-        <a :href="article.link" target="_blank">
+        <a :href="article.url" target="_blank">
           <div class="row g-0">
             <div class="col-md-3">
               <img
-                :src="article.media"
+                :src="article.image"
                 class="img-fluid rounded-start"
                 alt="..."
               />
@@ -69,7 +69,7 @@
               <div class="card-body">
                 <h5 class="card-title"><strong>{{ article.title }}</strong></h5>
                 <p class="card-text">
-                  {{ article.summary }}
+                  {{ article.description }}
                 </p>
                 <p class="card-text">
                   <small class="text-muted">Last updated 3 mins ago</small>
@@ -99,11 +99,11 @@ export default {
   async created() {
     var newsApiKey;
     try {
-      newsApiKey = await getDoc(doc(db, "Admin", "NewsApi3"));
+      newsApiKey = await getDoc(doc(db, "Admin", "NewsApi2"));
       newsApiKey = newsApiKey.data().key;
-      var url = `https://api.newscatcherapi.com/v2/latest_headlines?countries=SG&topic=news&lang=en&sources=channelnewsasia.com`;
+      var url = `https://gnews.io/api/v4/top-headlines?&token=${newsApiKey}&lang=en&country=sg`;
 
-      fetch(url, {headers: {'x-api-key': newsApiKey}})
+      fetch(url)
         .then((response) => response.json())
         .then((json) => json.articles)
         .then((articles) => {
@@ -126,11 +126,11 @@ export default {
 
       var newsApiKey;
       try {
-        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi3"));
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi2"));
         newsApiKey = newsApiKey.data().key;
-        var url = `https://api.newscatcherapi.com/v2/latest_headlines?countries=SG&topic=news&lang=en&sources=channelnewsasia.com`;
+        var url = `https://gnews.io/api/v4/top-headlines?&token=${newsApiKey}&lang=en&country=sg`;
 
-        fetch(url, {headers: {'x-api-key': newsApiKey}})
+        fetch(url)
           .then((response) => response.json())
           .then((json) => json.articles)
           .then((articles) => {
@@ -150,11 +150,11 @@ export default {
 
       var newsApiKey;
       try {
-        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi3"));
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi2"));
         newsApiKey = newsApiKey.data().key;
-        var url = `https://api.newscatcherapi.com/v2/latest_headlines?countries=SG&topic=business&lang=en&sources=channelnewsasia.com`;
+        var url = `https://gnews.io/api/v4/top-headlines?&token=${newsApiKey}&lang=en&country=sg&topic=business`;
 
-        fetch(url, {headers: {'x-api-key': newsApiKey}})
+        fetch(url)
           .then((response) => response.json())
           .then((json) => json.articles)
           .then((articles) => {
@@ -174,11 +174,11 @@ export default {
 
       var newsApiKey;
       try {
-        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi3"));
+        newsApiKey = await getDoc(doc(db, "Admin", "NewsApi2"));
         newsApiKey = newsApiKey.data().key;
-        var url = `https://api.newscatcherapi.com/v2/latest_headlines?countries=SG&topic=science&lang=en&sources=channelnewsasia.com`;
+        var url = `https://gnews.io/api/v4/top-headlines?&token=${newsApiKey}&lang=en&country=sg&topic=health`;
 
-        fetch(url, {headers: {'x-api-key': newsApiKey}})
+        fetch(url)
           .then((response) => response.json())
           .then((json) => json.articles)
           .then((articles) => {
