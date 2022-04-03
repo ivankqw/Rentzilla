@@ -2980,7 +2980,7 @@
   "resolved" "https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz"
   "version" "0.7.0"
 
-"chart.js@^3.0.0", "chart.js@>=3.0.2":
+"chart.js@^3.0.0", "chart.js@^3.7.1", "chart.js@>=3.0.2":
   "integrity" "sha512-8knRegQLFnPQAheZV8MjxIXc5gQEfDFD897BJgv/klO/vtIyFFmgMXrNfgrXpbTr/XbTturxRgxIXx/Y+ASJBA=="
   "resolved" "https://registry.npmjs.org/chart.js/-/chart.js-3.7.1.tgz"
   "version" "3.7.1"
@@ -9109,6 +9109,13 @@
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   "version" "8.3.2"
 
+"v-onboarding@^1.0.2":
+  "integrity" "sha512-XOkREywVRv+PAxPryNikcW2/LyBtZCGZpMAOzls633OuNWz7QgwYMo13hp6dyEZ+nt8/xANeR1zndJiAyvBKQg=="
+  "resolved" "https://registry.npmjs.org/v-onboarding/-/v-onboarding-1.0.2.tgz"
+  "version" "1.0.2"
+  dependencies:
+    "vue" "^3.2.21"
+
 "v8-compile-cache@^2.0.3":
   "integrity" "sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA=="
   "resolved" "https://registry.npmjs.org/v8-compile-cache/-/v8-compile-cache-2.3.0.tgz"
@@ -9211,7 +9218,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@^3.0.0-0", "vue@^3.0.2", "vue@^3.2.0", "vue@>= 3.0.0 < 4", "vue@>=3.0.0", "vue@3.2.31":
+"vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@^3.0.0-0", "vue@^3.0.2", "vue@^3.2.0", "vue@^3.2.21", "vue@>= 3.0.0 < 4", "vue@>=3.0.0", "vue@3.2.31":
   "integrity" "sha512-odT3W2tcffTiQCy57nOT93INw1auq5lYLLYtWpPYQQYQOOdHiqFct9Xhna6GJ+pJQaF67yZABraH47oywkJgFw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.2.31.tgz"
   "version" "3.2.31"
