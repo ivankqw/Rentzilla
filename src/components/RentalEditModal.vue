@@ -559,6 +559,7 @@ export default {
       let numTenantsRemaining = this.numTenants;
       console.log(numTenantsRemaining);
 
+      // Tenant 1
       if (
         this.myFirstName1 !== null ||
         this.myLastName1 !== null ||
@@ -610,10 +611,7 @@ export default {
         ) {
           alert("Please ensure that all details for tenant 1 are filled up");
           return false;
-        } else {
-          // Not all tenant details for this tenant deleted,
-          // need to check that no updated fields for this tenant are empty or invalid
-          if (
+        } else if (
             this.myFirstName1 === "" ||
             this.myLastName1 === "" ||
             this.myContractStartDate1 === "" ||
@@ -623,6 +621,9 @@ export default {
             alert("Please ensure that all details for tenant 1 are filled up");
             return false;
           }
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          
           let contractStartDate1 =
             this.myContractStartDate1 === null
               ? this.contractStartDate1
@@ -637,9 +638,12 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 1"
             );
+            return false;
           }
-        }
+        
       }
+
+      // Tenant 2
       if (
         this.myFirstName2 !== null ||
         this.myLastName2 !== null ||
@@ -691,10 +695,7 @@ export default {
         ) {
           alert("Please ensure that all details for tenant 2 are filled up");
           return false;
-        } else {
-          // Not all tenant details for this tenant deleted,
-          // need to check that no updated fields for this tenant are empty or invalid
-          if (
+        } else if (
             this.myFirstName2 === "" ||
             this.myLastName2 === "" ||
             this.myContractStartDate2 === "" ||
@@ -704,6 +705,9 @@ export default {
             alert("Please ensure that all details for tenant 2 are filled up");
             return false;
           }
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          
           let contractStartDate2 =
             this.myContractStartDate2 === null
               ? this.contractStartDate2
@@ -718,9 +722,12 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 2"
             );
+            return false;
           }
-        }
+        
       }
+
+      // Tenant 3
       if (
         this.myFirstName3 !== null ||
         this.myLastName3 !== null ||
@@ -772,10 +779,7 @@ export default {
         ) {
           alert("Please ensure that all details for tenant 3 are filled up");
           return false;
-        } else {
-          // Not all tenant details for this tenant deleted,
-          // need to check that no updated fields for this tenant are empty or invalid
-          if (
+        } else if (
             this.myFirstName3 === "" ||
             this.myLastName3 === "" ||
             this.myContractStartDate3 === "" ||
@@ -785,6 +789,9 @@ export default {
             alert("Please ensure that all details for tenant 3 are filled up");
             return false;
           }
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          
           let contractStartDate3 =
             this.myContractStartDate3 === null
               ? this.contractStartDate3
@@ -799,9 +806,12 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 3"
             );
+            return false;
           }
-        }
+        
       }
+
+      // Tenant 4
       if (
         this.myFirstName4 !== null ||
         this.myLastName4 !== null ||
@@ -853,10 +863,7 @@ export default {
         ) {
           alert("Please ensure that all details for tenant 4 are filled up");
           return false;
-        } else {
-          // Not all tenant details for this tenant deleted,
-          // need to check that no updated fields for this tenant are empty or invalid
-          if (
+        } else if (
             this.myFirstName4 === "" ||
             this.myLastName4 === "" ||
             this.myContractStartDate4 === "" ||
@@ -866,6 +873,9 @@ export default {
             alert("Please ensure that all details for tenant 4 are filled up");
             return false;
           }
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          
           let contractStartDate4 =
             this.myContractStartDate4 === null
               ? this.contractStartDate4
@@ -880,9 +890,12 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 4"
             );
+            return false;
           }
-        }
+        
       }
+
+      // Tenant 5
       if (
         this.myFirstName5 !== null ||
         this.myLastName5 !== null ||
@@ -934,10 +947,7 @@ export default {
         ) {
           alert("Please ensure that all details for tenant 5 are filled up");
           return false;
-        } else {
-          // Not all tenant details for this tenant deleted,
-          // need to check that no updated fields for this tenant are empty or invalid
-          if (
+        } else if (
             this.myFirstName5 === "" ||
             this.myLastName5 === "" ||
             this.myContractStartDate5 === "" ||
@@ -947,6 +957,9 @@ export default {
             alert("Please ensure that all details for tenant 5 are filled up");
             return false;
           }
+          // Not all tenant details for this tenant deleted,
+          // need to check that no updated fields for this tenant are empty or invalid
+          
           let contractStartDate5 =
             this.myContractStartDate5 === null
               ? this.contractStartDate5
@@ -961,9 +974,11 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 5"
             );
+            return false;
           }
-        }
+        
       }
+      
       // ensure that there is at least one tenant when rental form is saved
       if (numTenantsRemaining < 1) {
         alert("Please ensure that there is at least one tenant");
