@@ -14,12 +14,17 @@
     <h4></h4>
     <br />
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        1 Year
+      <button class="btn btn-secondary dropdown-toggle" 
+        type="button" 
+        id="dropdownMenuButton1" 
+        data-bs-toggle="dropdown" 
+        aria-expanded="false">
+      {{value}}
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><button class="dropdown-item" type="button" v-on:click="changeTo3Months">3 Months</button></li>
-        <li><button class="dropdown-item" type="button" v-on:click="changeTo6Months">6 Months</button></li>
+        <li v-for="option in options" :key="option">
+          <button class="dropdown-item" type="button" v-on:click="changeToMonths(option)">{{option}}</button>
+        </li>
         <!-- <li><button class="dropdown-item" type="button" v-on:click="changeTo1Year">1 Year</button></li> -->
       </ul>
     <!-- <button v-on:click="foobarbarblacksheep">3 Months</button>
@@ -323,6 +328,8 @@ export default {
       showThreeMonths: false,
       showSixMonths: false,
       showDefault: true,
+      options: ['1 Year', '6 Months', '3 Months'],
+      value: '1 Year',
     };
   },
 
@@ -659,7 +666,7 @@ export default {
     findUpperBound() {
       if (!this.filterEndDate) {
         // by default shows data until current+1 month
-        return moment().add(1, "month").format("YYYY-MM");
+        return moment().add(1, "month").format("YYYY-MM"); 
       }
       console.log( moment(this.filterEndDate).format("YYYY-MM"));
       return moment(this.filterEndDate).format("YYYY-MM");
@@ -713,7 +720,7 @@ export default {
 
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
-      var lowerBoundMonth = moment().subtract(11, "months"); // "2021-05"
+      var lowerBoundMonth = moment().subtract(3, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
       expensesFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
@@ -724,7 +731,7 @@ export default {
         expensesFinal[addMonth] = 0;
       }
 
-      // console.log(revenueFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      console.log(revenueFinal) // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
       // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
 
       // populate revenueFinal with the months that have earned revenue
@@ -787,6 +794,7 @@ export default {
       ];
       return data;
     },
+
     revenueExpensesAgainstTimeData6Months() { 
       var revenueTemp = {};
       // initalise all dates to 0 payment amount
@@ -835,7 +843,7 @@ export default {
 
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
-      var lowerBoundMonth = moment().subtract(11, "months"); // "2021-05"
+      var lowerBoundMonth = moment().subtract(6, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
       expensesFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
@@ -984,6 +992,19 @@ export default {
 
     foobarbarblacksheep() {
       this.foo = !this.foo;
+    },
+
+    changeToMonths(option) {
+      this.value = option;
+      if (this.value === '1 Year') {
+        this.showDefault = true;
+        this.showThreeMonths = false;
+        this.showSixMonths = false;
+      } else if (this.value === '3 Months') {
+        this.changeTo3Months();
+      } else { 
+        this.changeTo6Months();
+      }
     },
 
     changeTo3Months() {
