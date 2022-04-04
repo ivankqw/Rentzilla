@@ -7,9 +7,79 @@
     <br /><br />
     <div id="mapid"></div>
     <br /><br />
+
     <h2 class="header">Overview of revenues and expenses</h2>
     <br /><br />
+    <!-- Revenues and Expenses over Time, time series chart  -->
+    <h4></h4>
+    <br />
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        1 Year
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><button class="dropdown-item" type="button" v-on:click="changeTo3Months">3 Months</button></li>
+        <li><button class="dropdown-item" type="button" v-on:click="changeTo6Months">6 Months</button></li>
+        <!-- <li><button class="dropdown-item" type="button" v-on:click="changeTo1Year">1 Year</button></li> -->
+      </ul>
+    <!-- <button v-on:click="foobarbarblacksheep">3 Months</button>
+    <button v-on:click="foobarbarblacksheep">6 Months</button> -->
+    </div>
 
+    <br />
+    <!-- <line-chart :data="revenueAgainstTimeDataDefault" v-if="foo == true">3 months</line-chart>  -->
+
+    <!-- <line-chart
+      :data="revenueExpensesAgainstTimeDataByMonth"
+      :colors="['#b00', '#666']"
+      :xmin="findLowerBound"
+      :xmax="findUpperBound"
+      v-if="foo == false"
+      prefix ="SGD$"
+      thousands=","
+      empty = "No data"
+      loading = "Loading..."
+    ></line-chart> -->
+
+    <line-chart
+      :data="revenueExpensesAgainstTimeDataDefault"
+      v-if="showDefault == true"
+      :colors="['#b00', '#666']"
+      :xmin="findLowerBound"
+      :xmax="findUpperBound"
+      prefix ="SGD$"
+      thousands=","
+      empty = "No data"
+      loading = "Loading..."
+    ></line-chart>
+
+    <line-chart
+      :data="revenueExpensesAgainstTimeData3Months"
+      v-if="showThreeMonths == true"
+      :colors="['#b00', '#666']"
+      :xmin="findLowerBound"
+      :xmax="findUpperBound"
+      prefix ="SGD$"
+      thousands=","
+      empty = "No data"
+      loading = "Loading..."
+    ></line-chart>
+
+    <line-chart
+      :data="revenueExpensesAgainstTimeData6Months"
+      v-if="showSixMonths == true"
+      :colors="['#b00', '#666']"
+      :xmin="findLowerBound"
+      :xmax="findUpperBound"
+      prefix ="SGD$"
+      thousands=","
+      empty = "No data"
+      loading = "Loading..."
+    ></line-chart>
+    <br>
+    
+    <h2> Breakdown of Revenues and Expenses</h2>
+    <br>
     <!-- filter -->
     <div class="text-left">
       <br />
@@ -89,27 +159,25 @@
         </div>
       </div>
     </div>
-
-    <!-- Revenues and Expenses over Time, time series chart  -->
-    <h4>revenue against time (default)</h4>
-    <br />
-    <button v-on:click="foobarbarblacksheep">touch me</button>
-    <br />
-    <line-chart :data="revenueAgainstTimeDataDefault" v-if="foo == true"
-      >TIMESERIES</line-chart
-    >
-    <line-chart
-      :data="revenueExpensesAgainstTimeDataByMonth"
-      :colors="['#b00', '#666']"
-      xmin="findLowerBound"
-      xmax="findUpperBound"
-      v-if="foo == false"
-      ytitle="in Singapore Dollars ($SGD)"
-    ></line-chart>
-
+  <br>
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Rents Collected</h5>
+            <div id="revenuesByRentalPieChart">
+              <line-chart :data="rentsCollectedAgainstTime" prefix ="SGD$" thousands=","></line-chart> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+  
     <!-- <h4>cumulative revenue against time</h4>
     <line-chart :data="cumulativeRevenueAgainstTimeData">TIMESERIES</line-chart> -->
   </div>
+  
 </template>
 
 <script>
@@ -251,7 +319,10 @@ export default {
       rentals: [],
       filterStartDate: "",
       filterEndDate: "",
-      foo: true,
+      // foo: true,
+      showThreeMonths: false,
+      showSixMonths: false,
+      showDefault: true,
     };
   },
 
@@ -356,8 +427,9 @@ export default {
       console.log(result);
       return result;
     },
+    
     // method to get data for time series chart
-    revenueAgainstTimeDataDefault() {
+    rentsCollectedAgainstTime() {
       // {time, }
       var result = {};
       // initalise all dates to 0 payment amount
@@ -419,13 +491,13 @@ export default {
         return filteredResultsFinal;
       }     
 
-      // if no filter
+      // else -> no filter applied
       return result;
     },
 
-    revenueExpensesAgainstTimeDataByMonth() {
+    revenueExpensesAgainstTimeDataDefault() {
       // REVENUES GRAPH
-      // need settle the filtering for rentals
+      // need settle the filtering for rentals - dont need anymore
       // for (let rental of this.rentals) {
       //   for (let tenant of rental.tenants) {
       //     for (let tenantRevenues of tenant.revenues) {
@@ -496,10 +568,25 @@ export default {
       }
 
       let revenueFinal = {};
-      for (const [key] of Object.entries(revenueTemp)) {
-        revenueFinal[moment(key).format("YYYY-MM")] = 0;
+      let expensesFinal = {};
+
+      // set all other months within minus 11 months of today's month to be 0
+      var todaysMonth = moment(); // "2022-04"
+      var lowerBoundMonth = moment().subtract(11, "months"); // "2021-05"
+      console.log(todaysMonth, lowerBoundMonth);
+      revenueFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+      expensesFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+
+      while (lowerBoundMonth.isBefore(todaysMonth)) {
+        var addMonth = lowerBoundMonth.add(1, "month").format("YYYY-MM");
+        revenueFinal[addMonth] = 0;
+        expensesFinal[addMonth] = 0;
       }
 
+      // console.log(revenueFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+
+      // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
         revenueFinal[moment(key).format("YYYY-MM")] += value;
       }
@@ -547,10 +634,6 @@ export default {
       for (let expense of this.expenses) {
         expensesTemp[expense.expenseDate] += expense.expenseCost;
       }
-      let expensesFinal = {};
-      for (const [key] of Object.entries(expensesTemp)) {
-        expensesFinal[moment(key).format("YYYY-MM")] = 0;
-      }
 
       for (const [key, value] of Object.entries(expensesTemp)) {
         expensesFinal[moment(key).format("YYYY-MM")] += value;
@@ -565,19 +648,267 @@ export default {
     },
 
     findLowerBound() {
-      if (!this.filterStartDate) {
-        return moment().subtract(1, "year").format("YYYY-MM"); // "2021-04"
+      if (!this.filterStartDate) { 
+        // by default is to show data from half year ago
+        return moment().subtract(11, "months").format("YYYY-MM"); // "2021-04"
       }
-      return this.filterStartDate;
+      console.log(moment(this.filterStartDate).format("YYYY-MM"));
+      return moment(this.filterStartDate).format("YYYY-MM");
     },
 
     findUpperBound() {
       if (!this.filterEndDate) {
-        return moment().format("YYYY-MM");
+        // by default shows data until current+1 month
+        return moment().add(1, "month").format("YYYY-MM");
       }
-      return this.filterEndDate;
+      console.log( moment(this.filterEndDate).format("YYYY-MM"));
+      return moment(this.filterEndDate).format("YYYY-MM");
     },
 
+    revenueExpensesAgainstTimeData3Months() {
+      var revenueTemp = {};
+      // initalise all dates to 0 payment amount
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          for (let tenantRevenues of tenant.revenues) {
+            // set all dates to 0
+            let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
+            revenueTemp[tenantRevenuePaymentDate] = 0;
+          }
+        }
+      }
+      revenueTemp = Object.keys(revenueTemp)
+        .sort()
+        .reduce(function (acc, key) {
+          acc[key] = revenueTemp[key];
+          return acc;
+        }, {});
+
+      // result.map((x) => moment(x).format("YYYY-MM"))
+
+      console.log("sorted initialised result:", revenueTemp);
+
+      var startDate = moment(Object.keys(revenueTemp)[0]);
+      var endDate = moment(
+        Object.keys(revenueTemp)[Object.keys(revenueTemp).length - 1]
+      );
+      var currentDate = startDate;
+      while (currentDate.isBefore(endDate)) {
+        var nextDate = startDate.add(1, "days").format("YYYY-MM-DD");
+        revenueTemp[nextDate] = 0;
+      }
+
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          for (let tenantRevenues of tenant.revenues) {
+            let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
+            revenueTemp[tenantRevenuePaymentDate] +=
+              tenantRevenues.paymentAmount;
+          }
+        }
+      }
+
+      let revenueFinal = {};
+      let expensesFinal = {};
+
+      // set all other months within minus 11 months of today's month to be 0
+      var todaysMonth = moment(); // "2022-04"
+      var lowerBoundMonth = moment().subtract(11, "months"); // "2021-05"
+      console.log(todaysMonth, lowerBoundMonth);
+      revenueFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+      expensesFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+
+      while (lowerBoundMonth.isBefore(todaysMonth)) {
+        var addMonth = lowerBoundMonth.add(1, "month").format("YYYY-MM");
+        revenueFinal[addMonth] = 0;
+        expensesFinal[addMonth] = 0;
+      }
+
+      // console.log(revenueFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+
+      // populate revenueFinal with the months that have earned revenue
+      for (const [key, value] of Object.entries(revenueTemp)) {
+        revenueFinal[moment(key).format("YYYY-MM")] += value;
+      }
+      console.log("final revenues", revenueFinal);
+
+      // EXPENSES GRAPH
+      let expenses = this.expenses;
+      if (this.filterStartDate && this.filterEndDate) {
+        console.log("hi");
+        expenses = this.expenses.filter(
+          (exp) =>
+            moment(exp.expenseDate).isSameOrAfter(
+              moment(this.filterStartDate)
+            ) &&
+            moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
+        );
+      }
+      var expensesTemp = {};
+      // initalise all dates to 0 payment amount
+      for (let expense of expenses) {
+        expensesTemp[expense.expenseDate] = 0;
+      }
+
+      expensesTemp = Object.keys(expensesTemp)
+        .sort()
+        .reduce(function (acc, key) {
+          acc[key] = expensesTemp[key];
+          return acc;
+        }, {});
+
+      // result.map((x) => moment(x).format("YYYY-MM"))
+
+      // console.log("sorted initialised result:", revenueTemp);
+      console.log(expensesTemp);
+      var startDate1 = moment(Object.keys(expensesTemp)[0]);
+      var endDate1 = moment(
+        Object.keys(expensesTemp)[Object.keys(expensesTemp).length - 1]
+      );
+      var currentDate1 = startDate1;
+      while (currentDate1.isBefore(endDate1)) {
+        var nextDate1 = startDate1.add(1, "days").format("YYYY-MM-DD");
+        expensesTemp[nextDate1] = 0;
+      }
+
+      for (let expense of this.expenses) {
+        expensesTemp[expense.expenseDate] += expense.expenseCost;
+      }
+
+      for (const [key, value] of Object.entries(expensesTemp)) {
+        expensesFinal[moment(key).format("YYYY-MM")] += value;
+      }
+      console.log("final expenses", expensesFinal);
+
+      var data = [
+        { name: "Revenue", data: revenueFinal },
+        { name: "Expenses", data: expensesFinal },
+      ];
+      return data;
+    },
+    revenueExpensesAgainstTimeData6Months() { 
+      var revenueTemp = {};
+      // initalise all dates to 0 payment amount
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          for (let tenantRevenues of tenant.revenues) {
+            // set all dates to 0
+            let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
+            revenueTemp[tenantRevenuePaymentDate] = 0;
+          }
+        }
+      }
+      revenueTemp = Object.keys(revenueTemp)
+        .sort()
+        .reduce(function (acc, key) {
+          acc[key] = revenueTemp[key];
+          return acc;
+        }, {});
+
+      // result.map((x) => moment(x).format("YYYY-MM"))
+
+      console.log("sorted initialised result:", revenueTemp);
+
+      var startDate = moment(Object.keys(revenueTemp)[0]);
+      var endDate = moment(
+        Object.keys(revenueTemp)[Object.keys(revenueTemp).length - 1]
+      );
+      var currentDate = startDate;
+      while (currentDate.isBefore(endDate)) {
+        var nextDate = startDate.add(1, "days").format("YYYY-MM-DD");
+        revenueTemp[nextDate] = 0;
+      }
+
+      for (let rental of this.rentals) {
+        for (let tenant of rental.tenants) {
+          for (let tenantRevenues of tenant.revenues) {
+            let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
+            revenueTemp[tenantRevenuePaymentDate] +=
+              tenantRevenues.paymentAmount;
+          }
+        }
+      }
+
+      let revenueFinal = {};
+      let expensesFinal = {};
+
+      // set all other months within minus 11 months of today's month to be 0
+      var todaysMonth = moment(); // "2022-04"
+      var lowerBoundMonth = moment().subtract(11, "months"); // "2021-05"
+      console.log(todaysMonth, lowerBoundMonth);
+      revenueFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+      expensesFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+
+      while (lowerBoundMonth.isBefore(todaysMonth)) {
+        var addMonth = lowerBoundMonth.add(1, "month").format("YYYY-MM");
+        revenueFinal[addMonth] = 0;
+        expensesFinal[addMonth] = 0;
+      }
+
+      // console.log(revenueFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+
+      // populate revenueFinal with the months that have earned revenue
+      for (const [key, value] of Object.entries(revenueTemp)) {
+        revenueFinal[moment(key).format("YYYY-MM")] += value;
+      }
+      console.log("final revenues", revenueFinal);
+
+      // EXPENSES GRAPH
+      let expenses = this.expenses;
+      if (this.filterStartDate && this.filterEndDate) {
+        console.log("hi");
+        expenses = this.expenses.filter(
+          (exp) =>
+            moment(exp.expenseDate).isSameOrAfter(
+              moment(this.filterStartDate)
+            ) &&
+            moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
+        );
+      }
+      var expensesTemp = {};
+      // initalise all dates to 0 payment amount
+      for (let expense of expenses) {
+        expensesTemp[expense.expenseDate] = 0;
+      }
+
+      expensesTemp = Object.keys(expensesTemp)
+        .sort()
+        .reduce(function (acc, key) {
+          acc[key] = expensesTemp[key];
+          return acc;
+        }, {});
+
+      // result.map((x) => moment(x).format("YYYY-MM"))
+
+      // console.log("sorted initialised result:", revenueTemp);
+      console.log(expensesTemp);
+      var startDate1 = moment(Object.keys(expensesTemp)[0]);
+      var endDate1 = moment(
+        Object.keys(expensesTemp)[Object.keys(expensesTemp).length - 1]
+      );
+      var currentDate1 = startDate1;
+      while (currentDate1.isBefore(endDate1)) {
+        var nextDate1 = startDate1.add(1, "days").format("YYYY-MM-DD");
+        expensesTemp[nextDate1] = 0;
+      }
+
+      for (let expense of this.expenses) {
+        expensesTemp[expense.expenseDate] += expense.expenseCost;
+      }
+
+      for (const [key, value] of Object.entries(expensesTemp)) {
+        expensesFinal[moment(key).format("YYYY-MM")] += value;
+      }
+      console.log("final expenses", expensesFinal);
+
+      var data = [
+        { name: "Revenue", data: revenueFinal },
+        { name: "Expenses", data: expensesFinal },
+      ];
+      return data;
+    },
     // cumulativeRevenueAgainstTimeData() {
     //   // {time, }
     //   var result = {};
@@ -654,6 +985,19 @@ export default {
     foobarbarblacksheep() {
       this.foo = !this.foo;
     },
+
+    changeTo3Months() {
+      this.showThreeMonths = true;
+      this.showDefault = false;
+      this.showSixMonths = false;
+
+    },
+
+    changeTo6Months() {
+      this.showSixMonths = true;
+      this.showDefault = false;
+      this.showThreeMonths = false;
+    }
   },
 
   created() {
