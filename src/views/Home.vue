@@ -56,6 +56,7 @@
       thousands=","
       empty = "No data"
       loading = "Loading..."
+      discrete = "true"
     ></line-chart>
 
     <line-chart
@@ -68,6 +69,7 @@
       thousands=","
       empty = "No data"
       loading = "Loading..."
+      discrete = "true"
     ></line-chart>
 
     <line-chart
@@ -80,6 +82,7 @@
       thousands=","
       empty = "No data"
       loading = "Loading..."
+      discrete = "true"
     ></line-chart>
     <br>
     
@@ -456,7 +459,7 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("YYYY-MM"))
+      // result.map((x) => moment(x).format("MMM YYYY"))
 
       // console.log("sorted initialised result:", result);
 
@@ -550,7 +553,7 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("YYYY-MM"))
+      // result.map((x) => moment(x).format("MMM YYYY"))
 
       console.log("sorted initialised result:", revenueTemp);
 
@@ -581,11 +584,11 @@ export default {
       var todaysMonth = moment(); // "2022-04"
       var lowerBoundMonth = moment().subtract(11, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
-      revenueFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
-      expensesFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+      revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
+      expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
 
       while (lowerBoundMonth.isBefore(todaysMonth)) {
-        var addMonth = lowerBoundMonth.add(1, "month").format("YYYY-MM");
+        var addMonth = lowerBoundMonth.add(1, "month").format("MMM YYYY");
         revenueFinal[addMonth] = 0;
         expensesFinal[addMonth] = 0;
       }
@@ -595,7 +598,7 @@ export default {
 
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
-        revenueFinal[moment(key).format("YYYY-MM")] += value;
+        revenueFinal[moment(key).format("MMM YYYY")] += value;
       }
       console.log("final revenues", revenueFinal);
 
@@ -624,7 +627,7 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("YYYY-MM"))
+      // result.map((x) => moment(x).format("MMM YYYY"))
 
       // console.log("sorted initialised result:", revenueTemp);
       console.log(expensesTemp);
@@ -643,7 +646,7 @@ export default {
       }
 
       for (const [key, value] of Object.entries(expensesTemp)) {
-        expensesFinal[moment(key).format("YYYY-MM")] += value;
+        expensesFinal[moment(key).format("MMM YYYY")] += value;
       }
       console.log("final expenses", expensesFinal);
 
@@ -657,10 +660,10 @@ export default {
     findLowerBound() {
       if (!this.filterStartDate) { 
         // by default is to show data from half year ago
-        return moment().subtract(11, "months").format("YYYY-MM"); // "2021-04"
+        return moment().subtract(11, "months").format("MMM YYYY"); // "2021-04"
       }
-      console.log(moment(this.filterStartDate).format("YYYY-MM"));
-      return moment(this.filterStartDate).format("YYYY-MM");
+      console.log(moment(this.filterStartDate).format("MMM YYYY"));
+      return moment(this.filterStartDate).format("MMM YYYY");
     },
 
     findUpperBound() {
@@ -668,8 +671,8 @@ export default {
         // by default shows data until current+1 month
         return moment().add(1, "month").format("YYYY-MM"); 
       }
-      console.log( moment(this.filterEndDate).format("YYYY-MM"));
-      return moment(this.filterEndDate).format("YYYY-MM");
+      console.log( moment(this.filterEndDate).format("MMM YYYY"));
+      return moment(this.filterEndDate).format("MMM YYYY");
     },
 
     revenueExpensesAgainstTimeData3Months() {
@@ -691,7 +694,7 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("YYYY-MM"))
+      // result.map((x) => moment(x).format("MMM YYYY"))
 
       console.log("sorted initialised result:", revenueTemp);
 
@@ -722,11 +725,11 @@ export default {
       var todaysMonth = moment(); // "2022-04"
       var lowerBoundMonth = moment().subtract(3, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
-      revenueFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
-      expensesFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+      revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
+      expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
 
       while (lowerBoundMonth.isBefore(todaysMonth)) {
-        var addMonth = lowerBoundMonth.add(1, "month").format("YYYY-MM");
+        var addMonth = lowerBoundMonth.add(1, "month").format("MMM YYYY");
         revenueFinal[addMonth] = 0;
         expensesFinal[addMonth] = 0;
       }
@@ -736,7 +739,7 @@ export default {
 
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
-        revenueFinal[moment(key).format("YYYY-MM")] += value;
+        revenueFinal[moment(key).format("MMM YYYY")] += value;
       }
       console.log("final revenues", revenueFinal);
 
@@ -765,7 +768,7 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("YYYY-MM"))
+      // result.map((x) => moment(x).format("MMM YYYY"))
 
       // console.log("sorted initialised result:", revenueTemp);
       console.log(expensesTemp);
@@ -784,7 +787,7 @@ export default {
       }
 
       for (const [key, value] of Object.entries(expensesTemp)) {
-        expensesFinal[moment(key).format("YYYY-MM")] += value;
+        expensesFinal[moment(key).format("MMM YYYY")] += value;
       }
       console.log("final expenses", expensesFinal);
 
@@ -814,7 +817,7 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("YYYY-MM"))
+      // result.map((x) => moment(x).format("MMM YYYY"))
 
       console.log("sorted initialised result:", revenueTemp);
 
@@ -845,11 +848,11 @@ export default {
       var todaysMonth = moment(); // "2022-04"
       var lowerBoundMonth = moment().subtract(6, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
-      revenueFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
-      expensesFinal[lowerBoundMonth.format("YYYY-MM")] = 0;
+      revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
+      expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
 
       while (lowerBoundMonth.isBefore(todaysMonth)) {
-        var addMonth = lowerBoundMonth.add(1, "month").format("YYYY-MM");
+        var addMonth = lowerBoundMonth.add(1, "month").format("MMM YYYY");
         revenueFinal[addMonth] = 0;
         expensesFinal[addMonth] = 0;
       }
@@ -859,7 +862,7 @@ export default {
 
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
-        revenueFinal[moment(key).format("YYYY-MM")] += value;
+        revenueFinal[moment(key).format("MMM YYYY")] += value;
       }
       console.log("final revenues", revenueFinal);
 
@@ -888,7 +891,7 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("YYYY-MM"))
+      // result.map((x) => moment(x).format("MMM YYYY"))
 
       // console.log("sorted initialised result:", revenueTemp);
       console.log(expensesTemp);
@@ -907,7 +910,7 @@ export default {
       }
 
       for (const [key, value] of Object.entries(expensesTemp)) {
-        expensesFinal[moment(key).format("YYYY-MM")] += value;
+        expensesFinal[moment(key).format("MMM YYYY")] += value;
       }
       console.log("final expenses", expensesFinal);
 
