@@ -7,14 +7,13 @@
     <br /><br />
     <div id="mapid"></div>
     <div class="card">
-      <div v-if="!rentals">
-        Hey there! You do not have any Rental Properties or Expenses currently.
-        <br />
-        <img src="../../public/rentzilla_logo.png" width="50" height="50" />
+      <div v-if="Object.keys(rentals).length === 0">
+        Hey there! Your Rental Properties will show up on the map above! <br />
+        You do not have any Rental Properties currently. <br />
+        <img src="../assets/home.png" width="100" height="100" />
         <br />
         <router-link to="/my-rentals">Add Rental Properties</router-link>
         <br />
-        <router-link to="/my-expenses">Add Expenses</router-link>
       </div>
     </div>
     <br />
@@ -134,7 +133,7 @@
         v-if="
           Object.keys(expensesByRentalData).length !== 0 ||
           Object.keys(expensesByCategoryData).length !== 0 ||
-          !revenuesByRentalData[1]  || 
+          !revenuesByRentalData[1] ||
           Object.keys(rentsCollectedAgainstTime).length !== 0
         "
       >
@@ -230,10 +229,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Revenues by Rental Properties</h5>
-            <div
-              id="revenuesByRentalPieChart"
-              v-if="!revenuesByRentalData[1]"
-            >
+            <div id="revenuesByRentalPieChart" v-if="!revenuesByRentalData[1]">
               <pie-chart :data="revenuesByRentalData[0]"></pie-chart>
             </div>
             <div v-if="revenuesByRentalData[1]">
@@ -359,8 +355,10 @@ export default {
             }
           }
           var counter = 0;
+          //var isEmpty = true;
           for (let [postalCode, values] of Object.entries(resultObj)) {
             console.log(postalCode);
+            //isEmpty = fl
             let currLat = parseFloat(values.latitude);
             let currLong = parseFloat(values.longtitude);
             let currMarker = leaflet.marker([currLat, currLong]).addTo(mymap);
@@ -540,8 +538,8 @@ export default {
         }
       }
 
-      console.log("re",[result,empty]);
-      return [result,empty];
+      console.log("re", [result, empty]);
+      return [result, empty];
     },
 
     // method to get data for time series chart
@@ -614,33 +612,6 @@ export default {
     revenueExpensesAgainstTimeDataDefault() {
       // REVENUES GRAPH
       // need settle the filtering for rentals - dont need anymore
-      // for (let rental of this.rentals) {
-      //   for (let tenant of rental.tenants) {
-      //     for (let tenantRevenues of tenant.revenues) {
-      //       if (
-      //         this.filterStartDate &&
-      //         this.filterEndDate &&
-      //         (moment(tenantRevenues.paymentDate).isSameOrAfter(moment(this.filterStartDate)) &&
-      //         moment(tenantRevenues.paymentDate).isSameOrBefore(moment(this.filterEndDate)))
-      //       ) {
-      //         console.log(tenantRevenues.paymentDate);
-      //         let tenantRevenuesPaymentAmount = JSON.parse(
-      //           JSON.stringify(tenantRevenues.paymentAmount)
-      //         );
-      //         if (tenantRevenuesPaymentAmount) {
-      //           result[rental.address] += parseInt(tenantRevenuesPaymentAmount);
-      //         }
-      //       } else if (this.filterStartDate && this.filterEndDate) {
-      //         continue;
-      //       } else {
-      //         let tenantRevenuesPaymentAmount = JSON.parse(
-      //           JSON.stringify(tenantRevenues.paymentAmount)
-      //         );
-      //         result[rental.address] += parseInt(tenantRevenuesPaymentAmount);
-      //       }
-      //     }
-      //   }
-      // }
       var revenueTemp = {};
       // initalise all dates to 0 payment amount
       for (let rental of this.rentals) {
@@ -658,9 +629,6 @@ export default {
           acc[key] = revenueTemp[key];
           return acc;
         }, {});
-
-      // result.map((x) => moment(x).format("MMM YYYY"))
-
       console.log("sorted initialised result:", revenueTemp);
 
       var startDate = moment(Object.keys(revenueTemp)[0]);
@@ -710,16 +678,6 @@ export default {
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
-      // if (this.filterStartDate && this.filterEndDate) {
-      //   console.log("hi");
-      //   expenses = this.expenses.filter(
-      //     (exp) =>
-      //       moment(exp.expenseDate).isSameOrAfter(
-      //         moment(this.filterStartDate)
-      //       ) &&
-      //       moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
-      //   );
-      // }
       var expensesTemp = {};
       // initalise all dates to 0 payment amount
       for (let expense of expenses) {
@@ -732,8 +690,6 @@ export default {
           acc[key] = expensesTemp[key];
           return acc;
         }, {});
-
-      // result.map((x) => moment(x).format("MMM YYYY"))
 
       // console.log("sorted initialised result:", revenueTemp);
       console.log(expensesTemp);
@@ -782,7 +738,7 @@ export default {
     },
 
     // findLowerBound() {
-    //   if (!this.filterStartDate) { 
+    //   if (!this.filterStartDate) {
     //     // by default is to show data from half year ago
     //     return moment().subtract(11, "months").format("MMM YYYY"); // "2021-04"
     //   }
@@ -793,7 +749,7 @@ export default {
     // findUpperBound() {
     //   if (!this.filterEndDate) {
     //     // by default shows data until current+1 month
-    //     return moment().add(1, "month").format("YYYY-MM"); 
+    //     return moment().add(1, "month").format("YYYY-MM");
     //   }
     //   console.log( moment(this.filterEndDate).format("MMM YYYY"));
     //   return moment(this.filterEndDate).format("MMM YYYY");
@@ -817,9 +773,6 @@ export default {
           acc[key] = revenueTemp[key];
           return acc;
         }, {});
-
-      // result.map((x) => moment(x).format("MMM YYYY"))
-
       console.log("sorted initialised result:", revenueTemp);
 
       var startDate = moment(Object.keys(revenueTemp)[0]);
@@ -869,16 +822,6 @@ export default {
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
-      // if (this.filterStartDate && this.filterEndDate) {
-      //   console.log("hi");
-      //   expenses = this.expenses.filter(
-      //     (exp) =>
-      //       moment(exp.expenseDate).isSameOrAfter(
-      //         moment(this.filterStartDate)
-      //       ) &&
-      //       moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
-      //   );
-      // }
       var expensesTemp = {};
       // initalise all dates to 0 payment amount
       for (let expense of expenses) {
@@ -892,9 +835,6 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("MMM YYYY"))
-
-      // console.log("sorted initialised result:", revenueTemp);
       console.log(expensesTemp);
       var startDate1 = moment(Object.keys(expensesTemp)[0]);
       var endDate1 = moment(
@@ -941,8 +881,6 @@ export default {
           return acc;
         }, {});
 
-      // result.map((x) => moment(x).format("MMM YYYY"))
-
       console.log("sorted initialised result:", revenueTemp);
 
       var startDate = moment(Object.keys(revenueTemp)[0]);
@@ -980,10 +918,6 @@ export default {
         revenueFinal[addMonth] = 0;
         expensesFinal[addMonth] = 0;
       }
-
-      // console.log(revenueFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
-      // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
-
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
         revenueFinal[moment(key).format("MMM YYYY")] += value;
@@ -992,16 +926,6 @@ export default {
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
-      // if (this.filterStartDate && this.filterEndDate) {
-      //   console.log("hi");
-      //   expenses = this.expenses.filter(
-      //     (exp) =>
-      //       moment(exp.expenseDate).isSameOrAfter(
-      //         moment(this.filterStartDate)
-      //       ) &&
-      //       moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
-      //   );
-      // }
       var expensesTemp = {};
       // initalise all dates to 0 payment amount
       for (let expense of expenses) {
@@ -1014,10 +938,6 @@ export default {
           acc[key] = expensesTemp[key];
           return acc;
         }, {});
-
-      // result.map((x) => moment(x).format("MMM YYYY"))
-
-      // console.log("sorted initialised result:", revenueTemp);
       console.log(expensesTemp);
       var startDate1 = moment(Object.keys(expensesTemp)[0]);
       var endDate1 = moment(
@@ -1044,45 +964,6 @@ export default {
       ];
       return data;
     },
-    // cumulativeRevenueAgainstTimeData() {
-    //   // {time, }
-    //   var result = {};
-    //   // initalise all dates to 0 payment amount
-    //   for (let rental of this.rentals) {
-    //     for (let tenant of rental.tenants) {
-    //       for (let tenantRevenues of tenant.revenues) {
-    //         let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
-    //         result[tenantRevenuePaymentDate] = 0;
-    //       }
-    //     }
-    //   }
-    //   console.log("initalised result:", result);
-    //   for (let rental of this.rentals) {
-    //     for (let tenant of rental.tenants) {
-    //       for (let tenantRevenues of tenant.revenues) {
-    //         let tenantRevenuePaymentDate = tenantRevenues.paymentDate;
-    //         result[tenantRevenuePaymentDate] += tenantRevenues.paymentAmount;
-    //       }
-    //     }
-    //   }
-    //   console.log("unsorted", result);
-
-    //   let sortedResult = Object.keys(result)
-    //     .sort()
-    //     .reduce(function (acc, key) {
-    //       acc[key] = result[key];
-    //       return acc;
-    //     }, {});
-
-    //   var cumulativeRevenue = 0;
-    //   for (const [key, value] of Object.entries(sortedResult)) {
-    //     console.log(`${key}: ${value}`);
-    //     cumulativeRevenue += value;
-    //     sortedResult[key] = cumulativeRevenue;
-    //   }
-    //   console.log(sortedResult);
-    //   return sortedResult;
-    // },
   },
 
   components: {},
@@ -1163,6 +1044,7 @@ export default {
         { includeMetadataChanges: true },
         (doc) => {
           this.rentals = doc.data().rentals;
+          console.log("rentalsss", this.rentals);
         }
       );
     } catch (err) {
