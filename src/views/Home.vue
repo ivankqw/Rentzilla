@@ -604,16 +604,16 @@ export default {
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
-      if (this.filterStartDate && this.filterEndDate) {
-        console.log("hi");
-        expenses = this.expenses.filter(
-          (exp) =>
-            moment(exp.expenseDate).isSameOrAfter(
-              moment(this.filterStartDate)
-            ) &&
-            moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
-        );
-      }
+      // if (this.filterStartDate && this.filterEndDate) {
+      //   console.log("hi");
+      //   expenses = this.expenses.filter(
+      //     (exp) =>
+      //       moment(exp.expenseDate).isSameOrAfter(
+      //         moment(this.filterStartDate)
+      //       ) &&
+      //       moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
+      //   );
+      // }
       var expensesTemp = {};
       // initalise all dates to 0 payment amount
       for (let expense of expenses) {
@@ -657,23 +657,23 @@ export default {
       return data;
     },
 
-    findLowerBound() {
-      if (!this.filterStartDate) { 
-        // by default is to show data from half year ago
-        return moment().subtract(11, "months").format("MMM YYYY"); // "2021-04"
-      }
-      console.log(moment(this.filterStartDate).format("MMM YYYY"));
-      return moment(this.filterStartDate).format("MMM YYYY");
-    },
+    // findLowerBound() {
+    //   if (!this.filterStartDate) { 
+    //     // by default is to show data from half year ago
+    //     return moment().subtract(11, "months").format("MMM YYYY"); // "2021-04"
+    //   }
+    //   console.log(moment(this.filterStartDate).format("MMM YYYY"));
+    //   return moment(this.filterStartDate).format("MMM YYYY");
+    // },
 
-    findUpperBound() {
-      if (!this.filterEndDate) {
-        // by default shows data until current+1 month
-        return moment().add(1, "month").format("YYYY-MM"); 
-      }
-      console.log( moment(this.filterEndDate).format("MMM YYYY"));
-      return moment(this.filterEndDate).format("MMM YYYY");
-    },
+    // findUpperBound() {
+    //   if (!this.filterEndDate) {
+    //     // by default shows data until current+1 month
+    //     return moment().add(1, "month").format("YYYY-MM"); 
+    //   }
+    //   console.log( moment(this.filterEndDate).format("MMM YYYY"));
+    //   return moment(this.filterEndDate).format("MMM YYYY");
+    // },
 
     revenueExpensesAgainstTimeData3Months() {
       var revenueTemp = {};
@@ -723,7 +723,7 @@ export default {
 
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
-      var lowerBoundMonth = moment().subtract(3, "months"); // "2021-05"
+      var lowerBoundMonth = moment().subtract(2, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
@@ -745,16 +745,16 @@ export default {
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
-      if (this.filterStartDate && this.filterEndDate) {
-        console.log("hi");
-        expenses = this.expenses.filter(
-          (exp) =>
-            moment(exp.expenseDate).isSameOrAfter(
-              moment(this.filterStartDate)
-            ) &&
-            moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
-        );
-      }
+      // if (this.filterStartDate && this.filterEndDate) {
+      //   console.log("hi");
+      //   expenses = this.expenses.filter(
+      //     (exp) =>
+      //       moment(exp.expenseDate).isSameOrAfter(
+      //         moment(this.filterStartDate)
+      //       ) &&
+      //       moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
+      //   );
+      // }
       var expensesTemp = {};
       // initalise all dates to 0 payment amount
       for (let expense of expenses) {
@@ -846,7 +846,7 @@ export default {
 
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
-      var lowerBoundMonth = moment().subtract(6, "months"); // "2021-05"
+      var lowerBoundMonth = moment().subtract(5, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
@@ -868,16 +868,16 @@ export default {
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
-      if (this.filterStartDate && this.filterEndDate) {
-        console.log("hi");
-        expenses = this.expenses.filter(
-          (exp) =>
-            moment(exp.expenseDate).isSameOrAfter(
-              moment(this.filterStartDate)
-            ) &&
-            moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
-        );
-      }
+      // if (this.filterStartDate && this.filterEndDate) {
+      //   console.log("hi");
+      //   expenses = this.expenses.filter(
+      //     (exp) =>
+      //       moment(exp.expenseDate).isSameOrAfter(
+      //         moment(this.filterStartDate)
+      //       ) &&
+      //       moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
+      //   );
+      // }
       var expensesTemp = {};
       // initalise all dates to 0 payment amount
       for (let expense of expenses) {
