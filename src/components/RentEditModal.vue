@@ -33,6 +33,13 @@
                 @change="onMonthsPaidChange"
                 value="myMonthsPaid"
               />
+              <div id="validationText" style="color: red">
+                {{ this.validation }}
+              </div>
+
+            
+                
+              
               <br />
               <label for="paymentDate">Date of Payment:</label>
               <input
@@ -110,9 +117,13 @@
         <div class="modal-body">
           Please verify that you have collected rent for the following tenant:
           <br />
-          Tenant Name: {{ tenantInfo.firstName + " " + tenantInfo.lastName }} <br>
-          Total Rent Collected: ${{ tenantInfo.monthlyRent * this.myMonthsPaid}} <br>
-          Tenant's Payment Date: {{this.myPaymentDate}} <br>
+          Tenant Name: {{ tenantInfo.firstName + " " + tenantInfo.lastName }}
+          <br />
+          Total Rent Collected: ${{
+            tenantInfo.monthlyRent * this.myMonthsPaid
+          }}
+          <br />
+          Tenant's Payment Date: {{ this.myPaymentDate }} <br />
           Once you have done so, click 'Confirm'.
         </div>
         <div class="modal-footer">
@@ -203,6 +214,7 @@ export default {
       confirm: "",
       checkMonthsPaid: false,
       checkPaymentDate: false,
+      validation: " ",
     };
   },
 
@@ -235,7 +247,7 @@ export default {
         return;
       } else if (!this.myPaymentDate) {
         alert("Please enter a valid date");
-        var myModalEl2= document.getElementById("exampleModal1");
+        var myModalEl2 = document.getElementById("exampleModal1");
         var modal2 = Modal.getInstance(myModalEl2);
         modal2.hide();
         this.resetEditRentForm();
@@ -331,35 +343,44 @@ export default {
 
     async onMonthsPaidChange(event) {
       this.myMonthsPaid = event.target.value;
-       const auth = getAuth();
-    const userEmail = auth.currentUser.email;
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
 
-    const rentalRef = doc(db, "Rentals", userEmail);
-    const rentalDocSnap = await getDoc(rentalRef);
-    const rentals = rentalDocSnap.data().rentals;
-    this.rentals = rentals;
-    console.log(rentals);
+      const rentalRef = doc(db, "Rentals", userEmail);
+      const rentalDocSnap = await getDoc(rentalRef);
+      const rentals = rentalDocSnap.data().rentals;
+      this.rentals = rentals;
+      console.log(rentals);
 
-    for (let rental of rentals) {
-      // console.log(rental);
-      for (let tenant of rental.tenants) {
-        // console.log(tenant);
-        if (tenant.tenantID == this.tenantId) {
-          this.tenantInfo = {
-            firstName: tenant.firstName,
-            lastName: tenant.lastName,
-            address: rental.address,
-            postalCode: rental.postalCode,
-            monthlyRent: tenant.monthlyRent,
-            numberOfMonthsRentalUnpaid: tenant.numberOfMonthsRentalUnpaid
-          };
+      for (let rental of rentals) {
+        // console.log(rental);
+        for (let tenant of rental.tenants) {
+          // console.log(tenant);
+          if (tenant.tenantID == this.tenantId) {
+            this.tenantInfo = {
+              firstName: tenant.firstName,
+              lastName: tenant.lastName,
+              address: rental.address,
+              postalCode: rental.postalCode,
+              monthlyRent: tenant.monthlyRent,
+              numberOfMonthsRentalUnpaid: tenant.numberOfMonthsRentalUnpaid,
+            };
+          }
         }
       }
-    }
-    
 
-    console.log(this.tenantInfo);
-    this.checkMonthsPaid = this.myMonthsPaid <= this.tenantInfo.numberOfMonthsRentalUnpaid && this.myMonthsPaid > 0;
+      console.log(this.tenantInfo);
+      if (this.myMonthsPaid > this.tenantInfo.numberOfMonthsRentalUnpaid ){
+        this.validation = "Please enter a number less than or equal to " + this.tenantInfo.numberOfMonthsRentalUnpaid
+      } else if (this.myMonthsPaid <= 0) {
+        this.validation = "Please enter a number greater than 0"
+        
+      } else {
+this.validation = " "
+      }
+      this.checkMonthsPaid =
+        this.myMonthsPaid <= this.tenantInfo.numberOfMonthsRentalUnpaid &&
+        this.myMonthsPaid > 0;
     },
 
     onPaymentDateChange(event) {
