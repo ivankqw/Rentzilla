@@ -637,6 +637,7 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 1"
             );
+            return false;
           }
         }
       }
@@ -718,6 +719,7 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 2"
             );
+            return false;
           }
         }
       }
@@ -799,6 +801,7 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 3"
             );
+            return false;
           }
         }
       }
@@ -880,6 +883,7 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 4"
             );
+            return false;
           }
         }
       }
@@ -961,6 +965,7 @@ export default {
             alert(
               "Please ensure that contract end date is after contract start date for Tenant 5"
             );
+            return false;
           }
         }
       }
