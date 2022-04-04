@@ -6,13 +6,14 @@ import router from "./router/index.js";
 import { initializeApp } from "firebase/app";
 import store from "./store/index.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPhone, faCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPhone, faCircle, faChartPie } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VueChartKick from 'vue-chartkick';
 import "chartkick/chart.js"
 
 library.add(faPhone);
 library.add(faCircle);
+library.add(faChartPie)
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2848pREvxcAcLDFPSIfVC1qiCN-cU9FI",

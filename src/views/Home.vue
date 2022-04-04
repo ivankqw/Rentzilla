@@ -6,32 +6,25 @@
     <h2 class="header">My Rental Properties</h2>
     <br /><br />
     <div id="mapid"></div>
-    <br /><br />
+    <div class="card">
+      <div v-if="!rentals">
+        Hey there! You do not have any Rental Properties or Expenses currently.
+        <br />
+        <img src="../../public/rentzilla_logo.png" width="50" height="50" />
+        <br />
+        <router-link to="/my-rentals">Add Rental Properties</router-link>
+        <br />
+        <router-link to="/my-expenses">Add Expenses</router-link>
+      </div>
+    </div>
+    <br />
 
     <h2 class="header">Overview of revenues and expenses</h2>
-    <br /><br />
+    <br />
     <!-- Revenues and Expenses over Time, time series chart  -->
     <h4></h4>
     <br />
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" 
-        type="button" 
-        id="dropdownMenuButton1" 
-        data-bs-toggle="dropdown" 
-        aria-expanded="false">
-      {{value}}
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li v-for="option in options" :key="option">
-          <button class="dropdown-item" type="button" v-on:click="changeToMonths(option)">{{option}}</button>
-        </li>
-        <!-- <li><button class="dropdown-item" type="button" v-on:click="changeTo1Year">1 Year</button></li> -->
-      </ul>
-    <!-- <button v-on:click="foobarbarblacksheep">3 Months</button>
-    <button v-on:click="foobarbarblacksheep">6 Months</button> -->
-    </div>
 
-    <br />
     <!-- <line-chart :data="revenueAgainstTimeDataDefault" v-if="foo == true">3 months</line-chart>  -->
 
     <!-- <line-chart
@@ -45,53 +38,106 @@
       empty = "No data"
       loading = "Loading..."
     ></line-chart> -->
+    <div v-if="!revenueExpensesAgainstTimeDataDefault[2]">
+      <div class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ value }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li v-for="option in options" :key="option">
+            <button
+              class="dropdown-item"
+              type="button"
+              v-on:click="changeToMonths(option)"
+            >
+              {{ option }}
+            </button>
+          </li>
+          <!-- <li><button class="dropdown-item" type="button" v-on:click="changeTo1Year">1 Year</button></li> -->
+        </ul>
+        <!-- <button v-on:click="foobarbarblacksheep">3 Months</button>
+    <button v-on:click="foobarbarblacksheep">6 Months</button> -->
+      </div>
+      <br />
+      <div class="card" v-if="!revenueExpensesAgainstTimeDataDefault[2]">
+        <br />
+        <line-chart
+          :data="revenueExpensesAgainstTimeDataDefault.slice(0, 2)"
+          v-if="showDefault == true"
+          :colors="['#b00', '#666']"
+          :xmin="findLowerBound"
+          :xmax="findUpperBound"
+          prefix="SGD$"
+          thousands=","
+          empty="No data"
+          loading="Loading..."
+          discrete="true"
+        ></line-chart>
 
-    <line-chart
-      :data="revenueExpensesAgainstTimeDataDefault"
-      v-if="showDefault == true"
-      :colors="['#b00', '#666']"
-      :xmin="findLowerBound"
-      :xmax="findUpperBound"
-      prefix ="SGD$"
-      thousands=","
-      empty = "No data"
-      loading = "Loading..."
-      discrete = "true"
-    ></line-chart>
+        <line-chart
+          :data="revenueExpensesAgainstTimeData3Months"
+          v-if="showThreeMonths == true"
+          :colors="['#b00', '#666']"
+          :xmin="findLowerBound"
+          :xmax="findUpperBound"
+          prefix="SGD$"
+          thousands=","
+          empty="No data"
+          loading="Loading..."
+          discrete="true"
+        ></line-chart>
 
-    <line-chart
-      :data="revenueExpensesAgainstTimeData3Months"
-      v-if="showThreeMonths == true"
-      :colors="['#b00', '#666']"
-      :xmin="findLowerBound"
-      :xmax="findUpperBound"
-      prefix ="SGD$"
-      thousands=","
-      empty = "No data"
-      loading = "Loading..."
-      discrete = "true"
-    ></line-chart>
+        <line-chart
+          :data="revenueExpensesAgainstTimeData6Months"
+          v-if="showSixMonths == true"
+          :colors="['#b00', '#666']"
+          :xmin="findLowerBound"
+          :xmax="findUpperBound"
+          prefix="SGD$"
+          thousands=","
+          empty="No data"
+          loading="Loading..."
+          discrete="true"
+        ></line-chart>
+        <br />
+      </div>
+    </div>
+    <br />
+    <div class="card">
+      <div v-if="revenueExpensesAgainstTimeDataDefault[2]">
+        Hey there! You do not have any Revenue or Expenses currently.
+        <br />
 
-    <line-chart
-      :data="revenueExpensesAgainstTimeData6Months"
-      v-if="showSixMonths == true"
-      :colors="['#b00', '#666']"
-      :xmin="findLowerBound"
-      :xmax="findUpperBound"
-      prefix ="SGD$"
-      thousands=","
-      empty = "No data"
-      loading = "Loading..."
-      discrete = "true"
-    ></line-chart>
-    <br>
-    
-    <h2> Breakdown of Revenues and Expenses</h2>
-    <br>
+        <img src="../assets/line-chart.png" width="100" height="100" />
+        <br />
+        <router-link to="/my-rentals"
+          >Add Rental Properties to start recording Rent</router-link
+        >
+        |
+        <router-link to="/my-expenses">Add Expenses</router-link>
+      </div>
+    </div>
+    <br />
+    <h2>Breakdown of Revenues and Expenses</h2>
+    <br />
     <!-- filter -->
     <div class="text-left">
       <br />
-      <div class="filter">
+      <div
+        class="filter"
+        v-if="
+          Object.keys(expensesByRentalData).length !== 0 ||
+          Object.keys(expensesByCategoryData).length !== 0 ||
+          !revenuesByRentalData[1]  || 
+          Object.keys(rentsCollectedAgainstTime).length !== 0
+        "
+      >
         <form id="filterForm" class="row">
           <div class="col align-self-center"></div>
           <div class="col"></div>
@@ -130,11 +176,25 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Expenses by Category</h5>
-            <div id="expensesByCatergoryPieChart">
+            <div
+              id="expensesByCatergoryPieChart"
+              v-if="Object.keys(expensesByCategoryData).length !== 0"
+            >
               <pie-chart
                 :data="expensesByCategoryData"
                 :donut="true"
               ></pie-chart>
+            </div>
+            <div v-if="Object.keys(expensesByCategoryData).length === 0">
+              Hey there! You do not have any Expenses currently.
+              <br />
+              <img src="../assets/pie-chart.png" width="100" height="100" />
+              <br />
+              <router-link to="/my-rentals"
+                >Add more Rental Properties</router-link
+              >
+              |
+              <router-link to="/my-expenses">Add Expenses</router-link>
             </div>
           </div>
         </div>
@@ -145,11 +205,21 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Expenses by Rental Properties</h5>
-            <div id="expensesByRentalBarChart">
+            <div
+              id="expensesByRentalBarChart"
+              v-if="Object.keys(expensesByRentalData).length !== 0"
+            >
               <column-chart
                 :data="expensesByRentalData"
                 :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"
               ></column-chart>
+            </div>
+            <div v-if="Object.keys(expensesByRentalData).length === 0">
+              Hey there! You do not have any Rental Properties
+              <br />
+              <img src="../assets/bar-chart.png" width="100" height="100" />
+              <br />
+              <router-link to="/my-rentals">Add Rental Properties</router-link>
             </div>
           </div>
         </div>
@@ -160,32 +230,59 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Revenues by Rental Properties</h5>
-            <div id="revenuesByRentalPieChart">
-              <pie-chart :data="revenuesByRentalData"></pie-chart>
+            <div
+              id="revenuesByRentalPieChart"
+              v-if="!revenuesByRentalData[1]"
+            >
+              <pie-chart :data="revenuesByRentalData[0]"></pie-chart>
+            </div>
+            <div v-if="revenuesByRentalData[1]">
+              Hey there! You do not have any Revenues currently.
+              <br />
+              <img src="../assets/pie-chart.png" width="100" height="100" />
+              <br />
+              <router-link to="/my-rentals"
+                >Add Rental Properties to start recording Revenue</router-link
+              >
             </div>
           </div>
         </div>
       </div>
     </div>
-  <br>
+    <br />
     <div class="row">
       <div class="col">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Rents Collected</h5>
-            <div id="revenuesByRentalPieChart">
-              <line-chart :data="rentsCollectedAgainstTime" prefix ="SGD$" thousands=","></line-chart> 
+            <div
+              id="revenuesByRentalPieChart"
+              v-if="Object.keys(rentsCollectedAgainstTime).length !== 0"
+            >
+              <line-chart
+                :data="rentsCollectedAgainstTime"
+                prefix="SGD$"
+                thousands=","
+              ></line-chart>
+            </div>
+            <div v-if="Object.keys(rentsCollectedAgainstTime).length === 0">
+              Hey there! You do not have any Revenues currently.
+              <br />
+              <img src="../assets/line-chart.png" width="100" height="100" />
+              <br />
+              <router-link to="/my-rentals"
+                >Add Rental Properties to start recording Revenues</router-link
+              >
             </div>
           </div>
         </div>
       </div>
     </div>
-    <br>
-  
+    <br />
+
     <!-- <h4>cumulative revenue against time</h4>
     <line-chart :data="cumulativeRevenueAgainstTimeData">TIMESERIES</line-chart> -->
   </div>
-  
 </template>
 
 <script>
@@ -331,8 +428,8 @@ export default {
       showThreeMonths: false,
       showSixMonths: false,
       showDefault: true,
-      options: ['1 Year', '6 Months', '3 Months'],
-      value: '1 Year',
+      options: ["1 Year", "6 Months", "3 Months"],
+      value: "1 Year",
     };
   },
 
@@ -434,10 +531,19 @@ export default {
           }
         }
       }
-      console.log(result);
-      return result;
+      var empty = true;
+
+      for (const [key, value] of Object.entries(result)) {
+        if (value !== 0 && key) {
+          empty = false;
+          break;
+        }
+      }
+
+      console.log("re",[result,empty]);
+      return [result,empty];
     },
-    
+
     // method to get data for time series chart
     rentsCollectedAgainstTime() {
       // {time, }
@@ -487,10 +593,10 @@ export default {
       if (this.filterStartDate && this.filterEndDate) {
         // filter by dates
         const resultAsArray = Object.entries(result);
-        // console.log(resultAsArray); 
+        // console.log(resultAsArray);
         // nested array -> [['2022-03-30', 111221], ['2022-04-01', 115508], ...]
 
-        const filteredResultsArray= resultAsArray.filter(
+        const filteredResultsArray = resultAsArray.filter(
           ([paymentDate]) =>
             moment(paymentDate).isSameOrAfter(moment(this.filterStartDate)) &&
             moment(paymentDate).isSameOrBefore(moment(this.filterEndDate))
@@ -499,7 +605,7 @@ export default {
         const filteredResultsFinal = Object.fromEntries(filteredResultsArray);
         console.log(filteredResultsFinal);
         return filteredResultsFinal;
-      }     
+      }
 
       // else -> no filter applied
       return result;
@@ -650,15 +756,33 @@ export default {
       }
       console.log("final expenses", expensesFinal);
 
+      var empty = true;
+
+      for (const [key, value] of Object.entries(expensesTemp)) {
+        if (value !== 0 && key) {
+          empty = false;
+          break;
+        }
+      }
+
+      for (const [key, value] of Object.entries(revenueFinal)) {
+        if (value !== 0 && key) {
+          empty = false;
+          break;
+        }
+      }
+
       var data = [
         { name: "Revenue", data: revenueFinal },
         { name: "Expenses", data: expensesFinal },
+        empty,
       ];
+      console.log("foooo", data);
       return data;
     },
 
     findLowerBound() {
-      if (!this.filterStartDate) { 
+      if (!this.filterStartDate) {
         // by default is to show data from half year ago
         return moment().subtract(11, "months").format("MMM YYYY"); // "2021-04"
       }
@@ -669,9 +793,9 @@ export default {
     findUpperBound() {
       if (!this.filterEndDate) {
         // by default shows data until current+1 month
-        return moment().add(1, "month").format("YYYY-MM"); 
+        return moment().add(1, "month").format("YYYY-MM");
       }
-      console.log( moment(this.filterEndDate).format("MMM YYYY"));
+      console.log(moment(this.filterEndDate).format("MMM YYYY"));
       return moment(this.filterEndDate).format("MMM YYYY");
     },
 
@@ -734,7 +858,7 @@ export default {
         expensesFinal[addMonth] = 0;
       }
 
-      console.log(revenueFinal) // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      console.log(revenueFinal); // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
       // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
 
       // populate revenueFinal with the months that have earned revenue
@@ -798,7 +922,7 @@ export default {
       return data;
     },
 
-    revenueExpensesAgainstTimeData6Months() { 
+    revenueExpensesAgainstTimeData6Months() {
       var revenueTemp = {};
       // initalise all dates to 0 payment amount
       for (let rental of this.rentals) {
@@ -999,13 +1123,13 @@ export default {
 
     changeToMonths(option) {
       this.value = option;
-      if (this.value === '1 Year') {
+      if (this.value === "1 Year") {
         this.showDefault = true;
         this.showThreeMonths = false;
         this.showSixMonths = false;
-      } else if (this.value === '3 Months') {
+      } else if (this.value === "3 Months") {
         this.changeTo3Months();
-      } else { 
+      } else {
         this.changeTo6Months();
       }
     },
@@ -1014,14 +1138,13 @@ export default {
       this.showThreeMonths = true;
       this.showDefault = false;
       this.showSixMonths = false;
-
     },
 
     changeTo6Months() {
       this.showSixMonths = true;
       this.showDefault = false;
       this.showThreeMonths = false;
-    }
+    },
   },
 
   created() {

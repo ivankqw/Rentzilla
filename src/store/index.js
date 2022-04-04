@@ -45,7 +45,7 @@ export default createStore({
             alert("Wrong password provided");
             break;
           default:
-            alert("Something went wrong!");
+            alert("Missing details!");
         }
 
         return;
@@ -92,7 +92,7 @@ export default createStore({
             alert("Operation not allowed");
             break;
           default:
-            alert("Something went wrong!");
+            alert("Missing details!");
         }
         return;
       }

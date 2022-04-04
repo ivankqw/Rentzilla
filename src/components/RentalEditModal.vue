@@ -12,7 +12,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit rental</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Manage Rental Property</h5>
           <button
             type="button"
             class="btn-close"

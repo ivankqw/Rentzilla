@@ -31,7 +31,7 @@
             <th>Unit Number</th>
             <th>Purchase Price</th>
             <th>View Tenant Details</th>
-            <th>Edit Rental Details</th>
+            <th>Manage Rental Property</th>
           </tr>
         </thead>
         <tbody>
@@ -58,7 +58,7 @@
                 class="btn btn-primary btn-sm"
                 @click="this.editRentalDetails(i)"
               >
-                Edit
+                Manage
               </button>
             </td>
           </tr>
