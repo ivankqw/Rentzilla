@@ -64,14 +64,73 @@
               <button
                 type="button"
                 class="btn btn-success"
+                data-bs-dismiss="modal"
+                style="margin-right: 10px"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal1"
+                v-on:click="retrieveTenantInfo"
+                :disabled="canConfirm"
+              >
+                Confirm
+              </button>
+              <!-- <button
+                type="button"
+                class="btn btn-success"
                 v-on:click="savePayment(this.tenantId)"
                 data-bs-dismiss="modal fade"
                 style="margin-right: 10px"
               >
                 Confirm
-              </button>
+              </button> -->
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ConfirmModal -->
+  <div
+    class="modal fade"
+    id="exampleModal1"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirm?</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          Please verify that you have collected rent for the following tenant:
+          <br />
+          Tenant Name: {{ tenantInfo.firstName + " " + tenantInfo.lastName }} <br>
+          Total Rent Collected: ${{ tenantInfo.monthlyRent * this.myMonthsPaid}} <br>
+          Tenant's Payment Date: {{this.myPaymentDate}} <br>
+          Once you have done so, click 'Confirm'.
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            @click="savePayment(this.tenantId)"
+            class="btn btn-success"
+            data-bs-dismiss="modal"
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>
@@ -115,31 +174,97 @@ export default {
     const rentals = rentalDocSnap.data().rentals;
     this.rentals = rentals;
     console.log("mounted rentals:", rentals);
+
+    for (let rental of this.rentals) {
+      // console.log(rental);
+      for (let tenant of rental.tenants) {
+        // console.log(tenant);
+        if (tenant.tenantID == this.tenantId) {
+          this.tenantInfo = {
+            firstName: tenant.firstName,
+            lastName: tenant.lastName,
+            address: rental.address,
+            postalCode: rental.postalCode,
+            monthlyRent: tenant.monthlyRent,
+          };
+        }
+      }
+    }
+    console.log(this.tenantInfo);
   },
 
   data() {
     return {
       myMonthsPaid: this.monthsPaid,
       myPaymentDate: this.paymentDate,
-      paymentDetails: ""
+      paymentDetails: "",
+      tenantInfo: "",
+      confirm: "",
+      checkMonthsPaid: false,
+      checkPaymentDate: false,
     };
   },
 
-//   computed: {
-//       getPaymentAmount () {
-//           const auth = getAuth();
-//           const userEmail = auth.currentUser.email;
-//           const rentalRef = doc(db, "Rentals", userEmail);
-//           const tenantDocSnap = await getDoc(rentalRef, this.);
-//       }
-//   }
+  computed: {
+    canConfirm() {
+      if (this.checkMonthsPaid && this.checkPaymentDate) {
+        return false;
+      }
+      return true;
+    },
+  },
 
   methods: {
     resetEditRentForm() {
       document.getElementById("editRentForm").reset();
       this.myMonthsPaid = "";
       this.myPaymentDate = "";
+      this.checkMonthsPaid = false;
+      this.checkPaymentDate = false;
       console.log("form resetted");
+    },
+
+    async retrieveTenantInfo() {
+      if (!this.myMonthsPaid) {
+        alert("Please enter a valid number of months");
+        // var myModalEl = document.getElementById("exampleModal1");
+        // var modal = Modal.getInstance(myModalEl);
+        // modal.hide();
+        // this.resetEditRentForm();
+        return;
+      } else if (!this.myPaymentDate) {
+        alert("Please enter a valid date");
+        var myModalEl2= document.getElementById("exampleModal1");
+        var modal2 = Modal.getInstance(myModalEl2);
+        modal2.hide();
+        this.resetEditRentForm();
+        return;
+      }
+      const auth = getAuth();
+      const userEmail = auth.currentUser.email;
+
+      const rentalRef = doc(db, "Rentals", userEmail);
+      const rentalDocSnap = await getDoc(rentalRef);
+      const rentals = rentalDocSnap.data().rentals;
+      this.rentals = rentals;
+      console.log("mounted rentals:", rentals);
+
+      for (let rental of this.rentals) {
+        // console.log(rental);
+        for (let tenant of rental.tenants) {
+          // console.log(tenant);
+          if (tenant.tenantID == this.tenantId) {
+            this.tenantInfo = {
+              firstName: tenant.firstName,
+              lastName: tenant.lastName,
+              address: rental.address,
+              postalCode: rental.postalCode,
+              monthlyRent: tenant.monthlyRent,
+            };
+            return this.tenantInfo;
+          }
+        }
+      }
     },
 
     async savePayment(tenantId) {
@@ -169,15 +294,22 @@ export default {
             if (tenant.tenantID == tenantId) {
               // console.log("owe money");
 
-              if (this.myMonthsPaid > tenant.numberOfMonthsRentalUnpaid || this.myMonthsPaid <= 0) {
-                  alert("Please enter a valid number of months");
-                  return;
+              if (
+                this.myMonthsPaid > tenant.numberOfMonthsRentalUnpaid ||
+                this.myMonthsPaid <= 0
+              ) {
+                alert("Please enter a valid number of months");
+                return;
               }
 
               tenant.numberOfMonthsRentalUnpaid -= this.myMonthsPaid;
-              let paymentAmount = parseInt(tenant.monthlyRent) * this.myMonthsPaid;
+              let paymentAmount =
+                parseInt(tenant.monthlyRent) * this.myMonthsPaid;
 
-              tenant.revenues.push({paymentDate: this.myPaymentDate, paymentAmount: paymentAmount});
+              tenant.revenues.push({
+                paymentDate: this.myPaymentDate,
+                paymentAmount: paymentAmount,
+              });
             }
           }
         }
@@ -193,14 +325,17 @@ export default {
       var myModalEl = document.getElementById("rentEditModal");
       var modal = Modal.getInstance(myModalEl);
       modal.hide();
+      this.resetEditRentForm();
     },
 
     onMonthsPaidChange(event) {
       this.myMonthsPaid = event.target.value;
+      this.checkMonthsPaid = true;
     },
 
     onPaymentDateChange(event) {
       this.myPaymentDate = event.target.value;
+      this.checkPaymentDate = true;
     },
   },
 };
