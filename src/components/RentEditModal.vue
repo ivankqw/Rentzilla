@@ -175,7 +175,7 @@ export default {
     this.rentals = rentals;
     console.log("mounted rentals:", rentals);
 
-    for (let rental of this.rentals) {
+    for (let rental of rentals) {
       // console.log(rental);
       for (let tenant of rental.tenants) {
         // console.log(tenant);
@@ -328,9 +328,37 @@ export default {
       this.resetEditRentForm();
     },
 
-    onMonthsPaidChange(event) {
+    async onMonthsPaidChange(event) {
       this.myMonthsPaid = event.target.value;
-      this.checkMonthsPaid = true;
+       const auth = getAuth();
+    const userEmail = auth.currentUser.email;
+
+    const rentalRef = doc(db, "Rentals", userEmail);
+    const rentalDocSnap = await getDoc(rentalRef);
+    const rentals = rentalDocSnap.data().rentals;
+    this.rentals = rentals;
+    console.log(rentals);
+
+    for (let rental of rentals) {
+      // console.log(rental);
+      for (let tenant of rental.tenants) {
+        // console.log(tenant);
+        if (tenant.tenantID == this.tenantId) {
+          this.tenantInfo = {
+            firstName: tenant.firstName,
+            lastName: tenant.lastName,
+            address: rental.address,
+            postalCode: rental.postalCode,
+            monthlyRent: tenant.monthlyRent,
+            numberOfMonthsRentalUnpaid: tenant.numberOfMonthsRentalUnpaid
+          };
+        }
+      }
+    }
+    
+
+    console.log(this.tenantInfo);
+    this.checkMonthsPaid = this.myMonthsPaid <= this.tenantInfo.numberOfMonthsRentalUnpaid && this.myMonthsPaid > 0;
     },
 
     onPaymentDateChange(event) {
