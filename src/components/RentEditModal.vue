@@ -37,9 +37,6 @@
                 {{ this.validation }}
               </div>
 
-            
-                
-              
               <br />
               <label for="paymentDate">Date of Payment:</label>
               <input
@@ -370,13 +367,14 @@ export default {
       }
 
       console.log(this.tenantInfo);
-      if (this.myMonthsPaid > this.tenantInfo.numberOfMonthsRentalUnpaid ){
-        this.validation = "Please enter a number less than or equal to " + this.tenantInfo.numberOfMonthsRentalUnpaid
+      if (this.myMonthsPaid > this.tenantInfo.numberOfMonthsRentalUnpaid) {
+        this.validation =
+          "Please enter a number less than or equal to " +
+          this.tenantInfo.numberOfMonthsRentalUnpaid;
       } else if (this.myMonthsPaid <= 0) {
-        this.validation = "Please enter a number greater than 0"
-        
+        this.validation = "Please enter a number greater than 0";
       } else {
-this.validation = " "
+        this.validation = " ";
       }
       this.checkMonthsPaid =
         this.myMonthsPaid <= this.tenantInfo.numberOfMonthsRentalUnpaid &&
