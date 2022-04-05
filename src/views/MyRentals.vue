@@ -299,7 +299,7 @@ export default {
 
       // Sort array
       return allUnpaid.sort(
-        (a, b) => a.numberOfMonthsRentalUnpaid - b.numberOfMonthsRentalUnpaid
+        (a, b) => b.numberOfMonthsRentalUnpaid - a.numberOfMonthsRentalUnpaid
       );
     },
   },
