@@ -1,33 +1,52 @@
 <template>
   <div class="container" style="margin-top: 20px">
-    <button
-      class="btn btn-outline-warning newsbtn"
-      type="button"
-      id="generalNews"
-      v-on:click="getGeneralNews()"
-    >
-      General
-    </button>
+    <div class="text-right align-right row g-0">
+      <div class="col-md-5 w-auto ms-auto">
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="btnradio1"
+            autocomplete="off"
+            checked
+            v-on:click="getGeneralNews()"
+          />
+          <label class="btn btn-outline-primary" for="btnradio1"
+            >General</label
+          >
 
-    <button
-      class="btn btn-outline-success newsbtn"
-      type="button"
-      id="bizNews"
-      v-on:click="getBizNews()"
-    >
-      Business
-    </button>
-    <button
-      class="btn btn-outline-danger newsbtn"
-      type="button"
-      id="healthNews"
-      v-on:click="getHealthNews()"
-    >
-      Health
-    </button>
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="btnradio2"
+            autocomplete="off"
+            v-on:click="getBizNews()"
+          />
+          <label class="btn btn-outline-primary" for="btnradio2"
+            >Business</label
+          >
 
-    <br /><br>
-    <h2 id="firstHeader" style="text-align: left">Top General News</h2><br><br><br>
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="btnradio3"
+            autocomplete="off"
+            v-on:click="getHealthNews()"
+          />
+          <label class="btn btn-outline-primary" for="btnradio3">Health </label>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="firstHeader" style="text-align: left">Top General News</h2>
+    <br /><br /><br />
     <div class="row row-cols-1 row-cols-md-3 g-4" id="top-content">
       <div v-for="(article, index) in articlesTop" :key="index" class="col">
         <a :href="article.url" target="_blank">
@@ -38,7 +57,9 @@
               @error="replaceByDefault(e)"
             />
             <div class="card-body">
-              <h5 class="card-title"><strong>{{ article.title }}</strong></h5>
+              <h5 class="card-title">
+                <strong>{{ article.title }}</strong>
+              </h5>
               <p class="card-text">{{ article.description }}</p>
             </div>
           </div>
@@ -46,7 +67,8 @@
       </div>
     </div>
     <br />
-    <h2 id="secondHeader" style="text-align: left">Other News</h2><br><br><br>
+    <h2 id="secondHeader" style="text-align: left">Other News</h2>
+    <br /><br /><br />
     <div
       class="row row-cols-1 row-cols-md-1 g-4 align-items-stretch"
       id="bottom-content"
@@ -67,7 +89,9 @@
             </div>
             <div class="col-md-9">
               <div class="card-body">
-                <h5 class="card-title"><strong>{{ article.title }}</strong></h5>
+                <h5 class="card-title">
+                  <strong>{{ article.title }}</strong>
+                </h5>
                 <p class="card-text">
                   {{ article.description }}
                 </p>
@@ -199,10 +223,9 @@ export default {
 .card:hover {
   transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
-
 }
 
-.newsbtn{
+.newsbtn {
   margin-left: 5px;
   margin-right: 5px;
 }

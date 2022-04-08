@@ -1,11 +1,9 @@
 <template>
   <div class="container">
-    <h1 class="header">Home Page</h1>
-    <h3>Welcome back, {{ $store.state.name }}</h3>
-    <h3>Your email is {{ $store.state.email }}</h3>
     <div id="helpButton">
       <button class="helpButton" @click="clickTour">Help!</button>
     </div>
+    <br>
     <h2 class="header" id="myRentalProperties">My Rental Properties</h2>
     <br /><br />
     <div id="mapid"></div>
@@ -14,7 +12,6 @@
       <div v-if="Object.keys(rentals).length === 0">
         Hey there! Your Rental Properties will show up on the map above! <br />
         You do not have any Rental Properties currently. <br />
-        <img src="../assets/home.png" width="100" height="100" />
         <br />
         <router-link to="/my-rentals">Add Rental Properties</router-link>
         <br />
@@ -28,82 +25,54 @@
     <h4></h4>
     <br />
 
-    <!-- <line-chart :data="revenueAgainstTimeDataDefault" v-if="foo == true">3 months</line-chart>  -->
-
-    <!-- <line-chart
-      :data="revenueExpensesAgainstTimeDataByMonth"
-      :colors="['#b00', '#666']"
-      :xmin="findLowerBound"
-      :xmax="findUpperBound"
-      v-if="foo == false"
-      prefix ="SGD$"
-      thousands=","
-      empty = "No data"
-      loading = "Loading..."
-    ></line-chart> -->
     <div v-if="!revenueExpensesAgainstTimeDataDefault[2]">
       <div class="dropdown">
-        <!---
-        <button
-          class="btn btn-secondary dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton1"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          {{ value }}
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li v-for="option in options" :key="option">
-            <button
-              class="dropdown-item"
-              type="button"
-              v-on:click="changeToMonths(option)"
+        <div class="text-right align-right row g-0">
+          <div class="col-md-5 w-auto ms-auto">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic radio toggle button group"
             >
-              {{ option }}
-            </button>
-          </li>
-        </ul>
-        --->
-        
-        <div
-          class="btn-group"
-          role="group"
-          aria-label="Basic radio toggle button group"
-        >
-          <input
-            type="radio"
-            class="btn-check"
-            name="btnradio"
-            id="btnradio1"
-            autocomplete="off"
-            checked
-             v-on:click="changeToMonths('3 Months')"
-          />
-          <label class="btn btn-outline-primary" for="btnradio1">3 Months</label>
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio1"
+                autocomplete="off"
+                checked
+                v-on:click="changeToMonths('3 Months')"
+              />
+              <label class="btn btn-outline-primary" for="btnradio1"
+                >3 Months</label
+              >
 
-          <input
-            type="radio"
-            class="btn-check"
-            name="btnradio"
-            id="btnradio2"
-            autocomplete="off"
-             v-on:click="changeToMonths('6 Months')"
-          />
-          <label class="btn btn-outline-primary" for="btnradio2">6 Months</label>
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio2"
+                autocomplete="off"
+                v-on:click="changeToMonths('6 Months')"
+              />
+              <label class="btn btn-outline-primary" for="btnradio2"
+                >6 Months</label
+              >
 
-          <input
-            type="radio"
-            class="btn-check"
-            name="btnradio"
-            id="btnradio3"
-            autocomplete="off"
-             v-on:click="changeToMonths('1 Year')"
-          />
-          <label class="btn btn-outline-primary" for="btnradio3">1 Year </label>
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio3"
+                autocomplete="off"
+                v-on:click="changeToMonths('1 Year')"
+              />
+              <label class="btn btn-outline-primary" for="btnradio3"
+                >1 Year
+              </label>
+            </div>
+          </div>
         </div>
-        <!-- <button v-on:click="foobarbarblacksheep">3 Months</button>
-    <button v-on:click="foobarbarblacksheep">6 Months</button> -->
       </div>
       <br />
       <div
@@ -116,7 +85,7 @@
         <line-chart
           :data="revenueExpensesAgainstTimeDataDefault.slice(0, 2)"
           v-if="showDefault == true"
-          :colors="['#b00', '#666']"
+          :colors="['green', 'red']"
           :xmin="findLowerBound"
           :xmax="findUpperBound"
           prefix="SGD$"
@@ -129,7 +98,7 @@
         <line-chart
           :data="revenueExpensesAgainstTimeData3Months"
           v-if="showThreeMonths == true"
-          :colors="['#b00', '#666']"
+          :colors="['green', 'red']"
           :xmin="findLowerBound"
           :xmax="findUpperBound"
           prefix="SGD$"
@@ -142,7 +111,7 @@
         <line-chart
           :data="revenueExpensesAgainstTimeData6Months"
           v-if="showSixMonths == true"
-          :colors="['#b00', '#666']"
+          :colors="['green', 'red']"
           :xmin="findLowerBound"
           :xmax="findUpperBound"
           prefix="SGD$"
@@ -160,7 +129,6 @@
         Hey there! You do not have any Revenue or Expenses currently.
         <br />
 
-        <img src="../assets/line-chart.png" width="100" height="100" />
         <br />
         <router-link to="/my-rentals"
           >Add Rental Properties to start recording Rent</router-link
@@ -173,45 +141,53 @@
     <h2>Breakdown of Revenues and Expenses</h2>
     <br />
     <!-- filter -->
-    <div class="text-left">
-      <br />
-      <div
-        class="filter"
-        v-if="
-          Object.keys(expensesByRentalData).length !== 0 ||
-          Object.keys(expensesByCategoryData).length !== 0 ||
-          !revenuesByRentalData[1] ||
-          Object.keys(rentsCollectedAgainstTime).length !== 0
-        "
-      >
-        <form id="filterForm" class="row">
-          <div class="col align-self-center"></div>
-          <div class="col"></div>
-          <div class="col"></div>
-          <div class="col">
-            <label for="filterStart" class="form-label">Start Date:</label>
-            <input
-              id="filterStart"
-              @input="onFilterStartInput"
-              type="date"
-              class="form-control"
-            />
+    <div class="text-right align-right row g-0">
+      <div class="col-md-5 w-auto ms-auto">
+        <div class="text-left">
+          <br />
+          <div
+            class="filter"
+            v-if="
+              Object.keys(expensesByRentalData).length !== 0 ||
+              Object.keys(expensesByCategoryData).length !== 0 ||
+              !revenuesByRentalData[1] ||
+              Object.keys(rentsCollectedAgainstTime).length !== 0
+            "
+          >
+            <form id="filterForm" class="row">
+              <div class="col align-self-center"></div>
+              <div class="col"></div>
+              <div class="col"></div>
+              <div class="col">
+                <label for="filterStart" class="form-label">Start Date:</label>
+                <input
+                  id="filterStart"
+                  @input="onFilterStartInput"
+                  type="date"
+                  class="form-control"
+                />
+              </div>
+              <div class="col">
+                <label for="filterEnd" class="form-label">End Date:</label>
+                <input
+                  id="filterEnd"
+                  @input="onFilterEndInput"
+                  type="date"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-3 align-self-center">
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  @click="clearFilter"
+                >
+                  Clear filter
+                </button>
+              </div>
+            </form>
           </div>
-          <div class="col">
-            <label for="filterEnd" class="form-label">End Date:</label>
-            <input
-              id="filterEnd"
-              @input="onFilterEndInput"
-              type="date"
-              class="form-control"
-            />
-          </div>
-          <div class="col-md-2 align-self-center">
-            <button type="button" class="btn btn-warning" @click="clearFilter">
-              Clear filter
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
 
@@ -234,7 +210,6 @@
             <div v-if="Object.keys(expensesByCategoryData).length === 0">
               Hey there! You do not have any Expenses currently.
               <br />
-              <img src="../assets/pie-chart.png" width="100" height="100" />
               <br />
               <router-link to="/my-rentals"
                 >Add more Rental Properties</router-link
@@ -263,7 +238,6 @@
             <div v-if="Object.keys(expensesByRentalData).length === 0">
               Hey there! You do not have any Rental Properties
               <br />
-              <img src="../assets/bar-chart.png" width="100" height="100" />
               <br />
               <router-link to="/my-rentals">Add Rental Properties</router-link>
             </div>
@@ -282,7 +256,6 @@
             <div v-if="revenuesByRentalData[1]">
               Hey there! You do not have any Revenues currently.
               <br />
-              <img src="../assets/pie-chart.png" width="100" height="100" />
               <br />
               <router-link to="/my-rentals"
                 >Add Rental Properties to start recording Revenue</router-link
@@ -293,36 +266,6 @@
       </div>
     </div>
     <br />
-    <!---
-    <div class="row">
-      <div class="col">
-        <div class="card rentsCollectedAgainstTime">
-          <div class="card-body">
-            <h5 class="card-title">Rents Collected</h5>
-            <div
-              id="revenuesByRentalPieChart"
-              v-if="Object.keys(rentsCollectedAgainstTime).length !== 0"
-            >
-              <line-chart
-                :data="rentsCollectedAgainstTime"
-                prefix="SGD$"
-                thousands=","
-              ></line-chart>
-            </div>
-            <div v-if="Object.keys(rentsCollectedAgainstTime).length === 0">
-              Hey there! You do not have any Revenues currently.
-              <br />
-              <img src="../assets/line-chart.png" width="100" height="100" />
-              <br />
-              <router-link to="/my-rentals"
-                >Add Rental Properties to start recording Revenues</router-link
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    ---->
     <br />
 
     <!-- <h4>cumulative revenue against time</h4>
