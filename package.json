@@ -21,9 +21,11 @@
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",
     "v-onboarding": "^1.0.2",
+    "v3-tour": "^3.1.2",
     "vue": "^3.0.0-0",
     "vue-chartkick": "^1.1.0",
     "vue-router": "^4.0.13",
+    "vue3-tour": "^0.2.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

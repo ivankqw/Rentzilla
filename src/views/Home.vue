@@ -3,9 +3,13 @@
     <h1 class="header">Home Page</h1>
     <h3>Welcome back, {{ $store.state.name }}</h3>
     <h3>Your email is {{ $store.state.email }}</h3>
-    <h2 class="header">My Rental Properties</h2>
+    <div id="helpButton">
+    <button class="helpButton" @click="clickTour">Help!</button>
+    </div>
+    <h2 class="header" id="myRentalProperties">My Rental Properties</h2>
     <br /><br />
     <div id="mapid"></div>
+    <v-tour name="myTour" :steps="steps"></v-tour>
     <div class="card">
       <div v-if="Object.keys(rentals).length === 0">
         Hey there! Your Rental Properties will show up on the map above! <br />
@@ -64,7 +68,11 @@
     <button v-on:click="foobarbarblacksheep">6 Months</button> -->
       </div>
       <br />
-      <div class="card" v-if="!revenueExpensesAgainstTimeDataDefault[2]">
+      <div
+        class="card revenueExpensesAgainstTime"
+        id="revenueExpensesAgainstTime"
+        v-if="!revenueExpensesAgainstTimeDataDefault[2]"
+      >
         <br />
         <line-chart
           :data="revenueExpensesAgainstTimeDataDefault.slice(0, 2)"
@@ -108,7 +116,7 @@
       </div>
     </div>
     <br />
-    <div class="card">
+    <div class="card revenueExpensesAgainstTime">
       <div v-if="revenueExpensesAgainstTimeDataDefault[2]">
         Hey there! You do not have any Revenue or Expenses currently.
         <br />
@@ -172,7 +180,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
       <!-- expensesByCategory Pie Chart -->
       <div class="col">
-        <div class="card">
+        <div class="card expensesByCategory" id="expensesByCategory">
           <div class="card-body">
             <h5 class="card-title">Expenses by Category</h5>
             <div
@@ -201,7 +209,7 @@
 
       <!-- expensesByRentalProperty Column Chart -->
       <div class="col">
-        <div class="card">
+        <div class="card expensesByRentalProperty">
           <div class="card-body">
             <h5 class="card-title">Expenses by Rental Properties</h5>
             <div
@@ -226,7 +234,7 @@
 
       <!-- revenuesByRentalProperty Pie Chart -->
       <div class="col">
-        <div class="card">
+        <div class="card revenuesByRentalProperties">
           <div class="card-body">
             <h5 class="card-title">Revenues by Rental Properties</h5>
             <div id="revenuesByRentalPieChart" v-if="!revenuesByRentalData[1]">
@@ -248,7 +256,7 @@
     <br />
     <div class="row">
       <div class="col">
-        <div class="card">
+        <div class="card rentsCollectedAgainstTime">
           <div class="card-body">
             <h5 class="card-title">Rents Collected</h5>
             <div
@@ -283,7 +291,7 @@
 
 <script>
 import leaflet from "leaflet";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { getDoc, doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { getAuth } from "firebase/auth";
@@ -297,6 +305,68 @@ export default {
     var accessToken;
     var rentals;
     var expenses;
+    const steps = ref([]);
+
+    steps.value = [
+      {
+        target: "#mapid",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Welcome to Rentzilla!",
+        },
+        content: `You will be able to see your Rental Properties in this map here`,
+      },
+      {
+        target: ".revenueExpensesAgainstTime",
+        content:
+          "You will be able to see your Revenue and Expenses oevr time here!<br> Head over to My Rentals and My Expenses to find out more!",
+      },
+      {
+        target: ".expensesByCategory",
+        content:
+          "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+      },
+      {
+        target: ".expensesByRentalProperty",
+        content:
+          "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+      },
+      {
+        target: ".revenuesByRentalProperties",
+        content:
+          "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+      },
+      
+      {
+        target: ".rentsCollectedAgainstTime",
+        content:
+          "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+      },
+    ];
+
+    const clickTour = () => {
+      console.log("hi");
+      console.log(window.tours)
+      try {
+        window.tours['myTour'].start();
+      } catch (e) {
+        console.log("error here click tour", e);
+      }
+    };
 
     (async () => {
       try {
@@ -413,6 +483,10 @@ export default {
         )
         .addTo(mymap);
     });
+    return {
+      clickTour,
+      steps,
+    };
   },
 
   data() {
@@ -1075,5 +1149,19 @@ h2 {
   float: left;
   font-weight: bold;
   margin-left: 30px;
+}
+
+.helpButton {
+  background-color : #31B0D5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: #46b8da;
+}
+
+#helpButton {
+  position: fixed;
+  bottom: -4px;
+  right: 10px;
 }
 </style>
