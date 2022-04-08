@@ -1,9 +1,17 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="noData">
+    <h1>Welcome to Rentzilla</h1>
+    <h2>We are glad to have you here!</h2>
+    <h3>To get you started, let us start adding data in here!</h3>
+    <router-link to="/my-rentals">Add your Rental Properties</router-link>
+    |
+    <router-link to="/my-expenses">Add your Expenses</router-link>
+  </div>
+  <div class="container" v-if="!noData">
     <div id="helpButton">
       <button class="helpButton" @click="clickTour">Help!</button>
     </div>
-    <br>
+    <br />
     <h2 class="header" id="myRentalProperties">My Rental Properties</h2>
     <br /><br />
     <div id="mapid"></div>
@@ -25,7 +33,7 @@
     <h4></h4>
     <br />
 
-    <div v-if="!revenueExpensesAgainstTimeDataDefault[2]">
+    <div>
       <div class="dropdown">
         <div class="text-right align-right row g-0">
           <div class="col-md-5 w-auto ms-auto">
@@ -78,7 +86,6 @@
       <div
         class="card revenueExpensesAgainstTime"
         id="revenueExpensesAgainstTime"
-        v-if="!revenueExpensesAgainstTimeDataDefault[2]"
       >
         <h5 class="card-title">Revenue and Expenses over Time</h5>
         <br />
@@ -121,22 +128,21 @@
           discrete="true"
         ></line-chart>
         <br />
+        <div v-if="revenueExpensesAgainstTimeDataDefault[2]">
+          Hey there! You do not have any Revenue or Expenses currently.
+          <br />
+
+          <br />
+          <router-link to="/my-rentals"
+            >Add Rental Properties to start recording Rent</router-link
+          >
+          |
+          <router-link to="/my-expenses">Add Expenses</router-link>
+        </div>
       </div>
     </div>
     <br />
-    <div class="card revenueExpensesAgainstTime">
-      <div v-if="revenueExpensesAgainstTimeDataDefault[2]">
-        Hey there! You do not have any Revenue or Expenses currently.
-        <br />
-
-        <br />
-        <router-link to="/my-rentals"
-          >Add Rental Properties to start recording Rent</router-link
-        >
-        |
-        <router-link to="/my-expenses">Add Expenses</router-link>
-      </div>
-    </div>
+    <div class="card revenueExpensesAgainstTime"></div>
     <br />
     <h2>Breakdown of Revenues and Expenses</h2>
     <br />
@@ -198,10 +204,7 @@
         <div class="card expensesByCategory" id="expensesByCategory">
           <div class="card-body">
             <h5 class="card-title">Expenses by Category</h5>
-            <div
-              id="expensesByCatergoryPieChart"
-              v-if="Object.keys(expensesByCategoryData).length !== 0"
-            >
+            <div id="expensesByCatergoryPieChart">
               <pie-chart
                 :data="expensesByCategoryData"
                 :donut="true"
@@ -226,10 +229,7 @@
         <div class="card expensesByRentalProperty">
           <div class="card-body">
             <h5 class="card-title">Expenses by Rental Properties</h5>
-            <div
-              id="expensesByRentalBarChart"
-              v-if="Object.keys(expensesByRentalData).length !== 0"
-            >
+            <div id="expensesByRentalBarChart">
               <column-chart
                 :data="expensesByRentalData"
                 :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"
@@ -250,7 +250,7 @@
         <div class="card revenuesByRentalProperties">
           <div class="card-body">
             <h5 class="card-title">Revenues by Rental Properties</h5>
-            <div id="revenuesByRentalPieChart" v-if="!revenuesByRentalData[1]">
+            <div id="revenuesByRentalPieChart">
               <pie-chart :data="revenuesByRentalData[0]"></pie-chart>
             </div>
             <div v-if="revenuesByRentalData[1]">
@@ -424,6 +424,21 @@ export default {
           }
           var counter = 0;
           //var isEmpty = true;
+          mymap = leaflet.map("mapid").setView([1.29027, 103.851959], 11.5);
+          leaflet
+            .tileLayer(
+              "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXZhbmtxdyIsImEiOiJjbDBzMDR6MDAwOG5mM2NxYmJyMjQ4OGphIn0.8elCYEW3Ykk4W7oJ4AINbg",
+              {
+                attribution:
+                  'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: "mapbox/streets-v11",
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: accessToken,
+              }
+            )
+            .addTo(mymap);
           for (let [postalCode, values] of Object.entries(resultObj)) {
             console.log(postalCode);
             //isEmpty = fl
@@ -465,21 +480,6 @@ export default {
       })();
 
       //instantiate leaflet map
-      mymap = leaflet.map("mapid").setView([1.29027, 103.851959], 11.5);
-      leaflet
-        .tileLayer(
-          "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXZhbmtxdyIsImEiOiJjbDBzMDR6MDAwOG5mM2NxYmJyMjQ4OGphIn0.8elCYEW3Ykk4W7oJ4AINbg",
-          {
-            attribution:
-              'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: "mapbox/streets-v11",
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: accessToken,
-          }
-        )
-        .addTo(mymap);
     });
     return {
       clickTour,
@@ -504,6 +504,13 @@ export default {
   },
 
   computed: {
+    noData() {
+      return (
+        Object.keys(this.rentals).length === 0 &&
+        Object.keys(this.expenses).length === 0
+      );
+    },
+
     expensesByCategoryData() {
       let expenses = this.expenses;
       if (this.filterStartDate && this.filterEndDate) {
@@ -1109,6 +1116,7 @@ export default {
         { includeMetadataChanges: true },
         (doc) => {
           this.expenses = doc.data().expenses;
+          console.log("expensesss", this.expenses);
         }
       );
       onSnapshot(
