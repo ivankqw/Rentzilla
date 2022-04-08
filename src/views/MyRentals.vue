@@ -395,8 +395,12 @@ export default {
         header: {
           title: "Manage rent received",
         },
-        content: "Record receipt of rents here"
+        content: "Record receipt of rents here",
+params: {
+          placement: "top"
+        }
         },
+        
       
     ];
 
