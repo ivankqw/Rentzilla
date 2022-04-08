@@ -1,10 +1,14 @@
 <template>
+  
+
   <div class="container">
     <h1 class="header">My Rentals</h1>
     <!-- <h3>Welcome back, {{ $store.state.name }}</h3> -->
     <!-- <h3>Your email is {{ $store.state.email }}</h3> -->
 
     <h2 class="header">Rental Properties</h2>
+    <v-tour name="myTourMyRentals" :steps="steps"></v-tour>
+  <button class="helpButton" @click="clickTour">Help!</button>
     <br /><br />
 
     <button
@@ -22,7 +26,7 @@
     <RentalAddModal ref="rentalModal" />
 
     <div class="table-responsive">
-      <table class="table table-striped">
+      <table class="table table-striped"  id="myRentalTable">
         <thead>
           <tr class="table-light">
             <th>#</th>
@@ -30,8 +34,8 @@
             <th>Address</th>
             <th>Unit Number</th>
             <th>Purchase Price</th>
-            <th>View Tenant Details</th>
-            <th>Manage Rental Property</th>
+            <th id="viewTenantDetailsCol">View Tenant Details</th>
+            <th id="manageRentalPropertyCol">Manage Rental Property</th>
           </tr>
         </thead>
         <tbody>
@@ -228,13 +232,13 @@
     <h2 class="header">Outstanding Rent</h2>
     <br /><br />
     <div class="table-responsive">
-      <table class="table table-striped">
+      <table class="table table-striped" id="outstandingRentTable">
         <tr id="outstandingRentTableHeader" class="table-light">
           <th>#</th>
           <th>Tenant Name</th>
           <th>Monthly Rent</th>
           <th>Months Overdue</th>
-          <th>Manage Rent</th>
+          <th id="manageRentCol">Manage Rent</th>
         </tr>
         <tbody>
           <tr v-for="(tenant, i) in this.outstandingTenants" :key="i">
@@ -311,6 +315,101 @@ export default {
   },
 
   setup() {
+    const steps = ref([]);
+    steps.value = [
+      {
+        target: "#newRentalBtn",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Add New Rental",
+        },
+        content: `Add your rental properties here!`,
+        params: {
+          placement: "auto", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+          enableScrolling: false,
+        },
+        
+      },
+      {
+        target: "#myRentalTable",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "My rental properties",
+        },
+        content: `View and manage your rental properties here`,
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+                    enableScrolling: false,
+
+        },
+      },
+      {
+        target: "#viewTenantDetailsCol",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Tenant details",
+        },
+        content: `View tenant details, including past payments`,
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+                    enableScrolling: false,
+
+        },
+      },
+      {
+        target: "#manageRentalPropertyCol",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Rental Property details",
+        },
+        content: `View and manage your rental property details here`,
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+                    enableScrolling: false,
+
+        },
+      },
+      {
+        target: "#outstandingRentTable",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Outstanding and upcoming rent",
+        },
+        content: "View your upcoming and outstanding rents to be received here"
+        },
+        {
+        target: "#manageRentCol",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Manage rent received",
+        },
+        content: "Record receipt of rents here"
+        },
+      
+    ];
+
+    const clickTour = () => {
+      console.log("hi");
+      console.log(window.tours)
+      try {
+        window.tours['myTourMyRentals'].start();
+      } catch (e) {
+        console.log("error here click tour", e);
+      }
+    };
+
     let rentalEditModal = ref(null);
     function showRentalEditModal() {
       rentalEditModal.value.show();
@@ -433,6 +532,10 @@ export default {
       editRentalDetails,
       showRentEditModal,
       rentEditModal,
+      
+      clickTour,
+      steps,
+    
     };
   },
 
@@ -589,5 +692,19 @@ h2 {
 
 label {
   float: left;
+}
+
+.helpButton {
+  background-color : #31B0D5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: #46b8da;
+}
+
+.helpButton {
+  position: fixed;
+  bottom: -4px;
+  right: 10px;
 }
 </style>
