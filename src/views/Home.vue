@@ -4,7 +4,7 @@
     <h3>Welcome back, {{ $store.state.name }}</h3>
     <h3>Your email is {{ $store.state.email }}</h3>
     <div id="helpButton">
-    <button class="helpButton" @click="clickTour">Help!</button>
+      <button class="helpButton" @click="clickTour">Help!</button>
     </div>
     <h2 class="header" id="myRentalProperties">My Rental Properties</h2>
     <br /><br />
@@ -22,7 +22,7 @@
     </div>
     <br />
 
-    <h2 class="header">Overview of revenues and expenses</h2>
+    <h2 class="header">Overview of Revenues and Expenses</h2>
     <br />
     <!-- Revenues and Expenses over Time, time series chart  -->
     <h4></h4>
@@ -43,6 +43,7 @@
     ></line-chart> -->
     <div v-if="!revenueExpensesAgainstTimeDataDefault[2]">
       <div class="dropdown">
+        <!---
         <button
           class="btn btn-secondary dropdown-toggle"
           type="button"
@@ -62,8 +63,45 @@
               {{ option }}
             </button>
           </li>
-          <!-- <li><button class="dropdown-item" type="button" v-on:click="changeTo1Year">1 Year</button></li> -->
         </ul>
+        --->
+        
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="btnradio1"
+            autocomplete="off"
+            checked
+             v-on:click="changeToMonths('3 Months')"
+          />
+          <label class="btn btn-outline-primary" for="btnradio1">3 Months</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="btnradio2"
+            autocomplete="off"
+             v-on:click="changeToMonths('6 Months')"
+          />
+          <label class="btn btn-outline-primary" for="btnradio2">6 Months</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="btnradio3"
+            autocomplete="off"
+             v-on:click="changeToMonths('1 Year')"
+          />
+          <label class="btn btn-outline-primary" for="btnradio3">1 Year </label>
+        </div>
         <!-- <button v-on:click="foobarbarblacksheep">3 Months</button>
     <button v-on:click="foobarbarblacksheep">6 Months</button> -->
       </div>
@@ -73,6 +111,7 @@
         id="revenueExpensesAgainstTime"
         v-if="!revenueExpensesAgainstTimeDataDefault[2]"
       >
+        <h5 class="card-title">Revenue and Expenses over Time</h5>
         <br />
         <line-chart
           :data="revenueExpensesAgainstTimeDataDefault.slice(0, 2)"
@@ -254,6 +293,7 @@
       </div>
     </div>
     <br />
+    <!---
     <div class="row">
       <div class="col">
         <div class="card rentsCollectedAgainstTime">
@@ -282,6 +322,7 @@
         </div>
       </div>
     </div>
+    ---->
     <br />
 
     <!-- <h4>cumulative revenue against time</h4>
@@ -314,53 +355,69 @@ export default {
           // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
         },
         header: {
-          title: "Welcome to Rentzilla!",
+          title: "Welcome to your Home page!",
         },
         content: `You will be able to see your Rental Properties in this map here`,
       },
       {
+        header: {
+          title: "Welcome to your Home page!",
+        },
         target: ".revenueExpensesAgainstTime",
         content:
-          "You will be able to see your Revenue and Expenses oevr time here!<br> Head over to My Rentals and My Expenses to find out more!",
+          "You will be able to see your Revenue and Expenses over time here, displayed in a line graph!",
       },
       {
+        header: {
+          title: "Welcome to your Home page!",
+        },
         target: ".expensesByCategory",
         content:
-          "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+          "You will be able to see your Expenses by Category here! Use the date filters to filter by date!",
         params: {
           placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
         },
       },
       {
+        header: {
+          title: "Welcome to your Home page!",
+        },
         target: ".expensesByRentalProperty",
         content:
-          "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+          "You will be able to see your Expenses by Rental here! Use the date filters to filter by date!",
         params: {
           placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
         },
       },
       {
+        header: {
+          title: "Welcome to your Home page!",
+        },
         target: ".revenuesByRentalProperties",
         content:
-          "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+          "You will be able to see your Revenues by Rental Properties here! Use the date filters to filter by date!",
         params: {
           placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
         },
       },
-      
+      /*
       {
+        header: {
+          title: "Welcome to your Home page!",
+        },
         target: ".rentsCollectedAgainstTime",
         content:
-          "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
+          "You will be able to see your Revenues collected over time here! Use the date filters to filter by date!",
         params: {
           placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
         },
       },
+      */
     ];
 
     const clickTour = () => {
       try {
-        window.tours['myTour'].start();
+        window.tours["myTour"].start();
       } catch (e) {
         console.log("error here click tour", e);
       }
@@ -1150,7 +1207,7 @@ h2 {
 }
 
 .helpButton {
-  background-color : #31B0D5;
+  background-color: #31b0d5;
   color: white;
   padding: 10px 20px;
   border-radius: 4px;
