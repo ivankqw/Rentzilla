@@ -2,10 +2,11 @@
   <div class="container">
     <br />
     <h2 class="header">My Expenses</h2>
+    <v-tour name="myTourMyExpenses" :steps="steps"></v-tour>
+    <button class="helpButton" @click="clickTour">Help!</button>
     <!-- <h3> Welcome back, {{$store.state.name}} </h3>
   <h3> Your email is {{$store.state.email}} </h3> -->
-    <br />
-    <br />
+    <br>
     <div class="text-left">
       <br />
       <div class="filter">
@@ -23,6 +24,7 @@
           </div>
           <div class="col"> </div>
           <div class="col"> </div>
+          
           
           <div class="col"> 
             <label for="filterStart" class="form-label">Start Date:</label>
@@ -57,7 +59,7 @@
             <th>Cost</th>
             <th>Date of Expense</th>
 
-            <th>Manage Expense</th>
+            <th id="manageExpenseCol">Manage Expense</th>
           </tr>
         </thead>
         <tbody>
@@ -115,6 +117,89 @@ export default {
   },
 
   setup() {
+    const steps = ref([]);
+    steps.value = [
+      {
+        target: "#newExpenseBtn",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Add New Expense",
+        },
+        content: `Add your expenses for your rental properties here!`,
+        params: {
+          placement: "auto", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+          enableScrolling: false,
+        },
+      },
+      {
+        target: "#filterStart",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Filter Expenses",
+        },
+        content: `Filter your expenses by entering the start date here!`,
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+          enableScrolling: false,
+        },
+      },
+      {
+        target: "#filterEnd",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Filter Expenses",
+        },
+        content: `Filter your expenses by entering the end date here!`,
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+          enableScrolling: false,
+        },
+      },
+      {
+        target: "#expensestable",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "View and Manage Expenses",
+        },
+        content: `View and manage your expenses in this table`,
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+          enableScrolling: false,
+        },
+      },
+      {
+        target: "#manageExpenseCol",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Edit Expenses",
+        },
+        content: `Edit your expenses here`,
+        params: {
+          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+          enableScrolling: false,
+        },
+      },
+      
+    ]
+    const clickTour = () => {
+      console.log("hi");
+      console.log(window.tours);
+      try {
+        window.tours["myTourMyExpenses"].start();
+      } catch (e) {
+        console.log("error here click tour", e);
+      }
+    };
     let expenseEditModal = ref(null);
     function showExpenseEditModal() {
       expenseEditModal.value.show();
@@ -148,6 +233,8 @@ export default {
       showExpenseEditModal,
       showExpenseAddModal,
       editExpenseDetails,
+      clickTour,
+      steps
     };
   },
 
@@ -272,15 +359,16 @@ h2 {
   background: #ffb300;
   border-radius: 42px;
   font-weight: bold;
+  float: left;
 }
 #newExpenseBtn:hover{
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
-.filter {
+/* .filter {
   display: flex;
   justify-content: center;
-}
+} */
 
 #cancelbtn {
   flex: none;
@@ -305,5 +393,16 @@ h2 {
 form {
   align-content: left;
   text-align: left;
+}
+
+.helpButton {
+  background-color: #31b0d5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: #46b8da;
+  position: fixed;
+  bottom: -4px;
+  right: 10px;
 }
 </style>
