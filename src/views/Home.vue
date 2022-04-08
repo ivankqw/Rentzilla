@@ -359,8 +359,6 @@ export default {
     ];
 
     const clickTour = () => {
-      console.log("hi");
-      console.log(window.tours)
       try {
         window.tours['myTour'].start();
       } catch (e) {
