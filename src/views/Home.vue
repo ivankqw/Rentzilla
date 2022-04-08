@@ -1,11 +1,22 @@
 <template>
   <div class="container" v-if="noData">
-    <h1>Welcome to Rentzilla</h1>
-    <h2>We are glad to have you here!</h2>
+    <h1>Welcome to Rentzilla!</h1>
+    <br />
+    <h2 style="float: none">We are glad to have you here, landlord!</h2>
+    <br />
+    <img src="../assets/party_dino.png" />
+    <br />
+    <br />
+
     <h3>To get you started, let us start adding data in here!</h3>
-    <router-link to="/my-rentals">Add your Rental Properties</router-link>
-    |
-    <router-link to="/my-expenses">Add your Expenses</router-link>
+    <br>
+    <button type="button" class="btn btn-success">
+      <router-link
+        to="/my-rentals"
+        style="color: white; text-decoration: none; color: inherit"
+        >Add your Rental Properties</router-link
+      >
+    </button>
   </div>
   <div class="container" v-if="!noData">
     <div id="helpButton">
