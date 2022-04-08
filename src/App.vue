@@ -4,20 +4,17 @@
     style="background-color: #123b79"
   >
     <div class="container-fluid">
-      <a
-        class="navbar-brand mb-0 h1"
-        href="#"
-        style="
-          color: white;
-        "
-      >
+      <a class="navbar-brand mb-0 h1" href="#" style="color: white">
+        <router-link to="/" class="">
         <img
           class="d-inline-block align-bottom"
           src="./assets/rentzilla_logo.png"
           width="30"
           height="30"
         />
-        Rentzilla
+        </router-link>
+
+        <router-link to="/" class="" style="color: white; text-decoration: none; color: inherit;">Rentzilla</router-link>
       </a>
       <button
         type="button"
@@ -37,9 +34,7 @@
       >
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <router-link to="/" class="nav-link"
-              >Home</router-link
-            >
+            <router-link to="/" class="nav-link">Home</router-link>
           </li>
           <li class="nav-item active">
             <router-link to="/my-rentals" class="nav-link"
@@ -47,19 +42,15 @@
             >
           </li>
           <li class="nav-item active">
-            <router-link to="/my-expenses" class="nav-link" 
+            <router-link to="/my-expenses" class="nav-link"
               >My Expenses</router-link
             >
           </li>
           <li class="nav-item active">
-            <router-link to="/news" class="nav-link" 
-              >News</router-link
-            >
+            <router-link to="/news" class="nav-link">News</router-link>
           </li>
           <li class="nav-item active">
-            <router-link to="/contact" class="nav-link"
-              >Contact Us</router-link
-            >
+            <router-link to="/contact" class="nav-link">Contact Us</router-link>
           </li>
           <li class="nav-item d-lg-none d-xl-none" v-if="$store.state.email">
             <button
@@ -164,20 +155,20 @@ export default {
   height: 500px;
 }
 .carousel-item img {
-    position: absolute;
-    object-fit:cover;
-    top: 0;
-    left: 0;
-    min-height: 500px;
-    width: 100% !important;
-    max-width: 100% !important;
+  position: absolute;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  min-height: 500px;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 a.router-link-active.router-link-exact-active.nav-link {
-   border-bottom-style: solid;
+  border-bottom-style: solid;
   border-bottom-color: white !important;
-  }
+}
 
 a.nav-link {
-  color: white !important
-  }
+  color: white !important;
+}
 </style>
