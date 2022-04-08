@@ -9,7 +9,7 @@
     <br />
 
     <h3>To get you started, let us start adding data in here!</h3>
-    <br>
+    <br />
     <button type="button" class="btn btn-success">
       <router-link
         to="/my-rentals"
@@ -29,11 +29,11 @@
     <v-tour name="myTour" :steps="steps"></v-tour>
     <div class="card">
       <div v-if="Object.keys(rentals).length === 0">
-        Hey there! Your Rental Properties will show up on the map above! <br />
-        You do not have any Rental Properties currently. <br />
         <br />
-        <router-link to="/my-rentals">Add Rental Properties</router-link>
+        There seems to be no Rental Property data... 🤔
         <br />
+        <br />
+        <router-link to="/my-rentals">Add more Rental Properties</router-link>
       </div>
     </div>
     <br />
@@ -140,13 +140,12 @@
         ></line-chart>
         <br />
         <div v-if="revenueExpensesAgainstTimeDataDefault[2]">
-          Hey there! You do not have any Revenue or Expenses currently.
           <br />
-
+          There seems to be no Revenue and Expense data for this current date
+          range... 🤔
           <br />
-          <router-link to="/my-rentals"
-            >Add Rental Properties to start recording Rent</router-link
-          >
+          <br />
+          <router-link to="/my-rentals">Add more Rental Properties</router-link>
           |
           <router-link to="/my-expenses">Add Expenses</router-link>
         </div>
@@ -221,8 +220,15 @@
                 :donut="true"
               ></pie-chart>
             </div>
-            <div v-if="Object.keys(expensesByCategoryData).length === 0">
-              Hey there! You do not have any Expenses currently.
+            <div
+              v-if="
+                Object.keys(expensesByCategoryData).length === 0 ||
+                Number.isNaN(Object.values(expensesByCategoryData)[0])
+              "
+            >
+              <br />
+              There seems to be no Expense data for this current date range...
+              🤔
               <br />
               <br />
               <router-link to="/my-rentals"
@@ -246,11 +252,22 @@
                 :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"
               ></column-chart>
             </div>
-            <div v-if="Object.keys(expensesByRentalData).length === 0">
-              Hey there! You do not have any Rental Properties
+            <div
+              v-if="
+                Object.keys(expensesByRentalData).length === 0 ||
+                Number.isNaN(Object.values(expensesByRentalData)[0])
+              "
+            >
+              <br />
+              There seems to be no Expense data for this current date range...
+              🤔
               <br />
               <br />
-              <router-link to="/my-rentals">Add Rental Properties</router-link>
+              <router-link to="/my-rentals"
+                >Add more Rental Properties</router-link
+              >
+              |
+              <router-link to="/my-expenses">Add Expenses</router-link>
             </div>
           </div>
         </div>
@@ -265,11 +282,13 @@
               <pie-chart :data="revenuesByRentalData[0]"></pie-chart>
             </div>
             <div v-if="revenuesByRentalData[1]">
-              Hey there! You do not have any Revenues currently.
+              <br />
+              There seems to be no Revenue data for this current date range...
+              🤔
               <br />
               <br />
               <router-link to="/my-rentals"
-                >Add Rental Properties to start recording Revenue</router-link
+                >Collect Revenue from Outstanding Rents</router-link
               >
             </div>
           </div>
@@ -546,6 +565,7 @@ export default {
       for (let expense of this.expenses) {
         result[expense.expenseType] += expense.expenseCost;
       }
+      console.log("expenses by category", result);
       return result;
     },
 
@@ -575,6 +595,8 @@ export default {
         result[expense.fullAddress] += expense.expenseCost;
       }
       // console.log("result from expenses by rental data", result);
+      console.log("expenses by rental properties", result);
+      console.log("ddd", Number.isNaN(Object.values(result)[0]));
       return result;
     },
 
