@@ -880,4 +880,8 @@ export default {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
+.btn {
+  box-shadow: none !important;
+}
 </style>
