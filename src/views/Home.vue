@@ -49,7 +49,7 @@
         <div class="text-right align-right row g-0">
           <div class="col-md-5 w-auto ms-auto">
             <div
-              class="btn-group"
+              class="btn-group btn-group-sm"
               role="group"
               aria-label="Basic radio toggle button group"
             >
@@ -103,7 +103,7 @@
         <line-chart
           :data="revenueExpensesAgainstTimeDataDefault.slice(0, 2)"
           v-if="showDefault == true"
-          :colors="['green', 'red']"
+          :colors="['	#006400', '#8b0000']"
           :xmin="findLowerBound"
           :xmax="findUpperBound"
           prefix="SGD$"
@@ -116,7 +116,7 @@
         <line-chart
           :data="revenueExpensesAgainstTimeData3Months"
           v-if="showThreeMonths == true"
-          :colors="['green', 'red']"
+          :colors="['	#006400', '#8b0000']"
           :xmin="findLowerBound"
           :xmax="findUpperBound"
           prefix="SGD$"
@@ -129,7 +129,7 @@
         <line-chart
           :data="revenueExpensesAgainstTimeData6Months"
           v-if="showSixMonths == true"
-          :colors="['green', 'red']"
+          :colors="['	#006400', '#8b0000']"
           :xmin="findLowerBound"
           :xmax="findUpperBound"
           prefix="SGD$"
@@ -195,10 +195,10 @@
               <div class="col-md-3 align-self-center">
                 <button
                   type="button"
-                  class="btn btn-warning"
+                  class="btn btn-outline-secondary"
                   @click="clearFilter"
                 >
-                  Clear filter
+                  Clear Filter
                 </button>
               </div>
             </form>
@@ -1187,7 +1187,21 @@ h1 {
 h2 {
   float: left;
   font-weight: bold;
-  margin-left: 30px;
+  /* margin-left: 30px; */
+}
+
+.btn-outline-secondary {
+  border-color: #A9A9A9 !important;
+  color: #36454F !important;  
+}
+
+/* #clearFilterButton:hover {
+  background-color: green;
+  color: white;
+} */
+.btn-outline-secondary:hover {
+  background-color: #A9A9A9 !important;
+  color: black !important;
 }
 
 .helpButton {
