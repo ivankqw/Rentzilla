@@ -2,17 +2,14 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <img src="@/assets/hdb.jpg" class="img-fluid some" alt="..."/>
+        <img src="@/assets/hdb.jpg" class="img-fluid some" alt="..." />
       </div>
-      <div class="col" >
-        <br /><br /><br />
-        <br /><br /><br />
-        <br /><br /><br />
+      <div class="col">
         <br /><br /><br />
         <br /><br /><br />
         <div class="row" id="feedbackForm">
           <div class="row align-items-center">
-            <div class="card" >
+            <div class="card">
               <div class="card-body">
                 <div class="text-center">
                   <h2>Your Opinion Matters.</h2>
@@ -42,6 +39,32 @@
             </div>
           </div>
         </div>
+        <br /><br /><br />
+        <br /><br /><br />
+        <br /><br /><br />
+
+        <div class="row" id="socialMedias">
+          <div class="row align-items-center">
+            <link
+              rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            />
+            <div id="social-test">
+              <h3>Or find us here</h3>
+              <ul class="social">
+                <a href="https://www.facebook.com/profile.php?id=100080138387981" class="facebook">
+                  <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+                </a>
+                <a href="https://twitter.com/rentzillaa" class="twitter">
+                  <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+                </a>
+                <a href="https://www.instagram.com/rentzillaa/" class="instagram">
+                  <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
+                </a>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -63,21 +86,17 @@ export default {
 
   methods: {
     async submitFeedback() {
-
       if (String(this.feedback).length == 0) {
         alert("Please ensure you have written something before submitting");
         return false;
       }
 
-      
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Feedbacks", userEmail);
       const docData = {
         feedback: this.feedback,
       };
-
-      
 
       try {
         await updateDoc(ref, {
@@ -93,19 +112,56 @@ export default {
       document.getElementById("myForm").reset();
       this.feedback = "";
     },
-
-    // async validateFeedbackForm() {
-    //   if (String(this.feedback).length == 0) {
-    //     alert("Please ensure you have written something before submitting");
-    //     return false;
-    //   }
-    // },
   },
 };
 </script>
 
 <style>
-#feedbackForm {
+#feedbackForm,
+#socialMedias {
   margin-left: 80px;
+}
+
+#social-test {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 30px;
+
+  /* color: #fff; */
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-weight: 100;
+}
+
+.social {
+  margin-right: 40px;
+} 
+
+.social li {
+  color: #184994;
+  list-style-type: none;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  padding: 1%;
+  border: 1px solid rgba(167, 146, 129, 0.4);
+  cursor: pointer;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  transition: ease 0.3s;
+}
+
+.social li:hover {
+  color: rgba(167, 146, 129, 1);
+  border: 1px solid rgba(167, 146, 129, 1);
+}
+
+.social:hover > li {
+  opacity: 0.5;
+}
+
+.social:hover > li:hover {
+  opacity: 1;
 }
 </style>

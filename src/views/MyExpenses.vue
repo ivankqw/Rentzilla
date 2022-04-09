@@ -6,7 +6,7 @@
     <button class="helpButton" @click="clickTour">Help!</button>
     <!-- <h3> Welcome back, {{$store.state.name}} </h3>
   <h3> Your email is {{$store.state.email}} </h3> -->
-    <br>
+    <br />
     <div class="text-left">
       <br />
       <div class="filter">
@@ -24,9 +24,10 @@
           </div>
           <div class="col"> </div>
           <div class="col"> </div>
-          
-          
+          <div class="col"> </div>
+          <div class="col"> </div>
           <div class="col"> 
+            <!-- <div class="filterGroup"> -->
             <label for="filterStart" class="form-label">Start Date:</label>
             <input id="filterStart" class="form-control" @input="onFilterStartInput" type="date" />
           </div>
@@ -34,12 +35,12 @@
             <label for="filterEnd" class="form-label">End Date:</label>
             <input id="filterEnd" class="form-control" @input="onFilterEndInput" type="date" />
           </div>
-          <div class="col-md-2 align-self-center">
-            
-            <button type="button" class="btn btn-outline-secondary" @click="clearFilter" style="margin-top: 22px">
-              Clear filter
+          <div class="col align-self-center">
+            <button id="clearFilterButton" type="button" class="btn btn-outline-secondary " @click="clearFilter" style="margin-top: 22px">
+              Clear Filter
             </button>
           </div>
+          <!-- </div> -->
         </form>
       </div>
     </div>
@@ -74,6 +75,7 @@
             <td>{{ expense.expenseDate }}</td>
             <td>
               <button
+                id="manageExpenseButton"
                 type="button"
                 class="btn btn-primary btn-sm"
                 @click="this.editExpenseDetails(i)"
@@ -339,10 +341,7 @@ h1 {
 h2 {
   float: left;
   font-weight: bold;
-  margin-left: 30px;
 }
-
-
 
 #newExpenseBtn {
   
@@ -367,7 +366,7 @@ h2 {
 
 /* .filter {
   display: flex;
-  justify-content: center;
+  justify-content: right;
 } */
 
 #cancelbtn {
@@ -388,6 +387,45 @@ h2 {
 
 #tableheader {
   background: #e9ecef;
+}
+
+/* #manageExpenseButton{
+  background-color: #2C3E50 !important;
+} */
+
+.btn-primary {
+    background-color: #184994 !important;
+    border-color: #184994 !important;
+    box-shadow: none !important;
+    outline-color: #184994 !important;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  background-color: #0b2c5e !important;
+  border-color: #0b2c5e !important;
+  outline-color: #0b2c5e !important;
+}
+
+/* #manageExpenseButton:hover{
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}  */
+
+.btn-outline-secondary {
+  border-color: #A9A9A9 !important;
+  color: #36454F !important;  
+  white-space: nowrap;
+  text-align: center;
+  /* float: right; */
+}
+
+
+/* #clearFilterButton:hover {
+  background-color: green;
+  color: white;
+} */
+.btn-outline-secondary:hover {
+  background-color: #A9A9A9 !important;
+  color: black !important;
 }
 
 form {

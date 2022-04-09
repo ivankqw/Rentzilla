@@ -12,7 +12,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Rent Payment</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Record Tenant's Rent Payment</h5>
           <button
             class="btn-close"
             type="button"
@@ -24,7 +24,7 @@
           <form id="editRentForm">
             <div class="mb-3">
               <label for="monthsPaid"
-                >Enter the number of months of rent paid:</label
+                >Enter the Number of Months of Rent Paid by Tenant:</label
               >
               <input
                 type="number"
