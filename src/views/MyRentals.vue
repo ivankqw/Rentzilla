@@ -236,7 +236,7 @@
           <th>#</th>
           <th>Tenant Name</th>
           <th>Monthly Rent</th>
-          <th>Months Overdue</th>
+          <th id="monthsOverdueCol">Months Overdue</th>
           <th id="manageRentCol">Manage Rent</th>
         </tr>
         <tbody>
@@ -381,6 +381,19 @@ export default {
           title: "Outstanding and upcoming rent",
         },
         content: "View your upcoming and outstanding rents to be received here",
+      },
+      {
+        target: "#monthsOverdueCol",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Months Overdue ",
+        },
+        content: "Number of months rent owed by tenant to you. <br/><br/> <strong>Calculation of number of months overdue</strong><br/> Let the contract start date be x months ago (x is rounded up to the nearest month), and as of today, only y months of rent was recorded as received via the 'Manage' function. Number of months overdue = (x - y) months. ",
+        params: {
+          placement: "top",
+        },
       },
       {
         target: "#manageRentCol",
