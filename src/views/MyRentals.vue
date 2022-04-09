@@ -1,12 +1,11 @@
 <template>
-  
-
   <div class="container">
-    <h1 class="header">My Rentals</h1>
+    <!-- <h1 class="header">My Rentals</h1> -->
     <!-- <h3>Welcome back, {{ $store.state.name }}</h3> -->
     <!-- <h3>Your email is {{ $store.state.email }}</h3> -->
-
-    <h2 class="header">Rental Properties</h2>
+  <br />
+    <h2 class="header">My Rental Properties</h2>
+    <br />
     <v-tour name="myTourMyRentals" :steps="steps"></v-tour>
   <button class="helpButton" @click="clickTour">Help!</button>
     <br /><br />
@@ -43,7 +42,7 @@
             <td>{{ i + 1 }}</td>
             <td>{{ rental.postalCode }}</td>
             <td>{{ rental.address }}</td>
-            <td>{{ rental.unitNumber }}</td>
+            <td>#{{ rental.unitNumber }}</td>
             <td>${{ rental.purchasePrice }}</td>
             <td>
               <button
@@ -101,7 +100,7 @@
                     <th>Monthly Rent</th>
                     <th>Next Payment Date</th>
                     <th>Outstanding rental (months)</th>
-                    <th>View Rental Payment History</th>
+                    <th>Tenant's Payment History</th>
                   </tr>
                 </thead>
 
@@ -127,7 +126,7 @@
                             autocomplete="off"
                           />
                           <label
-                            class="btn btn-outline-primary btn-sm"
+                            class="btn btn-primary btn-sm"
                             v-bind:for="'btn-check-outlined' + i"
                             @click="toggleTenantHistory(i)"
                             >View</label
@@ -228,7 +227,6 @@
       :monthsPaid="this.monthsPaid"
       :paymentDate="this.paymentDate"
     />
-
     <h2 class="header">Outstanding Rent</h2>
     <br /><br />
     <div class="table-responsive">
@@ -662,6 +660,7 @@ export default {
 #outstandingRentTableHeader {
   background: #e9ecef;
 }
+
 h1 {
   /* My Rental Properties */
 
@@ -676,7 +675,7 @@ h1 {
 h2 {
   float: left;
   font-weight: bold;
-  margin-left: 30px;
+  margin-left: 1px;
 }
 
 .singleTenantDetails {
@@ -692,6 +691,17 @@ h2 {
 
 label {
   float: left;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #184994 !important;
+    border-color: #184994 !important;
+    box-shadow: none !important;
+    outline-color: #000000 !important;
+}
+
+.btn-primary:hover {
+  background-color: #0b2c5e !important;
 }
 
 .helpButton {

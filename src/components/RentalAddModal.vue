@@ -522,6 +522,12 @@ export default {
           ) {
             alert("Please enter a valid unit number e.g. 01-01");
             return false;
+          } else if ( // valid floor number and unit number
+            parseInt(unit.split("-")[0]) > 50 ||
+            parseInt(unit.split("-")[1]) > 999
+          ) {
+            alert("Please enter a valid unit/floor number e.g. 01-01")
+            return false;
           }
         } catch (error) {
           alert("Please enter a valid unit number e.g. 01-01");
