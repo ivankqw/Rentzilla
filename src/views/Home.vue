@@ -1238,11 +1238,11 @@ h2 {
 }
 
 .helpButton {
-  background-color: #31b0d5;
+  background-color: #184994;
   color: white;
   padding: 10px 20px;
   border-radius: 4px;
-  border-color: #46b8da;
+  border-color: #5b7192;
 }
 
 #helpButton {
