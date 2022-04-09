@@ -33,6 +33,7 @@ export default createStore({
 
     async login({ commit }, details) {
       const { email, password } = details;
+      console.log(auth)
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
@@ -71,7 +72,15 @@ export default createStore({
     },
 
     async signup({ commit }, details) {
-      const { name, email, password } = details;
+      const { name, email, password, valid } = details;
+
+      if (!valid) {
+        alert("Please provide a stronger password!");
+        return;
+      }
+
+      console.log(auth)
+      console.log(details)
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
@@ -92,7 +101,7 @@ export default createStore({
             alert("Operation not allowed");
             break;
           default:
-            alert("Missing details!");
+            alert(error);
         }
         return;
       }
