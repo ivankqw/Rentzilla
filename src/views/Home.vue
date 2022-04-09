@@ -187,8 +187,9 @@
                   class="form-control"
                 />
               </div>
-              <div class="col-md-3 align-self-center">
+              <div class="col align-self-center">
                 <button
+                  id="clearFilterButton"
                   type="button"
                   class="btn btn-outline-secondary"
                   @click="clearFilter"
@@ -1229,6 +1230,11 @@ h2 {
 .btn-outline-secondary:hover {
   background-color: #a9a9a9 !important;
   color: black !important;
+}
+
+#clearFilterButton {
+  white-space: nowrap;
+  text-align: center;
 }
 
 .helpButton {

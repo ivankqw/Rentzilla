@@ -34,7 +34,19 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 VueChartKick.options = {
-  colors: ["#2C3E50", "#F85F73", "#FBE8D3", "#928A97", "#827397"],
+  colors: [
+    "#FA8072",
+    "#f38ca3",
+    "#ff864d",
+    "#ffe366",
+    "#d0ff66",
+    "#489f14",
+    "#6dd09e",
+    "#9be9e5",
+    "#7ba7d1",
+    "#a682e8",
+  ],
+  // colors: ["#2C3E50", "#F85F73", "#FBE8D3", "#928A97", "#827397"],
 };
 
 const dapp = createApp(App)
@@ -42,8 +54,8 @@ const dapp = createApp(App)
   .use(router)
   .use(VueChartKick)
   .use(VueTour)
-  .component("font-awesome-icon", FontAwesomeIcon)
+  .component("font-awesome-icon", FontAwesomeIcon);
 
 window.tours = dapp.config.globalProperties.$tours;
 
-dapp.mount("#app")
+dapp.mount("#app");
