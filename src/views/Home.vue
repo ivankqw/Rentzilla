@@ -376,19 +376,6 @@ export default {
           placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
         },
       },
-      /*
-      {
-        header: {
-          title: "Welcome to your Home page!",
-        },
-        target: ".rentsCollectedAgainstTime",
-        content:
-          "You will be able to see your Revenues collected over time here! Use the date filters to filter by date!",
-        params: {
-          placement: "top", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
-        },
-      },
-      */
     ];
 
     const clickTour = () => {
