@@ -29,7 +29,7 @@
           <div class="tab-pane fade" id="video">
             <h5 class="card-title">Lost? We got your back!</h5>
             <p class="card-text">View the video here</p>
-            <iframe width="420" height="345" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&inline=1"></iframe>
+            <iframe width="420" height="345" src="https://www.youtube.com/embed/8_R-Tl5oQOw?autoplay=1&inline=1"></iframe>
           </div>
         </div>
       </div>
