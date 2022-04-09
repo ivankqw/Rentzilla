@@ -164,4 +164,17 @@ export default {
 .social:hover > li:hover {
   opacity: 1;
 }
+
+.btn-primary {
+    background-color: #184994 !important;
+    border-color: #184994 !important;
+    box-shadow: none !important;
+    outline-color: #184994 !important;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  background-color: #0b2c5e !important;
+  border-color: #0b2c5e !important;
+  outline-color: #0b2c5e !important;
+}
+
 </style>
