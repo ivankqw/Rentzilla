@@ -41,7 +41,7 @@
               />
 
               <label for="unitNumber" class="form-label"
-                >Unit Number (Enter 'x' if no unit number)</label
+                >Unit Number (Enter 'x' if not applicable)</label
               >
               <input
                 type="text"

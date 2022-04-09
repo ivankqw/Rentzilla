@@ -98,14 +98,12 @@
         class="card revenueExpensesAgainstTime"
         id="revenueExpensesAgainstTime"
       >
-        <h5 class="card-title">Revenue and Expenses over Time</h5>
         <br />
+        <h5 class="card-title">Revenue and Expenses over Time</h5>
         <line-chart
           :data="revenueExpensesAgainstTimeDataDefault.slice(0, 2)"
           v-if="showDefault == true"
-          :colors="['	#006400', '#8b0000']"
-          :xmin="findLowerBound"
-          :xmax="findUpperBound"
+          :colors="['#006400', '#8b0000']"
           prefix="SGD$"
           thousands=","
           empty="No data"
@@ -117,8 +115,6 @@
           :data="revenueExpensesAgainstTimeData3Months"
           v-if="showThreeMonths == true"
           :colors="['	#006400', '#8b0000']"
-          :xmin="findLowerBound"
-          :xmax="findUpperBound"
           prefix="SGD$"
           thousands=","
           empty="No data"
@@ -130,8 +126,6 @@
           :data="revenueExpensesAgainstTimeData6Months"
           v-if="showSixMonths == true"
           :colors="['	#006400', '#8b0000']"
-          :xmin="findLowerBound"
-          :xmax="findUpperBound"
           prefix="SGD$"
           thousands=","
           empty="No data"
@@ -778,13 +772,14 @@ export default {
         revenueFinal[addMonth] = 0;
         expensesFinal[addMonth] = 0;
       }
-
-      // console.log(revenueFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      console.log(revenueFinal) // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
       // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
 
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
-        revenueFinal[moment(key).format("MMM YYYY")] += value;
+        if (!moment(key).isBefore(moment().subtract(11, 'months')) && !moment(key).isAfter(moment().add(1, 'month'))) {
+          revenueFinal[moment(key).format("MMM YYYY")] += value;
+        }
       }
       console.log("final revenues", revenueFinal);
 
@@ -804,7 +799,7 @@ export default {
         }, {});
 
       // console.log("sorted initialised result:", revenueTemp);
-      console.log(expensesTemp);
+
       var startDate1 = moment(Object.keys(expensesTemp)[0]);
       var endDate1 = moment(
         Object.keys(expensesTemp)[Object.keys(expensesTemp).length - 1]
@@ -818,9 +813,14 @@ export default {
       for (let expense of this.expenses) {
         expensesTemp[expense.expenseDate] += expense.expenseCost;
       }
+      console.log(expensesTemp);
+
+      // filter from 1 year ago till today, add to expensesFinal
 
       for (const [key, value] of Object.entries(expensesTemp)) {
-        expensesFinal[moment(key).format("MMM YYYY")] += value;
+        if (!moment(key).isBefore(moment().subtract(11, 'months')) && !moment(key).isAfter(moment())) {
+          expensesFinal[moment(key).format("MMM YYYY")] += value;
+        }
       }
       console.log("final expenses", expensesFinal);
 
@@ -861,9 +861,9 @@ export default {
     // findUpperBound() {
     //   if (!this.filterEndDate) {
     //     // by default shows data until current+1 month
-    //     return moment().add(1, "month").format("YYYY-MM");
+    //     return moment().add(2, "month").format("YYYY-MM");
     //   }
-    //   console.log( moment(this.filterEndDate).format("MMM YYYY"));
+    //   console.log(moment(this.filterEndDate).format("MMM YYYY"));
     //   return moment(this.filterEndDate).format("MMM YYYY");
     // },
 
@@ -912,11 +912,11 @@ export default {
 
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
-      var lowerBoundMonth = moment().subtract(2, "months"); // "2021-05"
+      var lowerBoundMonth = moment().subtract(3, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
-
+      console.log(revenueFinal);
       while (lowerBoundMonth.isBefore(todaysMonth)) {
         var addMonth = lowerBoundMonth.add(1, "month").format("MMM YYYY");
         revenueFinal[addMonth] = 0;
@@ -928,7 +928,9 @@ export default {
 
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
+        if (!moment(key).isBefore(moment().subtract(3, 'months')) && !moment(key).isAfter(moment())) {
         revenueFinal[moment(key).format("MMM YYYY")] += value;
+        }
       }
       console.log("final revenues", revenueFinal);
 
@@ -963,7 +965,9 @@ export default {
       }
 
       for (const [key, value] of Object.entries(expensesTemp)) {
+        if (!moment(key).isBefore(moment().subtract(3, 'months')) && !moment(key).isAfter(moment())) {
         expensesFinal[moment(key).format("MMM YYYY")] += value;
+        }
       }
       console.log("final expenses", expensesFinal);
 
@@ -1020,7 +1024,7 @@ export default {
 
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
-      var lowerBoundMonth = moment().subtract(5, "months"); // "2021-05"
+      var lowerBoundMonth = moment().subtract(6, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
@@ -1032,7 +1036,9 @@ export default {
       }
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
+        if (!moment(key).isBefore(moment().subtract(6, 'months')) && !moment(key).isAfter(moment())) {
         revenueFinal[moment(key).format("MMM YYYY")] += value;
+        }
       }
       console.log("final revenues", revenueFinal);
 
@@ -1066,7 +1072,9 @@ export default {
       }
 
       for (const [key, value] of Object.entries(expensesTemp)) {
+        if (!moment(key).isBefore(moment().subtract(6, 'months')) && !moment(key).isAfter(moment())) {
         expensesFinal[moment(key).format("MMM YYYY")] += value;
+        }
       }
       console.log("final expenses", expensesFinal);
 
@@ -1191,8 +1199,8 @@ h2 {
 }
 
 .btn-outline-secondary {
-  border-color: #A9A9A9 !important;
-  color: #36454F !important;  
+  border-color: #a9a9a9 !important;
+  color: #36454f !important;
 }
 
 /* #clearFilterButton:hover {
@@ -1200,7 +1208,7 @@ h2 {
   color: white;
 } */
 .btn-outline-secondary:hover {
-  background-color: #A9A9A9 !important;
+  background-color: #a9a9a9 !important;
   color: black !important;
 }
 

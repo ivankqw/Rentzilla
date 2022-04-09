@@ -34,7 +34,7 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 VueChartKick.options = {
-  colors: ["#F85F73","#2C3E50","#FBE8D3", "#666", "#FF000"],
+  colors: ["#2C3E50", "#F85F73", "#FBE8D3", "#928A97", "#827397"],
 };
 
 const dapp = createApp(App)
