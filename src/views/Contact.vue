@@ -52,13 +52,13 @@
             <div id="social-test">
               <h3>Or find us here</h3>
               <ul class="social">
-                <a href="https://www.facebook.com/profile.php?id=100080138387981" class="facebook">
+                <a href="https://www.facebook.com/profile.php?id=100080138387981" class="facebook" target="_blank">
                   <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
                 </a>
-                <a href="https://twitter.com/rentzillaa" class="twitter">
+                <a href="https://twitter.com/rentzillaa" class="twitter" target="_blank">
                   <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
                 </a>
-                <a href="https://www.instagram.com/rentzillaa/" class="instagram">
+                <a href="https://www.instagram.com/rentzillaa/" class="instagram" target="_blank">
                   <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
                 </a>
               </ul>

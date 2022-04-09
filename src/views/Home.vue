@@ -2,7 +2,7 @@
   <div class="container" v-if="noData">
     <h1>Welcome to Rentzilla!</h1>
     <br />
-    <h2 style="float: none">We are glad to have you here, landlord!</h2>
+    <h2 style="float: none">We are glad to have you here, {{$store.state.name}}!</h2>
     <br />
     <img src="../assets/party_dino.png" />
     <br />
