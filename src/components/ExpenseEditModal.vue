@@ -280,7 +280,7 @@ export default {
 
       expenses[index].fullAddress = this.myFullAddress;
       expenses[index].expenseType = this.myExpenseType;
-      expenses[index].expenseCost = this.myExpenseCost;
+      expenses[index].expenseCost = parseInt(this.myExpenseCost) ;
       expenses[index].expenseDate = this.myExpenseDate;
 
       console.log("after: expenses[index]=", expenses[index]);
