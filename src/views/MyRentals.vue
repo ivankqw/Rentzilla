@@ -118,7 +118,7 @@
                       <td>{{ tenant.nextPaymentDate }}</td>
                       <td>{{ tenant.numberOfMonthsRentalUnpaid }}</td>
                       <td>
-                        <div class="text-align-center">
+                        <div class="col text-center">
                           <input
                             type="checkbox"
                             class="btn-check"
@@ -709,10 +709,15 @@ label {
     border-color: #184994 !important;
     box-shadow: none !important;
     outline-color: #000000 !important;
+
 }
 
 .btn-primary:hover {
   background-color: #0b2c5e !important;
+}
+
+.btn-primary {
+  text-align: center;
 }
 
 .helpButton {

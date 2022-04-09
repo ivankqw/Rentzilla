@@ -1,9 +1,11 @@
 <template>
   <div class="container" v-if="noData">
-    <br>
+    <br />
     <h1>Welcome to Rentzilla!</h1>
     <br />
-    <h2 style="float: none">We are glad to have you here, {{$store.state.name}}!</h2>
+    <h2 style="float: none">
+      We are glad to have you here, {{ $store.state.name }}!
+    </h2>
     <br />
     <img src="../assets/party_dino.png" />
     <br />
@@ -85,9 +87,10 @@
                 name="btnradio"
                 id="btnradio3"
                 autocomplete="off"
+                checked
                 v-on:click="changeToMonths('1 Year')"
               />
-              <label class="btn btn-outline-primary" for="btnradio3"
+              <label class="btn btn-outline-primary active" for="btnradio3"
                 >1 Year
               </label>
             </div>
@@ -247,7 +250,7 @@
             <div id="expensesByRentalBarChart">
               <column-chart
                 :data="expensesByRentalData"
-                :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"
+                :colors="[['#F85F73', '#FBE8D3', '#928A97', '#283C63']]"
                 prefix="SGD$"
                 thousands=","
               ></column-chart>
@@ -273,37 +276,36 @@
         </div>
       </div>
     </div>
-    <br>
-      <!-- revenuesByRentalProperty Bar Chart -->
-      <div class="col">
-        <div class="card revenuesByRentalProperties">
-          <div class="card-body">
-            <h5 class="card-title">Revenues by Rental Properties</h5>
-            <div id="revenuesByRentalPieChart">
-              <bar-chart 
+    <br />
+    <!-- revenuesByRentalProperty Bar Chart -->
+    <div class="col">
+      <div class="card revenuesByRentalProperties">
+        <div class="card-body">
+          <h5 class="card-title">Revenues by Rental Properties</h5>
+          <div id="revenuesByRentalPieChart">
+            <bar-chart
               :data="revenuesByRentalData[0]"
               prefix="SGD$"
               thousands=","
-              ></bar-chart>
-            </div>
-            <div v-if="revenuesByRentalData[1]">
-              <br />
-              There seems to be no Revenue data for this current date range...
-              🤔
-              <br />
-              <br />
-              <router-link to="/my-rentals"
-                >Collect Revenue from Outstanding Rents</router-link
-              >
-            </div>
+            ></bar-chart>
+          </div>
+          <div v-if="revenuesByRentalData[1]">
+            <br />
+            There seems to be no Revenue data for this current date range... 🤔
+            <br />
+            <br />
+            <router-link to="/my-rentals"
+              >Collect Revenue from Outstanding Rents</router-link
+            >
           </div>
         </div>
       </div>
     </div>
-    <br />
-    <br />
+  </div>
+  <br />
+  <br />
 
-    <!-- <h4>cumulative revenue against time</h4>
+  <!-- <h4>cumulative revenue against time</h4>
     <line-chart :data="cumulativeRevenueAgainstTimeData">TIMESERIES</line-chart> -->
 </template>
 
@@ -575,7 +577,9 @@ export default {
       var result = {};
       //get all unique rentals
       let addressSet = new Set(
-        expenses.map((arrElement) => arrElement.address + "#" + arrElement.unitNumber)
+        expenses.map(
+          (arrElement) => arrElement.address + "#" + arrElement.unitNumber
+        )
       );
       // console.log(addressSet);
       //initialize obj
@@ -596,7 +600,9 @@ export default {
       var result = {};
       //get all unique rentals
       let addressSet = new Set(
-        this.rentals.map((arrElement) => arrElement.address + "#"+ arrElement.unitNumber)
+        this.rentals.map(
+          (arrElement) => arrElement.address + "#" + arrElement.unitNumber
+        )
       );
       console.log(addressSet);
       //initialize obj
@@ -617,7 +623,7 @@ export default {
       for (let rental of this.rentals) {
         for (let tenant of rental.tenants) {
           for (let tenantRevenues of tenant.revenues) {
-            let fullAddress = rental.address + "#"+ rental.unitNumber;
+            let fullAddress = rental.address + "#" + rental.unitNumber;
             if (
               this.filterStartDate &&
               this.filterEndDate &&
@@ -792,12 +798,15 @@ export default {
         revenueFinal[addMonth] = 0;
         expensesFinal[addMonth] = 0;
       }
-      console.log(revenueFinal) // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      console.log(revenueFinal); // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
       // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
 
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
-        if (!moment(key).isBefore(moment().subtract(11, 'months')) && !moment(key).isAfter(moment().add(1, 'month'))) {
+        if (
+          !moment(key).isBefore(moment().subtract(11, "months")) &&
+          !moment(key).isAfter(moment().add(1, "month"))
+        ) {
           revenueFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
@@ -838,7 +847,10 @@ export default {
       // filter from 1 year ago till today, add to expensesFinal
 
       for (const [key, value] of Object.entries(expensesTemp)) {
-        if (!moment(key).isBefore(moment().subtract(11, 'months')) && !moment(key).isAfter(moment())) {
+        if (
+          !moment(key).isBefore(moment().subtract(11, "months")) &&
+          !moment(key).isAfter(moment())
+        ) {
           expensesFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
@@ -948,8 +960,11 @@ export default {
 
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
-        if (!moment(key).isBefore(moment().subtract(3, 'months')) && !moment(key).isAfter(moment())) {
-        revenueFinal[moment(key).format("MMM YYYY")] += value;
+        if (
+          !moment(key).isBefore(moment().subtract(3, "months")) &&
+          !moment(key).isAfter(moment())
+        ) {
+          revenueFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
       console.log("final revenues", revenueFinal);
@@ -985,8 +1000,11 @@ export default {
       }
 
       for (const [key, value] of Object.entries(expensesTemp)) {
-        if (!moment(key).isBefore(moment().subtract(3, 'months')) && !moment(key).isAfter(moment())) {
-        expensesFinal[moment(key).format("MMM YYYY")] += value;
+        if (
+          !moment(key).isBefore(moment().subtract(3, "months")) &&
+          !moment(key).isAfter(moment())
+        ) {
+          expensesFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
       console.log("final expenses", expensesFinal);
@@ -1056,8 +1074,11 @@ export default {
       }
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
-        if (!moment(key).isBefore(moment().subtract(6, 'months')) && !moment(key).isAfter(moment())) {
-        revenueFinal[moment(key).format("MMM YYYY")] += value;
+        if (
+          !moment(key).isBefore(moment().subtract(6, "months")) &&
+          !moment(key).isAfter(moment())
+        ) {
+          revenueFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
       console.log("final revenues", revenueFinal);
@@ -1092,8 +1113,11 @@ export default {
       }
 
       for (const [key, value] of Object.entries(expensesTemp)) {
-        if (!moment(key).isBefore(moment().subtract(6, 'months')) && !moment(key).isAfter(moment())) {
-        expensesFinal[moment(key).format("MMM YYYY")] += value;
+        if (
+          !moment(key).isBefore(moment().subtract(6, "months")) &&
+          !moment(key).isAfter(moment())
+        ) {
+          expensesFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
       console.log("final expenses", expensesFinal);
@@ -1218,11 +1242,37 @@ h2 {
   /* margin-left: 30px; */
 }
 
+.btn-outline-primary {
+  border-color: #184994 !important;
+  box-shadow: none !important;
+  outline-color: #184994 !important;
+  color: #184994 !important;
+}
+.btn-outline-primary.current {
+  border-color: #184994 !important;
+  box-shadow: none !important;
+  outline-color: #184994 !important;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:visited,
+.active {
+  background-color: #0b2c5e !important;
+  border-color: #0b2c5e !important;
+  outline-color: #0b2c5e !important;
+  color: white !important;
+}
+
 .btn-outline-secondary {
   border-color: #a9a9a9 !important;
   color: #36454f !important;
 }
-
+.btn-check:checked {
+  background-color: #0b2c5e !important;
+  border-color: #0b2c5e !important;
+  outline-color: #0b2c5e !important;
+  color: white !important;
+}
 /* #clearFilterButton:hover {
   background-color: green;
   color: white;
