@@ -226,7 +226,7 @@
       :monthsPaid="this.monthsPaid"
       :paymentDate="this.paymentDate"
     />
-
+    <br>
     <h2 class="header">Outstanding Rent</h2>
     <br /><br />
     <div class="table-responsive">
