@@ -285,6 +285,7 @@
           <div id="revenuesByRentalPieChart">
             <bar-chart
               :data="revenuesByRentalData[0]"
+              :colors="[['#F85F73', '#FBE8D3', '#928A97', '#283C63']]"
               prefix="SGD$"
               thousands=","
             ></bar-chart>
