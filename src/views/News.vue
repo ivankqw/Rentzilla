@@ -1,8 +1,11 @@
 <template>
   <div class="container" style="margin-top: 20px">
+    <v-tour name="myTourNews" :steps="steps"></v-tour>
+    <button class="helpButton" @click="clickTour">Help!</button>
     <div class="text-right align-right row g-0">
       <div class="col-md-5 w-auto ms-auto">
         <div
+        id="navNewsBtnGrp"
           class="btn-group"
           role="group"
           aria-label="Basic radio toggle button group"
@@ -110,6 +113,7 @@
 <script>
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.js";
+import { ref } from "vue";
 
 export default {
   name: "News",
@@ -120,6 +124,40 @@ export default {
       articlesBottom: [],
     };
   },
+  setup() {
+const steps = ref([]);
+    steps.value = [
+      {
+        target: "#navNewsBtnGrp",
+        step: {
+          // offset: 100, // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+        },
+        header: {
+          title: "Navigate between topics",
+        },
+        content: `Click on the buttons here to select the news topic to view`,
+        params: {
+          placement: "auto", // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+          enableScrolling: false,
+        },
+      },
+    ]
+
+    const clickTour = () => {
+      console.log("hi");
+      console.log(window.tours);
+      try {
+        window.tours["myTourNews"].start();
+      } catch (e) {
+        console.log("error here click tour", e);
+      }
+    };
+    return {
+      steps,
+      clickTour
+    }
+  },
+
   async created() {
     var newsApiKey;
     try {
@@ -232,5 +270,16 @@ export default {
 a {
   color: inherit;
   text-decoration: inherit;
+}
+
+.helpButton {
+  background-color: #31b0d5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: #46b8da;
+  position: fixed;
+  bottom: -4px;
+  right: 10px;
 }
 </style>

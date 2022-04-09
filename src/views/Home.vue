@@ -1,20 +1,39 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="noData">
+    <h1>Welcome to Rentzilla!</h1>
+    <br />
+    <h2 style="float: none">We are glad to have you here, landlord!</h2>
+    <br />
+    <img src="../assets/party_dino.png" />
+    <br />
+    <br />
+
+    <h3>To get you started, let us start adding data in here!</h3>
+    <br />
+    <button type="button" class="btn btn-success">
+      <router-link
+        to="/my-rentals"
+        style="color: white; text-decoration: none; color: inherit"
+        >Add your Rental Properties</router-link
+      >
+    </button>
+  </div>
+  <div class="container" v-if="!noData">
     <div id="helpButton">
       <button class="helpButton" @click="clickTour">Help!</button>
     </div>
-    <br>
+    <br />
     <h2 class="header" id="myRentalProperties">My Rental Properties</h2>
     <br /><br />
     <div id="mapid"></div>
     <v-tour name="myTour" :steps="steps"></v-tour>
     <div class="card">
       <div v-if="Object.keys(rentals).length === 0">
-        Hey there! Your Rental Properties will show up on the map above! <br />
-        You do not have any Rental Properties currently. <br />
         <br />
-        <router-link to="/my-rentals">Add Rental Properties</router-link>
+        There seems to be no Rental Property data... 🤔
         <br />
+        <br />
+        <router-link to="/my-rentals">Add more Rental Properties</router-link>
       </div>
     </div>
     <br />
@@ -25,7 +44,7 @@
     <h4></h4>
     <br />
 
-    <div v-if="!revenueExpensesAgainstTimeDataDefault[2]">
+    <div>
       <div class="dropdown">
         <div class="text-right align-right row g-0">
           <div class="col-md-5 w-auto ms-auto">
@@ -78,7 +97,6 @@
       <div
         class="card revenueExpensesAgainstTime"
         id="revenueExpensesAgainstTime"
-        v-if="!revenueExpensesAgainstTimeDataDefault[2]"
       >
         <h5 class="card-title">Revenue and Expenses over Time</h5>
         <br />
@@ -121,22 +139,20 @@
           discrete="true"
         ></line-chart>
         <br />
+        <div v-if="revenueExpensesAgainstTimeDataDefault[2]">
+          <br />
+          There seems to be no Revenue and Expense data for this current date
+          range... 🤔
+          <br />
+          <br />
+          <router-link to="/my-rentals">Add more Rental Properties</router-link>
+          |
+          <router-link to="/my-expenses">Add Expenses</router-link>
+        </div>
       </div>
     </div>
     <br />
-    <div class="card revenueExpensesAgainstTime">
-      <div v-if="revenueExpensesAgainstTimeDataDefault[2]">
-        Hey there! You do not have any Revenue or Expenses currently.
-        <br />
-
-        <br />
-        <router-link to="/my-rentals"
-          >Add Rental Properties to start recording Rent</router-link
-        >
-        |
-        <router-link to="/my-expenses">Add Expenses</router-link>
-      </div>
-    </div>
+    <div class="card revenueExpensesAgainstTime"></div>
     <br />
     <h2>Breakdown of Revenues and Expenses</h2>
     <br />
@@ -198,17 +214,21 @@
         <div class="card expensesByCategory" id="expensesByCategory">
           <div class="card-body">
             <h5 class="card-title">Expenses by Category</h5>
-            <div
-              id="expensesByCatergoryPieChart"
-              v-if="Object.keys(expensesByCategoryData).length !== 0"
-            >
+            <div id="expensesByCatergoryPieChart">
               <pie-chart
                 :data="expensesByCategoryData"
                 :donut="true"
               ></pie-chart>
             </div>
-            <div v-if="Object.keys(expensesByCategoryData).length === 0">
-              Hey there! You do not have any Expenses currently.
+            <div
+              v-if="
+                Object.keys(expensesByCategoryData).length === 0 ||
+                Number.isNaN(Object.values(expensesByCategoryData)[0])
+              "
+            >
+              <br />
+              There seems to be no Expense data for this current date range...
+              🤔
               <br />
               <br />
               <router-link to="/my-rentals"
@@ -226,20 +246,28 @@
         <div class="card expensesByRentalProperty">
           <div class="card-body">
             <h5 class="card-title">Expenses by Rental Properties</h5>
-            <div
-              id="expensesByRentalBarChart"
-              v-if="Object.keys(expensesByRentalData).length !== 0"
-            >
+            <div id="expensesByRentalBarChart">
               <column-chart
                 :data="expensesByRentalData"
                 :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"
               ></column-chart>
             </div>
-            <div v-if="Object.keys(expensesByRentalData).length === 0">
-              Hey there! You do not have any Rental Properties
+            <div
+              v-if="
+                Object.keys(expensesByRentalData).length === 0 ||
+                Number.isNaN(Object.values(expensesByRentalData)[0])
+              "
+            >
+              <br />
+              There seems to be no Expense data for this current date range...
+              🤔
               <br />
               <br />
-              <router-link to="/my-rentals">Add Rental Properties</router-link>
+              <router-link to="/my-rentals"
+                >Add more Rental Properties</router-link
+              >
+              |
+              <router-link to="/my-expenses">Add Expenses</router-link>
             </div>
           </div>
         </div>
@@ -250,15 +278,17 @@
         <div class="card revenuesByRentalProperties">
           <div class="card-body">
             <h5 class="card-title">Revenues by Rental Properties</h5>
-            <div id="revenuesByRentalPieChart" v-if="!revenuesByRentalData[1]">
+            <div id="revenuesByRentalPieChart">
               <pie-chart :data="revenuesByRentalData[0]"></pie-chart>
             </div>
             <div v-if="revenuesByRentalData[1]">
-              Hey there! You do not have any Revenues currently.
+              <br />
+              There seems to be no Revenue data for this current date range...
+              🤔
               <br />
               <br />
               <router-link to="/my-rentals"
-                >Add Rental Properties to start recording Revenue</router-link
+                >Collect Revenue from Outstanding Rents</router-link
               >
             </div>
           </div>
@@ -424,6 +454,21 @@ export default {
           }
           var counter = 0;
           //var isEmpty = true;
+          mymap = leaflet.map("mapid").setView([1.29027, 103.851959], 11.5);
+          leaflet
+            .tileLayer(
+              "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXZhbmtxdyIsImEiOiJjbDBzMDR6MDAwOG5mM2NxYmJyMjQ4OGphIn0.8elCYEW3Ykk4W7oJ4AINbg",
+              {
+                attribution:
+                  'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: "mapbox/streets-v11",
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: accessToken,
+              }
+            )
+            .addTo(mymap);
           for (let [postalCode, values] of Object.entries(resultObj)) {
             console.log(postalCode);
             //isEmpty = fl
@@ -465,21 +510,6 @@ export default {
       })();
 
       //instantiate leaflet map
-      mymap = leaflet.map("mapid").setView([1.29027, 103.851959], 11.5);
-      leaflet
-        .tileLayer(
-          "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXZhbmtxdyIsImEiOiJjbDBzMDR6MDAwOG5mM2NxYmJyMjQ4OGphIn0.8elCYEW3Ykk4W7oJ4AINbg",
-          {
-            attribution:
-              'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: "mapbox/streets-v11",
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: accessToken,
-          }
-        )
-        .addTo(mymap);
     });
     return {
       clickTour,
@@ -504,6 +534,13 @@ export default {
   },
 
   computed: {
+    noData() {
+      return (
+        Object.keys(this.rentals).length === 0 &&
+        Object.keys(this.expenses).length === 0
+      );
+    },
+
     expensesByCategoryData() {
       let expenses = this.expenses;
       if (this.filterStartDate && this.filterEndDate) {
@@ -528,6 +565,7 @@ export default {
       for (let expense of this.expenses) {
         result[expense.expenseType] += expense.expenseCost;
       }
+      console.log("expenses by category", result);
       return result;
     },
 
@@ -557,6 +595,8 @@ export default {
         result[expense.fullAddress] += expense.expenseCost;
       }
       // console.log("result from expenses by rental data", result);
+      console.log("expenses by rental properties", result);
+      console.log("ddd", Number.isNaN(Object.values(result)[0]));
       return result;
     },
 
@@ -1109,6 +1149,7 @@ export default {
         { includeMetadataChanges: true },
         (doc) => {
           this.expenses = doc.data().expenses;
+          console.log("expensesss", this.expenses);
         }
       );
       onSnapshot(
