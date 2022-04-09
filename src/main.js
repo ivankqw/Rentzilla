@@ -35,16 +35,16 @@ initializeApp(firebaseConfig);
 
 VueChartKick.options = {
   colors: [
-    "#FA8072",
-    "#f38ca3",
-    "#ff864d",
-    "#ffe366",
-    "#d0ff66",
-    "#489f14",
+    "#50D8D7",
+    "#474044",
+    "#FFC145",
+    "#12664F",
+    "#a682e8",
+    "#5d8aa8",
     "#6dd09e",
     "#9be9e5",
-    "#7ba7d1",
-    "#a682e8",
+    "#a85d65",
+    "#d0ff66",
   ],
   // colors: ["#2C3E50", "#F85F73", "#FBE8D3", "#928A97", "#827397"],
 };
