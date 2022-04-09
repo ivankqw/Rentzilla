@@ -278,7 +278,7 @@
       <div class="col">
         <div class="card revenuesByRentalProperties">
           <div class="card-body">
-            <h5 class="card-title">Revenues by Rental Properties</h5>
+            <h5 class="card-title">Revenues by Rental Properties :)</h5>
             <div id="revenuesByRentalPieChart">
               <bar-chart 
               :data="revenuesByRentalData[0]"
