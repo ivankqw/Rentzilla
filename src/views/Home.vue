@@ -1,5 +1,6 @@
 <template>
   <div class="container" v-if="noData">
+    <br>
     <h1>Welcome to Rentzilla!</h1>
     <br />
     <h2 style="float: none">We are glad to have you here, {{$store.state.name}}!</h2>
@@ -186,8 +187,9 @@
                   class="form-control"
                 />
               </div>
-              <div class="col-md-3 align-self-center">
+              <div class="col align-self-center">
                 <button
+                  id="clearFilterButton"
                   type="button"
                   class="btn btn-outline-secondary"
                   @click="clearFilter"
@@ -202,7 +204,7 @@
     </div>
 
     <!-- <div class="row row-cols-3"> -->
-    <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
       <!-- expensesByCategory Pie Chart -->
       <div class="col">
         <div class="card expensesByCategory" id="expensesByCategory">
@@ -212,6 +214,8 @@
               <pie-chart
                 :data="expensesByCategoryData"
                 :donut="true"
+                prefix="SGD$"
+                thousands=","
               ></pie-chart>
             </div>
             <div
@@ -244,6 +248,8 @@
               <column-chart
                 :data="expensesByRentalData"
                 :colors="[['#003f5c', '#58508d', '#bc5090', '#ffa600']]"
+                prefix="SGD$"
+                thousands=","
               ></column-chart>
             </div>
             <div
@@ -266,14 +272,19 @@
           </div>
         </div>
       </div>
-
-      <!-- revenuesByRentalProperty Pie Chart -->
+    </div>
+    <br>
+      <!-- revenuesByRentalProperty Bar Chart -->
       <div class="col">
         <div class="card revenuesByRentalProperties">
           <div class="card-body">
             <h5 class="card-title">Revenues by Rental Properties</h5>
             <div id="revenuesByRentalPieChart">
-              <pie-chart :data="revenuesByRentalData[0]"></pie-chart>
+              <bar-chart 
+              :data="revenuesByRentalData[0]"
+              prefix="SGD$"
+              thousands=","
+              ></bar-chart>
             </div>
             <div v-if="revenuesByRentalData[1]">
               <br />
@@ -294,7 +305,6 @@
 
     <!-- <h4>cumulative revenue against time</h4>
     <line-chart :data="cumulativeRevenueAgainstTimeData">TIMESERIES</line-chart> -->
-  </div>
 </template>
 
 <script>
@@ -565,7 +575,7 @@ export default {
       var result = {};
       //get all unique rentals
       let addressSet = new Set(
-        expenses.map((arrElement) => arrElement.fullAddress)
+        expenses.map((arrElement) => arrElement.address + "#" + arrElement.unitNumber)
       );
       // console.log(addressSet);
       //initialize obj
@@ -573,7 +583,8 @@ export default {
         result[address] = 0;
       }
       for (let expense of this.expenses) {
-        result[expense.fullAddress] += expense.expenseCost;
+        let fullAddress = expense.address + "#" + expense.unitNumber;
+        result[fullAddress] += expense.expenseCost;
       }
       // console.log("result from expenses by rental data", result);
       console.log("expenses by rental properties", result);
@@ -585,15 +596,28 @@ export default {
       var result = {};
       //get all unique rentals
       let addressSet = new Set(
-        this.rentals.map((arrElement) => arrElement.address)
+        this.rentals.map((arrElement) => arrElement.address + "#"+ arrElement.unitNumber)
       );
+      console.log(addressSet);
       //initialize obj
       for (let address of addressSet) {
         result[address] = 0;
       }
+      console.log(result);
+      // for (let rental of this.rentals) {
+      //   for (let tenant of rental.tenants) {
+      //     for (let tenantRevenues of tenant.revenues) {
+      //       console.log(rental.address + rental.unitNumber + "tenant paid: " + tenantRevenues.paymentAmount);
+      //       let fullAddress = rental.address + rental.unitNumber;
+      //       result[fullAddress] = 0;
+      //       console.log(result);
+      //     }
+      //   }
+      // }
       for (let rental of this.rentals) {
         for (let tenant of rental.tenants) {
           for (let tenantRevenues of tenant.revenues) {
+            let fullAddress = rental.address + "#"+ rental.unitNumber;
             if (
               this.filterStartDate &&
               this.filterEndDate &&
@@ -609,7 +633,8 @@ export default {
                 JSON.stringify(tenantRevenues.paymentAmount)
               );
               if (tenantRevenuesPaymentAmount) {
-                result[rental.address] += parseInt(tenantRevenuesPaymentAmount);
+                console.log(rental.address + rental.unitNumber);
+                result[fullAddress] += parseInt(tenantRevenuesPaymentAmount);
               }
             } else if (this.filterStartDate && this.filterEndDate) {
               continue;
@@ -617,12 +642,20 @@ export default {
               let tenantRevenuesPaymentAmount = JSON.parse(
                 JSON.stringify(tenantRevenues.paymentAmount)
               );
-              result[rental.address] += parseInt(tenantRevenuesPaymentAmount);
+              result[fullAddress] += parseInt(tenantRevenuesPaymentAmount);
             }
           }
         }
       }
       var empty = true;
+      for (const [key, value] of Object.entries(result)) {
+        console.log(key + "revnue:" + value);
+      }
+
+      // filter out those with 0 revenues
+      const resultAsArray = Object.entries(result);
+      const filtered = resultAsArray.filter((x) => x[1] > 0);
+      result = Object.fromEntries(filtered);
 
       for (const [key, value] of Object.entries(result)) {
         if (value !== 0 && key) {
@@ -1197,6 +1230,11 @@ h2 {
 .btn-outline-secondary:hover {
   background-color: #a9a9a9 !important;
   color: black !important;
+}
+
+#clearFilterButton {
+  white-space: nowrap;
+  text-align: center;
 }
 
 .helpButton {

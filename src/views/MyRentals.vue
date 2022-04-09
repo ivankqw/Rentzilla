@@ -33,7 +33,7 @@
             <th>Address</th>
             <th>Unit Number</th>
             <th>Purchase Price</th>
-            <th id="viewTenantDetailsCol">View Tenant Details</th>
+            <th id="viewTenantDetailsCol">Tenant Details</th>
             <th id="manageRentalPropertyCol">Manage Rental Property</th>
           </tr>
         </thead>

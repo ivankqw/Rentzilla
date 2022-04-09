@@ -12,7 +12,9 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Record Tenant's Rent Payment</h5>
+          <h5 class="modal-title" id="exampleModalLabel">
+            Record Tenant's Rent Payment
+          </h5>
           <button
             class="btn-close"
             type="button"
@@ -112,15 +114,22 @@
           ></button>
         </div>
         <div class="modal-body">
-          Please verify that you have collected rent for the following tenant:
+          Verify that you have collected rent for the following tenant:
           <br />
-          Tenant Name: {{ tenantInfo.firstName + " " + tenantInfo.lastName }}
           <br />
-          Total Rent Collected: ${{
-            tenantInfo.monthlyRent * this.myMonthsPaid
-          }}
+          <div style="text-align: center">
+            <div style="display: inline-block; text-align: left">
+              <strong> Tenant Name: </strong
+              >{{ tenantInfo.firstName + " " + tenantInfo.lastName }}
+              <br />
+              <strong> Total Rent Collected: </strong> ${{
+                tenantInfo.monthlyRent * this.myMonthsPaid
+              }}
+              <br />
+              <strong> Tenant's Payment Date: </strong> {{ this.myPaymentDate }}
+            </div>
+          </div>
           <br />
-          Tenant's Payment Date: {{ this.myPaymentDate }} <br />
           Once you have done so, click 'Confirm'.
         </div>
         <div class="modal-footer">
