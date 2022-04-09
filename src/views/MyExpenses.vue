@@ -24,6 +24,8 @@
           </div>
           <div class="col"> </div>
           <div class="col"> </div>
+          <div class="col"> </div>
+          <div class="col"> </div>
           <div class="col"> 
             <!-- <div class="filterGroup"> -->
             <label for="filterStart" class="form-label">Start Date:</label>
@@ -33,8 +35,8 @@
             <label for="filterEnd" class="form-label">End Date:</label>
             <input id="filterEnd" class="form-control" @input="onFilterEndInput" type="date" />
           </div>
-          <div class="col-md-2 align-self-center">
-            <button id="clearFilterButton" type="button" class="btn btn-outline-secondary" @click="clearFilter" style="margin-top: 22px">
+          <div class="col align-self-center">
+            <button id="clearFilterButton" type="button" class="btn btn-outline-secondary " @click="clearFilter" style="margin-top: 22px">
               Clear Filter
             </button>
           </div>
@@ -391,15 +393,17 @@ h2 {
   background-color: #2C3E50 !important;
 } */
 
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+.btn-primary {
     background-color: #184994 !important;
     border-color: #184994 !important;
     box-shadow: none !important;
-    outline-color: #000000 !important;
+    outline-color: #184994 !important;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn-primary:active, .btn-primary:visited {
   background-color: #0b2c5e !important;
+  border-color: #0b2c5e !important;
+  outline-color: #0b2c5e !important;
 }
 
 /* #manageExpenseButton:hover{
@@ -409,7 +413,11 @@ h2 {
 .btn-outline-secondary {
   border-color: #A9A9A9 !important;
   color: #36454F !important;  
+  white-space: nowrap;
+  text-align: center;
+  /* float: right; */
 }
+
 
 /* #clearFilterButton:hover {
   background-color: green;
