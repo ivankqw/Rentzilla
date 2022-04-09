@@ -1375,6 +1375,11 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@iconify/vue@^3.2.1":
+  "integrity" "sha512-c4R6ZgFo1JrJ8aPMMgOPgfU7lBswihMGR+yWe/P4ZukC3kTkeT4+lkt9Pc/itVFMkwva/S/7u9YofmYv57fnNQ=="
+  "resolved" "https://registry.npmjs.org/@iconify/vue/-/vue-3.2.1.tgz"
+  "version" "3.2.1"
+
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   "integrity" "sha512-zN69TnSr0viRSU6cEDIcuPcP67QcpQ6uHACg58FiN9PDrU6SLyGW3MR4tiISbYxy1kDWAVPwD+XwQTWE5cigAA=="
   "resolved" "https://registry.npmjs.org/@intervolga/optimize-cssnano-plugin/-/optimize-cssnano-plugin-1.0.6.tgz"
@@ -9249,7 +9254,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@^3.0.0-0", "vue@^3.0.2", "vue@^3.0.5", "vue@^3.2.0", "vue@^3.2.21", "vue@>= 3.0.0 < 4", "vue@>=3.0.0", "vue@3.2.31":
+"vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@^3.0.0-0", "vue@^3.0.2", "vue@^3.0.5", "vue@^3.2.0", "vue@^3.2.21", "vue@>= 3.0.0 < 4", "vue@>=3.0.0", "vue@3.2.31", "vue@3.x":
   "integrity" "sha512-odT3W2tcffTiQCy57nOT93INw1auq5lYLLYtWpPYQQYQOOdHiqFct9Xhna6GJ+pJQaF67yZABraH47oywkJgFw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.2.31.tgz"
   "version" "3.2.31"
