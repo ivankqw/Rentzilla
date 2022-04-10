@@ -413,8 +413,8 @@ export default {
     ];
 
     const clickTour = () => {
-      console.log("hi");
-      console.log(window.tours);
+      //console.log("hi");
+      //console.log(window.tours);
       try {
         window.tours["myTourMyRentals"].start();
       } catch (e) {
@@ -626,7 +626,7 @@ export default {
       const ref = doc(db, "Rentals", userEmail);
       const docSnap = await getDoc(ref);
       const rentals = docSnap.data().rentals;
-      console.log(rentals[id].tenants);
+      //console.log(rentals[id].tenants);
       this.currTenants = rentals[id].tenants;
     },
     change() {
