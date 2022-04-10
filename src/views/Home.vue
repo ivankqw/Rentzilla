@@ -90,7 +90,7 @@
                 checked
                 v-on:click="changeToMonths('1 Year')"
               />
-              <label class="btn btn-outline-primary active" for="btnradio3"
+              <label class="btn btn-outline-primary" for="btnradio3"
                 >1 Year
               </label>
             </div>
@@ -945,7 +945,7 @@ export default {
 
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
-      var lowerBoundMonth = moment().subtract(3, "months"); // "2021-05"
+      var lowerBoundMonth = moment().subtract(2, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
@@ -962,7 +962,7 @@ export default {
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
         if (
-          !moment(key).isBefore(moment().subtract(3, "months")) &&
+          !moment(key).isBefore(moment().subtract(2, "months")) &&
           !moment(key).isAfter(moment())
         ) {
           revenueFinal[moment(key).format("MMM YYYY")] += value;
@@ -1002,7 +1002,7 @@ export default {
 
       for (const [key, value] of Object.entries(expensesTemp)) {
         if (
-          !moment(key).isBefore(moment().subtract(3, "months")) &&
+          !moment(key).isBefore(moment().subtract(2, "months")) &&
           !moment(key).isAfter(moment())
         ) {
           expensesFinal[moment(key).format("MMM YYYY")] += value;
@@ -1063,7 +1063,7 @@ export default {
 
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
-      var lowerBoundMonth = moment().subtract(6, "months"); // "2021-05"
+      var lowerBoundMonth = moment().subtract(5, "months"); // "2021-05"
       console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
@@ -1076,7 +1076,7 @@ export default {
       // populate revenueFinal with the months that have earned revenue
       for (const [key, value] of Object.entries(revenueTemp)) {
         if (
-          !moment(key).isBefore(moment().subtract(6, "months")) &&
+          !moment(key).isBefore(moment().subtract(5, "months")) &&
           !moment(key).isAfter(moment())
         ) {
           revenueFinal[moment(key).format("MMM YYYY")] += value;
@@ -1115,7 +1115,7 @@ export default {
 
       for (const [key, value] of Object.entries(expensesTemp)) {
         if (
-          !moment(key).isBefore(moment().subtract(6, "months")) &&
+          !moment(key).isBefore(moment().subtract(5, "months")) &&
           !moment(key).isAfter(moment())
         ) {
           expensesFinal[moment(key).format("MMM YYYY")] += value;
@@ -1243,7 +1243,8 @@ h2 {
   /* margin-left: 30px; */
 }
 
-.btn-outline-primary {
+/* button group css stuff */
+/* .btn-outline-primary {
   border-color: #184994 !important;
   box-shadow: none !important;
   outline-color: #184994 !important;
@@ -1273,11 +1274,27 @@ h2 {
   border-color: #0b2c5e !important;
   outline-color: #0b2c5e !important;
   color: white !important;
-}
+} */
 /* #clearFilterButton:hover {
   background-color: green;
   color: white;
 } */
+
+/* selected btn css */
+.btn-group-toggle .btn:not(:disabled):not(.disabled).active, .btn-group-toggle .btn:not(:disabled):not(.disabled):active, .show>.btn.dropdown-toggle {
+      color: #fff;
+      background-color: #2196F3;
+      border-color: #2196F3;
+}
+
+/* non selected btn css */
+.btn-group-toggle .btn {
+  color: #fff;
+  background-color: #b7b7b7;
+  border-color: #6c757d;
+}
+
+
 .btn-outline-secondary:hover {
   background-color: #a9a9a9 !important;
   color: black !important;
