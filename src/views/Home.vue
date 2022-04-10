@@ -65,7 +65,9 @@
                 autocomplete="off"
                 v-on:click="changeToMonths('3 Months')"
               />
-              <label class="btn btn-outline-primary" for="btnradio1">3 Months</label>
+              <label class="btn btn-outline-primary" for="btnradio1"
+                >3 Months</label
+              >
 
               <input
                 type="radio"
@@ -75,7 +77,9 @@
                 autocomplete="off"
                 v-on:click="changeToMonths('6 Months')"
               />
-              <label class="btn btn-outline-primary" for="btnradio2">6 Months</label>
+              <label class="btn btn-outline-primary" for="btnradio2"
+                >6 Months</label
+              >
 
               <input
                 type="radio"
@@ -86,7 +90,9 @@
                 checked
                 v-on:click="changeToMonths('1 Year')"
               />
-              <label class="btn btn-outline-primary" for="btnradio3">1 Year</label>
+              <label class="btn btn-outline-primary" for="btnradio3"
+                >1 Year</label
+              >
             </div>
           </div>
         </div>
@@ -155,12 +161,7 @@
           <br />
           <div
             class="filter"
-            v-if="
-              Object.keys(expensesByRentalData).length !== 0 ||
-              Object.keys(expensesByCategoryData).length !== 0 ||
-              !revenuesByRentalData[1] ||
-              Object.keys(rentsCollectedAgainstTime).length !== 0
-            "
+            
           >
             <form id="filterForm" class="row">
               <div class="col align-self-center"></div>
@@ -460,7 +461,7 @@ export default {
           for (let [postalCode, values] of Object.entries(resultObj)) {
             // console.log(postalCode);
             if (postalCode) {
-              parseInt(postalCode)
+              parseInt(postalCode);
             }
             //isEmpty = fl
             let currLat = parseFloat(values.latitude);
@@ -469,7 +470,12 @@ export default {
             let currString = "";
             while (counter < values.addresses.length) {
               currString += "<h5>" + values.addresses[counter] + "</h5>";
-              currString += "" + "Unit Number: " + (values.unitNumbers[counter] === 'x' ? "-":values.unitNumbers[counter]);
+              currString +=
+                "" +
+                "Unit Number: " +
+                (values.unitNumbers[counter] === "x"
+                  ? "-"
+                  : values.unitNumbers[counter]);
               currString +=
                 "<br>" +
                 "Purchase Price: " +
@@ -534,8 +540,7 @@ export default {
 
     expensesByCategoryData() {
       let expenses = this.expenses;
-      if (this.filterStartDate && this.filterEndDate) {
-        
+      if (this.isValidDate(this.filterStartDate) && this.isValidDate(this.filterEndDate)) {
         expenses = this.expenses.filter(
           (exp) =>
             moment(exp.expenseDate).isSameOrAfter(
@@ -562,7 +567,7 @@ export default {
 
     expensesByRentalData() {
       let expenses = this.expenses;
-      if (this.filterStartDate && this.filterEndDate) {
+      if (this.isValidDate(this.filterStartDate) && this.isValidDate(this.filterEndDate)) {
         expenses = this.expenses.filter(
           (exp) =>
             moment(exp.expenseDate).isSameOrAfter(
@@ -591,18 +596,16 @@ export default {
       const resultAsArray = Object.entries(result);
       const filtered = resultAsArray.filter((x) => x[1] > 0);
       result = Object.fromEntries(filtered);
-      
 
       // for address with no unit number, remove the #x from full address
       const object1 = result;
       let object2 = {};
       for (const [key, value] of Object.entries(object1)) {
         if (key.slice(-2) === "#x") {
-          object2[key.slice(0,-3)] = value;
+          object2[key.slice(0, -3)] = value;
         } else {
           object2[key] = value;
         }
-        
       }
       // console.log(object2);
 
@@ -642,8 +645,8 @@ export default {
           for (let tenantRevenues of tenant.revenues) {
             let fullAddress = rental.address + "#" + rental.unitNumber;
             if (
-              this.filterStartDate &&
-              this.filterEndDate &&
+              this.isValidDate(this.filterStartDate) &&
+              this.isValidDate(this.filterEndDate) &&
               moment(tenantRevenues.paymentDate).isSameOrAfter(
                 moment(this.filterStartDate)
               ) &&
@@ -659,7 +662,7 @@ export default {
                 // console.log(rental.address + rental.unitNumber);
                 result[fullAddress] += parseInt(tenantRevenuesPaymentAmount);
               }
-            } else if (this.filterStartDate && this.filterEndDate) {
+            } else if (this.isValidDate(this.filterStartDate) && this.isValidDate(this.filterEndDate)) {
               continue;
             } else {
               let tenantRevenuesPaymentAmount = JSON.parse(
@@ -691,16 +694,15 @@ export default {
       let object2 = {};
       for (const [key, value] of Object.entries(object1)) {
         if (key.slice(-2) === "#x") {
-          object2[key.slice(0,-3)] = value;
+          object2[key.slice(0, -3)] = value;
         } else {
           object2[key] = value;
         }
-        
       }
       // console.log(object2);
 
       result = object2;
-      
+
       // console.log("re", [result, empty]);
       return [result, empty];
     },
@@ -751,7 +753,7 @@ export default {
       }
 
       // if date filter is activated
-      if (this.filterStartDate && this.filterEndDate) {
+      if (this.isValidDate(this.filterStartDate) && this.isValidDate(this.filterEndDate)) {
         // filter by dates
         const resultAsArray = Object.entries(result);
         // console.log(resultAsArray);
@@ -1164,6 +1166,14 @@ export default {
   components: {},
 
   methods: {
+    isValidDate(dateString) {
+      var regEx = /^\d{4}-\d{2}-\d{2}$/;
+      if (!dateString.match(regEx)) return false; // Invalid format
+      var d = new Date(dateString);
+      var dNum = d.getTime();
+      if (!dNum && dNum !== 0) return false; // NaN value, Invalid date
+      return d.toISOString().slice(0, 10) === dateString;
+    },
     async getCoordinates(postalCode) {
       var vm = this;
       let result = await fetch(
@@ -1180,10 +1190,12 @@ export default {
     },
 
     onFilterStartInput(e) {
+      console.log(e.target.value)
       this.filterStartDate = e.target.value;
     },
 
     onFilterEndInput(e) {
+      console.log(e.target.value)
       this.filterEndDate = e.target.value;
     },
 
