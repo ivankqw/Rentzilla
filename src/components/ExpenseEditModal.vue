@@ -23,7 +23,6 @@
         <div class="modal-body">
           <form id="editExpenseForm">
             <div class="mb-3">
-              <!-- <h5 :v-text="fullAddress">Rental Address: {{fullAddress}}</h5> -->
               <label for="fullAddress">Rental Address</label>
               <!--  <button type="button" class="btn btn-primary" @click="testbutton">test button</button> -->
               <select
@@ -111,7 +110,6 @@
 
 <script>
 import { getAuth } from "firebase/auth";
-// import { doc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ref, onMounted } from "vue";
@@ -232,58 +230,52 @@ export default {
       const docSnap = await getDoc(ref);
       const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
 
-      // console.log("myIndex = ", this.index == "");
-      // console.log("myPostalCode = ", this.postalCode == "");
-      // console.log("myExpenseType = ", this.expenseType == "");
-      // console.log("myExpenseCost = ", this.myExpenseCost == "");
-      // console.log("myExpenseDate = ", this.myExpenseDate == "");
-
-      console.log("parents\nindex is ", this.$parent.index);
-      console.log("fullAddress is ", this.$parent.fullAddress);
-      console.log("expenseType is ", this.$parent.expenseType);
-      console.log("expenseCost is ", this.$parent.expenseCost);
-      console.log("expenseDate is ", this.$parent.expenseDate);
+      // console.log("parents\nindex is ", this.$parent.index);
+      // console.log("fullAddress is ", this.$parent.fullAddress);
+      // console.log("expenseType is ", this.$parent.expenseType);
+      // console.log("expenseCost is ", this.$parent.expenseCost);
+      // console.log("expenseDate is ", this.$parent.expenseDate);
 
       // if user did not edit the data, populate it with the original (parent) data
       if (this.myIndex == "") {
         this.myIndex = this.$parent.index;
-        console.log("*");
+        // console.log("*");
       }
       if (this.myFullAddress == "") {
         this.myFullAddress = this.$parent.fullAddress;
-        console.log("** this.myFullAddress=", this.myFullAddress);
+        // console.log("** this.myFullAddress=", this.myFullAddress);
       }
       if (this.myExpenseType == "") {
         this.myExpenseType = this.$parent.expenseType;
-        console.log("***");
+        // console.log("***");
       }
       if (this.myExpenseCost == "") {
         this.myExpenseCost = this.$parent.expenseCost;
-        console.log("****");
+        // console.log("****");
       }
       if (this.myExpenseDate == "") {
         this.myExpenseDate = this.$parent.expenseDate;
-        console.log("*****");
+        // console.log("*****");
       }
-      console.log("index = ", this.index);
-      console.log("FullAddress = ", this.fullAddress);
-      console.log("ExpenseType = ", this.expenseType);
-      console.log("ExpenseCost = ", this.expenseCost);
-      console.log("ExpenseDate = ", this.expenseDate);
-      console.log("myIndex = ", this.myIndex);
-      console.log("myFullAddress = ", this.myFullAddress);
-      console.log("myExpenseType = ", this.myExpenseType);
-      console.log("myExpenseCost = ", this.myExpenseCost);
-      console.log("myExpenseDate = ", this.myExpenseDate);
+      // console.log("index = ", this.index);
+      // console.log("FullAddress = ", this.fullAddress);
+      // console.log("ExpenseType = ", this.expenseType);
+      // console.log("ExpenseCost = ", this.expenseCost);
+      // console.log("ExpenseDate = ", this.expenseDate);
+      // console.log("myIndex = ", this.myIndex);
+      // console.log("myFullAddress = ", this.myFullAddress);
+      // console.log("myExpenseType = ", this.myExpenseType);
+      // console.log("myExpenseCost = ", this.myExpenseCost);
+      // console.log("myExpenseDate = ", this.myExpenseDate);
 
-      console.log("before: expenses[index]=", expenses[index]);
+      // console.log("before: expenses[index]=", expenses[index]);
 
       expenses[index].fullAddress = this.myFullAddress;
       expenses[index].expenseType = this.myExpenseType;
       expenses[index].expenseCost = parseInt(this.myExpenseCost) ;
       expenses[index].expenseDate = this.myExpenseDate;
 
-      console.log("after: expenses[index]=", expenses[index]);
+      // console.log("after: expenses[index]=", expenses[index]);
       await updateDoc(ref, { expenses: expenses });
       this.myFullAddress = "";
       this.myExpenseType = "";
@@ -322,20 +314,20 @@ export default {
       const ref = doc(db, "Expenses", userEmail);
       const docSnap = await getDoc(ref);
       const expenses = JSON.parse(JSON.stringify(docSnap.data().expenses));
-      console.log("CLICKED DELETE BUTTON\nTo delete: ", expenses[index]);
+      // console.log("CLICKED DELETE BUTTON\nTo delete: ", expenses[index]);
 
       // var newExpenses;
       // await getDoc(ref)
       //   .then((x) => (newExpenses = x.data()))
       //   .catch((error) => console.log("get", error));
       // newExpenses = expenses;
-      console.log("exp b4 = ", expenses);
+      // console.log("exp b4 = ", expenses);
       expenses.splice(index, 1);
-      console.log("exp aft = ", expenses);
+      // console.log("exp aft = ", expenses);
       // await updateDoc(ref, { expenses: newExpenses });
       await updateDoc(ref, { expenses: expenses });
 
-      console.log("exp finally, ", expenses);
+      // console.log("exp finally, ", expenses);
 
       // setDoc(ref, {
       //   expenses: newExpenses.expenses,
