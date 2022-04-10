@@ -108,7 +108,7 @@ export default {
         });
       }
       alert("Feedback submitted successfully!");
-      console.log(docData);
+      // console.log(docData);
       document.getElementById("myForm").reset();
       this.feedback = "";
     },

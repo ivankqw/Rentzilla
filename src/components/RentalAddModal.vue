@@ -402,14 +402,14 @@ export default {
 
       if (docSnap.exists()) {
         let currentCounter = docSnap.data().counter;
-        console.log("Tenant ID:", currentCounter);
+        // console.log("Tenant ID:", currentCounter);
         await setDoc(docRef, {
           counter: currentCounter + 1,
         });
         return currentCounter;
       } else {
         
-        console.log("No such document!");
+        // console.log("No such document!");
         await setDoc(docRef, {
           counter: 1,
         });
@@ -428,7 +428,7 @@ export default {
         )
           .then((response) => response.text())
           .then((result) => {
-            console.log(result);
+            // console.log(result);
             if (JSON.parse(result).found == 0) {
               return "";
             }
@@ -531,7 +531,7 @@ export default {
           }
         } catch (error) {
           alert("Please enter a valid unit number e.g. 01-01");
-          console.log(error);
+          //console.log(error);
           return false;
         }
       }
@@ -768,7 +768,7 @@ export default {
       if (!valid) {
         return;
       }
-      console.log("saving rental");
+      //console.log("saving rental");
       const auth = getAuth();
       const userEmail = auth.currentUser.email;
       const ref = doc(db, "Rentals", userEmail);
@@ -780,7 +780,7 @@ export default {
       )
         .then((response) => response.text())
         .then((result) => {
-          console.log(result);
+          //console.log(result);
           if (JSON.parse(result).found == 0) {
             alert("Please enter a valid postal code");
           }
