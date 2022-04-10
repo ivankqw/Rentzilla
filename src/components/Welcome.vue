@@ -22,20 +22,20 @@
       <div class="card-body">
         <div class="tab-content">
           <div class="tab-pane fade show active" id="about">
-            <h5 class="card-title">Welcome to Rentzilla!</h5>
+            <h5 class="card-title">Welcome to Rentzilla! 🦎🛖</h5>
             <div class="card-text">
               Rentzilla is a super app that will help you manage all your
-              <strong> rental properties </strong>, <strong> expenses </strong>,
-              <strong> revenues </strong>, and keep up with the
-              <strong> latest news </strong>!
-              <img src="../assets/party_dino.png" />
-              <div class="text-left">
-                <ol class="list-group">
-                  <li class="list-group-item">Add, delete, and edit your rental properties</li>
-                  <li class="list-group-item">Add, delete, and edit your expenses</li>
-                  <li class="list-group-item">Collect rent from tenants as recorded revenue</li>
-                  <li class="list-group-item">Read the latest news</li>
-                  <li class="list-group-item">Make your next move with data visualisation</li>
+              <strong> rental properties 🏠</strong>, <strong> expenses 💸</strong>,
+              <strong> revenues 🤑</strong>, and keep up with the
+              <strong> latest news 📰</strong>!
+              <br><br>
+              <div class="text-start">
+                <ol class="list-group list-group-numbered">
+                  <li class="list-group-item list-group-item-action">Add, delete, and edit your rental properties</li>
+                  <li class="list-group-item list-group-item-action">Add, delete, and edit your expenses</li>
+                  <li class="list-group-item list-group-item-action">Collect rent from tenants as recorded revenue</li>
+                  <li class="list-group-item list-group-item-action">Read the latest news</li>
+                  <li class="list-group-item list-group-item-action">Make your next move with data visualisation</li>
                 </ol>
               </div>
             </div>
