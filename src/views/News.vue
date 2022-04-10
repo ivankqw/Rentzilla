@@ -171,7 +171,7 @@ const steps = ref([]);
         .then((articles) => {
           this.articlesTop = Array.from(articles).slice(0, 3);
           this.articlesBottom = Array.from(articles).slice(3);
-          console.log(articles);
+          // console.log(articles);
         });
     } catch (error) {
       // console.log(error);
@@ -199,7 +199,7 @@ const steps = ref([]);
             this.articlesTop = Array.from(articles).slice(0, 3);
 
             this.articlesBottom = Array.from(articles).slice(3);
-            console.log(articles);
+            // console.log(articles);
           });
       } catch (error) {
         // console.log(error);
@@ -223,7 +223,7 @@ const steps = ref([]);
             this.articlesTop = Array.from(articles).slice(0, 3);
 
             this.articlesBottom = Array.from(articles).slice(3);
-            console.log(articles);
+            // console.log(articles);
           });
       } catch (error) {
         // console.log(error);

@@ -553,7 +553,7 @@ export default {
       for (let cat of catSet) {
         result[cat] = 0;
       }
-      for (let expense of this.expenses) {
+      for (let expense of expenses) {
         result[expense.expenseType] += expense.expenseCost;
       }
       // console.log("expenses by category", result);
