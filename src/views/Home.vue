@@ -46,13 +46,14 @@
     <!-- Revenues and Expenses over Time, time series chart  -->
     <h4></h4>
     <br />
-
+    <div class="container"></div>
     <div>
       <div class="dropdown">
         <div class="text-right align-right row g-0">
           <div class="col-md-5 w-auto ms-auto">
             <div
               class="btn-group btn-group-sm"
+              data-toggle="buttons"
               role="group"
               aria-label="Basic radio toggle button group"
             >
@@ -62,12 +63,9 @@
                 name="btnradio"
                 id="btnradio1"
                 autocomplete="off"
-                checked
                 v-on:click="changeToMonths('3 Months')"
               />
-              <label class="btn btn-outline-primary" for="btnradio1"
-                >3 Months</label
-              >
+              <label class="btn btn-outline-primary" for="btnradio1">3 Months</label>
 
               <input
                 type="radio"
@@ -77,9 +75,7 @@
                 autocomplete="off"
                 v-on:click="changeToMonths('6 Months')"
               />
-              <label class="btn btn-outline-primary" for="btnradio2"
-                >6 Months</label
-              >
+              <label class="btn btn-outline-primary" for="btnradio2">6 Months</label>
 
               <input
                 type="radio"
@@ -90,9 +86,7 @@
                 checked
                 v-on:click="changeToMonths('1 Year')"
               />
-              <label class="btn btn-outline-primary" for="btnradio3"
-                >1 Year
-              </label>
+              <label class="btn btn-outline-primary" for="btnradio3">1 Year</label>
             </div>
           </div>
         </div>
@@ -591,6 +585,11 @@ export default {
         let fullAddress = expense.address + "#" + expense.unitNumber;
         result[fullAddress] += expense.expenseCost;
       }
+      // filter out those with 0 revenues
+      const resultAsArray = Object.entries(result);
+      const filtered = resultAsArray.filter((x) => x[1] > 0);
+      result = Object.fromEntries(filtered);
+      
       // console.log("result from expenses by rental data", result);
       console.log("expenses by rental properties", result);
       console.log("ddd", Number.isNaN(Object.values(result)[0]));
@@ -1280,20 +1279,19 @@ h2 {
   color: white;
 } */
 
-/* selected btn css */
-.btn-group-toggle .btn:not(:disabled):not(.disabled).active, .btn-group-toggle .btn:not(:disabled):not(.disabled):active, .show>.btn.dropdown-toggle {
-      color: #fff;
-      background-color: #2196F3;
-      border-color: #2196F3;
+.btn .btn-outline-primary,
+.active {
+  background-color: #e21833 !important;
+  border-color: #e21833 !important;
+  color: yellow !important;
 }
 
-/* non selected btn css */
-.btn-group-toggle .btn {
-  color: #fff;
-  background-color: #b7b7b7;
-  border-color: #6c757d;
+.btn .btn-outline-primary,
+.active:hover {
+  background-color: #900900 !important;
+  border-color: #900900 !important;
+  color: white !important;
 }
-
 
 .btn-outline-secondary:hover {
   background-color: #a9a9a9 !important;
