@@ -96,7 +96,7 @@
                 id="manageExpenseButton"
                 type="button"
                 class="btn btn-primary btn-sm"
-                @click="this.editExpenseDetails(i)"
+                @click="this.editExpenseDetails(expense.fullAddress)"
               >
                 Manage
               </button>
@@ -230,8 +230,14 @@ export default {
       expenseAddModal.value.show();
     }
 
-    function editExpenseDetails(id) {
+    function editExpenseDetails(fullAddress) {
       showExpenseEditModal();
+       let id;
+      for (let expId in this.expenses) {
+        if (fullAddress === JSON.parse(JSON.stringify(this.expenses))[expId].fullAddress) {
+          id = expId;
+        }
+      } 
       var currExpense = JSON.parse(JSON.stringify(this.expenses))[id];
       // console.log("currExpense=", currExpense);
       this.index = id;
@@ -245,6 +251,8 @@ export default {
       // console.log("expenseType=", this.expenseType);
       // console.log("expenseCost=", this.expenseCost);
       // console.log("expenseDate=", this.expenseDate);
+     
+
     }
 
     return {
