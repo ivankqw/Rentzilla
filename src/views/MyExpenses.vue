@@ -22,21 +22,37 @@
               + New Expense
             </button>
           </div>
-          <div class="col"> </div>
-          <div class="col"> </div>
-          <div class="col"> </div>
-          <div class="col"> </div>
-          <div class="col"> 
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col">
             <!-- <div class="filterGroup"> -->
             <label for="filterStart" class="form-label">Start Date:</label>
-            <input id="filterStart" class="form-control" @input="onFilterStartInput" type="date" />
+            <input
+              id="filterStart"
+              class="form-control"
+              @input="onFilterStartInput"
+              type="date"
+            />
           </div>
           <div class="col">
             <label for="filterEnd" class="form-label">End Date:</label>
-            <input id="filterEnd" class="form-control" @input="onFilterEndInput" type="date" />
+            <input
+              id="filterEnd"
+              class="form-control"
+              @input="onFilterEndInput"
+              type="date"
+            />
           </div>
           <div class="col align-self-center">
-            <button id="clearFilterButton" type="button" class="btn btn-outline-secondary " @click="clearFilter" style="margin-top: 22px">
+            <button
+              id="clearFilterButton"
+              type="button"
+              class="btn btn-outline-secondary"
+              @click="clearFilter"
+              style="margin-top: 22px"
+            >
               Clear Filter
             </button>
           </div>
@@ -68,8 +84,10 @@
             <td>{{ i + 1 }}</td>
             <td>{{ expense.postalCode }}</td>
             <td>{{ expense.address }}</td>
-            <td v-if="!isUnitNumLanded(expense.unitNumber)">#{{ expense.unitNumber }}</td>
-            <td v-else> - </td>
+            <td v-if="!isUnitNumLanded(expense.unitNumber)">
+              #{{ expense.unitNumber }}
+            </td>
+            <td v-else>-</td>
             <td>{{ expense.expenseType }}</td>
             <td>${{ expense.expenseCost }}</td>
             <td>{{ expense.expenseDate }}</td>
@@ -299,12 +317,16 @@ export default {
       if (!this.filterStartDate || !this.filterEndDate) {
         return this.expenses;
       }
-      return this.expenses.filter((exp) =>
-        moment(exp.expenseDate).isBetween(
-          moment(this.filterStartDate),
-          moment(this.filterEndDate)
+    
+
+      return this.expenses.filter(
+        (exp) =>
+            moment(exp.expenseDate).isSameOrAfter(
+              moment(this.filterStartDate)
+            ) &&
+            moment(exp.expenseDate).isSameOrBefore(moment(this.filterEndDate))
         )
-      );
+      
     },
   },
 
@@ -347,7 +369,6 @@ h2 {
 }
 
 #newExpenseBtn {
-  
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -363,7 +384,7 @@ h2 {
   font-weight: bold;
   float: left;
 }
-#newExpenseBtn:hover{
+#newExpenseBtn:hover {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
@@ -397,13 +418,15 @@ h2 {
 } */
 
 .btn-primary {
-    background-color: #184994 !important;
-    border-color: #184994 !important;
-    box-shadow: none !important;
-    outline-color: #184994 !important;
+  background-color: #184994 !important;
+  border-color: #184994 !important;
+  box-shadow: none !important;
+  outline-color: #184994 !important;
 }
 
-.btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
   background-color: #0b2c5e !important;
   border-color: #0b2c5e !important;
   outline-color: #0b2c5e !important;
@@ -414,20 +437,19 @@ h2 {
 }  */
 
 .btn-outline-secondary {
-  border-color: #A9A9A9 !important;
-  color: #36454F !important;  
+  border-color: #a9a9a9 !important;
+  color: #36454f !important;
   white-space: nowrap;
   text-align: center;
   /* float: right; */
 }
-
 
 /* #clearFilterButton:hover {
   background-color: green;
   color: white;
 } */
 .btn-outline-secondary:hover {
-  background-color: #A9A9A9 !important;
+  background-color: #a9a9a9 !important;
   color: black !important;
 }
 
