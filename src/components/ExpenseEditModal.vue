@@ -147,17 +147,17 @@ export default {
     const docSnap = await getDoc(ref);
     const expenses = docSnap.data().expenses; // JSON.parse(JSON.stringify(docSnap.data().expenses));
     this.expenses = expenses;
-    console.log("mounted expenses:", expenses);
+    // console.log("mounted expenses:", expenses);
 
     const rentalRef = doc(db, "Rentals", userEmail);
     const rentalDocSnap = await getDoc(rentalRef);
     const rentals = rentalDocSnap.data().rentals;
     this.rentals = rentals;
-    console.log("mounted rentals:", rentals);
+    // console.log("mounted rentals:", rentals);
   },
 
   data() {
-    console.log("data\nthis.fullAddress=", this.fullAddress);
+    // console.log("data\nthis.fullAddress=", this.fullAddress);
     return {
       myIndex: this.index,
       myFullAddress: this.fullAddress,
@@ -169,19 +169,19 @@ export default {
   },
 
   methods: {
-    testbutton() {
-      console.log("TEST BUTTON");
-      console.log("index = ", this.index);
-      console.log("FullAddress = ", this.fullAddress);
-      console.log("ExpenseType = ", this.expenseType);
-      console.log("ExpenseCost = ", this.expenseCost);
-      console.log("ExpenseDate = ", this.expenseDate);
-      console.log("myIndex = ", this.myIndex);
-      console.log("myFullAddress = ", this.myFullAddress);
-      console.log("myExpenseType = ", this.myExpenseType);
-      console.log("myExpenseCost = ", this.myExpenseCost);
-      console.log("myExpenseDate = ", this.myExpenseDate);
-    },
+    // testbutton() {
+    //   console.log("TEST BUTTON");
+    //   console.log("index = ", this.index);
+    //   console.log("FullAddress = ", this.fullAddress);
+    //   console.log("ExpenseType = ", this.expenseType);
+    //   console.log("ExpenseCost = ", this.expenseCost);
+    //   console.log("ExpenseDate = ", this.expenseDate);
+    //   console.log("myIndex = ", this.myIndex);
+    //   console.log("myFullAddress = ", this.myFullAddress);
+    //   console.log("myExpenseType = ", this.myExpenseType);
+    //   console.log("myExpenseCost = ", this.myExpenseCost);
+    //   console.log("myExpenseDate = ", this.myExpenseDate);
+    // },
 
     onPostalCodeChange(event) {
       this.myPostalCode = event.target.value;
