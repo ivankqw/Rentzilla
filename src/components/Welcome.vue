@@ -13,7 +13,9 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link troll" data-bs-toggle="tab" href="#video">Video</a>
+            <a class="nav-link troll" data-bs-toggle="tab" href="#video"
+              >Video</a
+            >
           </li>
         </ul>
       </div>
@@ -21,15 +23,31 @@
         <div class="tab-content">
           <div class="tab-pane fade show active" id="about">
             <h5 class="card-title">Welcome to Rentzilla!</h5>
-            <p class="card-text">
-              Rentzilla is a super app that will help you manage all your rental
-              properties, expenses, and keep up with the latest news!
-            </p>
+            <div class="card-text">
+              Rentzilla is a super app that will help you manage all your
+              <strong> rental properties </strong>, <strong> expenses </strong>,
+              <strong> revenues </strong>, and keep up with the
+              <strong> latest news </strong>!
+              <img src="../assets/party_dino.png" />
+              <div class="text-left">
+                <ol class="list-group">
+                  <li class="list-group-item">Add, delete, and edit your rental properties</li>
+                  <li class="list-group-item">Add, delete, and edit your expenses</li>
+                  <li class="list-group-item">Collect rent from tenants as recorded revenue</li>
+                  <li class="list-group-item">Read the latest news</li>
+                  <li class="list-group-item">Make your next move with data visualisation</li>
+                </ol>
+              </div>
+            </div>
           </div>
           <div class="tab-pane fade" id="video">
             <h5 class="card-title">Lost? We got your back!</h5>
             <p class="card-text">View the video here</p>
-            <iframe width="420" height="345" src="https://www.youtube.com/embed/8_R-Tl5oQOw?autoplay=1&inline=1"></iframe>
+            <iframe
+              width="420"
+              height="345"
+              src="https://www.youtube.com/embed/8_R-Tl5oQOw?autoplay=1&inline=1"
+            ></iframe>
           </div>
         </div>
       </div>
@@ -45,8 +63,8 @@ export default {
 
 <style>
 a.nav-link.troll {
-  color: black !important
-  }
+  color: black !important;
+}
 .carousel .carousel-item {
   height: 500px;
 }
