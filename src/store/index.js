@@ -33,7 +33,7 @@ export default createStore({
 
     async login({ commit }, details) {
       const { email, password } = details;
-      console.log(auth)
+      //console.log(auth)
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
@@ -79,8 +79,8 @@ export default createStore({
         return;
       }
 
-      console.log(auth)
-      console.log(details)
+      //console.log(auth)
+      //console.log(details)
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
@@ -120,7 +120,7 @@ export default createStore({
       };
 
       commit("SET_USER", userObj);
-      console.log(auth.currentUser);
+      //console.log(auth.currentUser);
       router.push("/");
     },
 
