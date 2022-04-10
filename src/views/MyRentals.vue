@@ -42,7 +42,9 @@
             <td>{{ i + 1 }}</td>
             <td>{{ rental.postalCode }}</td>
             <td>{{ rental.address }}</td>
-            <td>#{{ rental.unitNumber }}</td>
+            <td v-if="!isUnitNumLanded(rental.unitNumber)">#{{ rental.unitNumber }}</td>
+            <td v-else> - </td>
+            
             <td>${{ rental.purchasePrice }}</td>
             <td>
               <button
@@ -629,6 +631,10 @@ export default {
     },
     change() {
       this.refreshEdit += 1;
+    },
+
+    isUnitNumLanded(unitNumber) {
+      return unitNumber === 'x';
     },
 
     setCurrentTenantId(id) {

@@ -68,8 +68,8 @@
             <td>{{ i + 1 }}</td>
             <td>{{ expense.postalCode }}</td>
             <td>{{ expense.address }}</td>
-            <td>#{{ expense.unitNumber }}</td>
-
+            <td v-if="!isUnitNumLanded(expense.unitNumber)">#{{ expense.unitNumber }}</td>
+            <td v-else> - </td>
             <td>{{ expense.expenseType }}</td>
             <td>${{ expense.expenseCost }}</td>
             <td>{{ expense.expenseDate }}</td>
@@ -309,6 +309,9 @@ export default {
   },
 
   methods: {
+    isUnitNumLanded(unitNumber) {
+      return unitNumber === 'x';
+    },
     onFilterStartInput(e) {
       this.filterStartDate = e.target.value;
     },

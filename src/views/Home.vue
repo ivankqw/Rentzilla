@@ -466,7 +466,7 @@ export default {
             let currString = "";
             while (counter < values.addresses.length) {
               currString += "<h5>" + values.addresses[counter] + "</h5>";
-              currString += "" + "Unit Number: " + values.unitNumbers[counter];
+              currString += "" + "Unit Number: " + (values.unitNumbers[counter] === 'x' ? "-":values.unitNumbers[counter]);
               currString +=
                 "<br>" +
                 "Purchase Price: " +
