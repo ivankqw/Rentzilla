@@ -266,7 +266,7 @@ export default {
       const rentalDocSnap = await getDoc(rentalRef);
       const rentals = rentalDocSnap.data().rentals;
       this.rentals = rentals;
-      console.log("mounted rentals:", rentals);
+      // console.log("mounted rentals:", rentals);
 
       for (let rental of this.rentals) {
         // console.log(rental);

@@ -120,7 +120,7 @@ export default {
   props: ["index", "fullAddress", "expenseType", "expenseCost", "expenseDate"],
 
   setup() {
-    console.log("setup from ExpenseEditModal.vue");
+    // console.log("setup from ExpenseEditModal.vue");
     let modalEle = ref(null);
     let thisModalObj = null;
     onMounted(() => {
