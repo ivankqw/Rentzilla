@@ -109,13 +109,13 @@ export default {
     const docSnap = await getDoc(ref);
     const expenses = docSnap.data().expenses; // JSON.parse(JSON.stringify(docSnap.data().expenses));
     this.expenses = expenses;
-    console.log("mounted expenses:", expenses);
+    // console.log("mounted expenses:", expenses);
 
     const rentalRef = doc(db, "Rentals", userEmail);
     const rentalDocSnap = await getDoc(rentalRef);
     const rentals = rentalDocSnap.data().rentals;
     this.rentals = rentals;
-    console.log("mounted rentals:", rentals);
+    // console.log("mounted rentals:", rentals);
   },
 
   data() {
@@ -169,12 +169,12 @@ export default {
       this.expenseType= ""
       this.expenseCost= ""
       this.expenseDate= ""
-      console.log("form resetted");
+      // console.log("form resetted");
     },
 
 
     async saveExpense() {
-      console.log("CLICKED + ADD EXPENSE")
+      // console.log("CLICKED + ADD EXPENSE")
       
 
       // Validation of inputs property details
@@ -192,7 +192,7 @@ export default {
         return;
       }
 
-      console.log("fullAddress = ", this.fullAddress);
+      // console.log("fullAddress = ", this.fullAddress);
 
       this.rentalIndex = this.getRentalIndex(this.fullAddress);
 
@@ -211,7 +211,7 @@ export default {
         postalCode: this.postalCode,
       };
       
-      console.log("docData: ", docData);
+      // console.log("docData: ", docData);
       try {
         await updateDoc(ref, {
           expenses: arrayUnion(docData),

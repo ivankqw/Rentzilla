@@ -144,12 +144,12 @@ const steps = ref([]);
     ]
 
     const clickTour = () => {
-      console.log("hi");
-      console.log(window.tours);
+      // console.log("hi");
+      // console.log(window.tours);
       try {
         window.tours["myTourNews"].start();
       } catch (e) {
-        console.log("error here click tour", e);
+        // console.log("error here click tour", e);
       }
     };
     return {
@@ -174,7 +174,7 @@ const steps = ref([]);
           console.log(articles);
         });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   },
   methods: {
@@ -202,7 +202,7 @@ const steps = ref([]);
             console.log(articles);
           });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
 
@@ -226,7 +226,7 @@ const steps = ref([]);
             console.log(articles);
           });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
 
@@ -247,10 +247,10 @@ const steps = ref([]);
             this.articlesTop = Array.from(articles).slice(0, 3);
 
             this.articlesBottom = Array.from(articles).slice(2);
-            console.log(articles);
+            // console.log(articles);
           });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
   },

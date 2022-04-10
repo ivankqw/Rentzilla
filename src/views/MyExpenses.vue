@@ -212,7 +212,7 @@ export default {
       
     ]
     const clickTour = () => {
-      console.log("hi");
+      // console.log("hi");
       console.log(window.tours);
       try {
         window.tours["myTourMyExpenses"].start();
@@ -233,18 +233,18 @@ export default {
     function editExpenseDetails(id) {
       showExpenseEditModal();
       var currExpense = JSON.parse(JSON.stringify(this.expenses))[id];
-      console.log("currExpense=", currExpense);
+      // console.log("currExpense=", currExpense);
       this.index = id;
       this.fullAddress = currExpense.fullAddress;
       this.expenseType = currExpense.expenseType;
       this.expenseCost = currExpense.expenseCost;
       this.expenseDate = currExpense.expenseDate;
-      console.log("CLICKED ON MANAGE:\nInside editExpenseDetails");
-      console.log("id=", id);
-      console.log("fullAddress=", this.fullAddress);
-      console.log("expenseType=", this.expenseType);
-      console.log("expenseCost=", this.expenseCost);
-      console.log("expenseDate=", this.expenseDate);
+      // console.log("CLICKED ON MANAGE:\nInside editExpenseDetails");
+      // console.log("id=", id);
+      // console.log("fullAddress=", this.fullAddress);
+      // console.log("expenseType=", this.expenseType);
+      // console.log("expenseCost=", this.expenseCost);
+      // console.log("expenseDate=", this.expenseDate);
     }
 
     return {
@@ -282,7 +282,7 @@ export default {
     const ref = doc(db, "Expenses", userEmail);
     const docSnap = await getDoc(ref);
     const expenses = docSnap.data().expenses;
-    console.log(expenses);
+    // console.log(expenses);
     this.expenses = expenses;
 
     const rentalRef = doc(db, "Rentals", userEmail);
@@ -293,7 +293,7 @@ export default {
     //wat is thissss
     onSnapshot(doc(db, "Expenses", userEmail)),
       (doc) => {
-        console.log("hello");
+        // console.log("hello");
         console.log(doc.data());
         this.expenses = doc.data().expenses;
         console.log(this.expenses);
