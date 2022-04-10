@@ -458,7 +458,10 @@ export default {
             )
             .addTo(mymap);
           for (let [postalCode, values] of Object.entries(resultObj)) {
-            console.log(postalCode);
+            // console.log(postalCode);
+            if (postalCode) {
+              parseInt(postalCode)
+            }
             //isEmpty = fl
             let currLat = parseFloat(values.latitude);
             let currLong = parseFloat(values.longtitude);
@@ -532,7 +535,7 @@ export default {
     expensesByCategoryData() {
       let expenses = this.expenses;
       if (this.filterStartDate && this.filterEndDate) {
-        console.log("hi");
+        
         expenses = this.expenses.filter(
           (exp) =>
             moment(exp.expenseDate).isSameOrAfter(
@@ -553,14 +556,13 @@ export default {
       for (let expense of this.expenses) {
         result[expense.expenseType] += expense.expenseCost;
       }
-      console.log("expenses by category", result);
+      // console.log("expenses by category", result);
       return result;
     },
 
     expensesByRentalData() {
       let expenses = this.expenses;
       if (this.filterStartDate && this.filterEndDate) {
-        console.log("hi");
         expenses = this.expenses.filter(
           (exp) =>
             moment(exp.expenseDate).isSameOrAfter(
@@ -602,12 +604,12 @@ export default {
         }
         
       }
-      console.log(object2);
+      // console.log(object2);
 
       result = object2;
       // console.log("result from expenses by rental data", result);
-      console.log("expenses by rental properties", result);
-      console.log("ddd", Number.isNaN(Object.values(result)[0]));
+      // console.log("expenses by rental properties", result);
+      // console.log("ddd", Number.isNaN(Object.values(result)[0]));
       return result;
     },
 
@@ -619,12 +621,12 @@ export default {
           (arrElement) => arrElement.address + "#" + arrElement.unitNumber
         )
       );
-      console.log(addressSet);
+      // console.log(addressSet);
       //initialize obj
       for (let address of addressSet) {
         result[address] = 0;
       }
-      console.log(result);
+      // console.log(result);
       // for (let rental of this.rentals) {
       //   for (let tenant of rental.tenants) {
       //     for (let tenantRevenues of tenant.revenues) {
@@ -649,12 +651,12 @@ export default {
                 moment(this.filterEndDate)
               )
             ) {
-              console.log(tenantRevenues.paymentDate);
+              // console.log(tenantRevenues.paymentDate);
               let tenantRevenuesPaymentAmount = JSON.parse(
                 JSON.stringify(tenantRevenues.paymentAmount)
               );
               if (tenantRevenuesPaymentAmount) {
-                console.log(rental.address + rental.unitNumber);
+                // console.log(rental.address + rental.unitNumber);
                 result[fullAddress] += parseInt(tenantRevenuesPaymentAmount);
               }
             } else if (this.filterStartDate && this.filterEndDate) {
@@ -669,9 +671,9 @@ export default {
         }
       }
       var empty = true;
-      for (const [key, value] of Object.entries(result)) {
-        console.log(key + "revnue:" + value);
-      }
+      // for (const [key, value] of Object.entries(result)) {
+      //   console.log(key + "revnue:" + value);
+      // }
 
       // filter out those with 0 revenues
       const resultAsArray = Object.entries(result);
@@ -695,11 +697,11 @@ export default {
         }
         
       }
-      console.log(object2);
+      // console.log(object2);
 
       result = object2;
       
-      console.log("re", [result, empty]);
+      // console.log("re", [result, empty]);
       return [result, empty];
     },
 
@@ -736,7 +738,7 @@ export default {
         var nextDate = startDate.add(1, "days").format("YYYY-MM-DD");
         result[nextDate] = 0;
       }
-      console.log(result);
+      // console.log(result);
 
       // those dates with payment, map date to amount
       for (let rental of this.rentals) {
@@ -762,7 +764,7 @@ export default {
         );
         // Convert filteredResultsArray back to an object:
         const filteredResultsFinal = Object.fromEntries(filteredResultsArray);
-        console.log(filteredResultsFinal);
+        // console.log(filteredResultsFinal);
         return filteredResultsFinal;
       }
 
@@ -790,7 +792,7 @@ export default {
           acc[key] = revenueTemp[key];
           return acc;
         }, {});
-      console.log("sorted initialised result:", revenueTemp);
+      // console.log("sorted initialised result:", revenueTemp);
 
       var startDate = moment(Object.keys(revenueTemp)[0]);
       var endDate = moment(
@@ -818,7 +820,7 @@ export default {
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
       var lowerBoundMonth = moment().subtract(11, "months"); // "2021-05"
-      console.log(todaysMonth, lowerBoundMonth);
+      // console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
 
@@ -827,7 +829,7 @@ export default {
         revenueFinal[addMonth] = 0;
         expensesFinal[addMonth] = 0;
       }
-      console.log(revenueFinal); // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      // console.log(revenueFinal); // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
       // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
 
       // populate revenueFinal with the months that have earned revenue
@@ -839,7 +841,7 @@ export default {
           revenueFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
-      console.log("final revenues", revenueFinal);
+      // console.log("final revenues", revenueFinal);
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
@@ -871,7 +873,7 @@ export default {
       for (let expense of this.expenses) {
         expensesTemp[expense.expenseDate] += expense.expenseCost;
       }
-      console.log(expensesTemp);
+      // console.log(expensesTemp);
 
       // filter from 1 year ago till today, add to expensesFinal
 
@@ -883,7 +885,7 @@ export default {
           expensesFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
-      console.log("final expenses", expensesFinal);
+      // console.log("final expenses", expensesFinal);
 
       var empty = true;
 
@@ -906,7 +908,7 @@ export default {
         { name: "Expenses", data: expensesFinal },
         empty,
       ];
-      console.log("foooo", data);
+      // console.log("foooo", data);
       return data;
     },
 
@@ -946,7 +948,7 @@ export default {
           acc[key] = revenueTemp[key];
           return acc;
         }, {});
-      console.log("sorted initialised result:", revenueTemp);
+      // console.log("sorted initialised result:", revenueTemp);
 
       var startDate = moment(Object.keys(revenueTemp)[0]);
       var endDate = moment(
@@ -974,17 +976,17 @@ export default {
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
       var lowerBoundMonth = moment().subtract(2, "months"); // "2021-05"
-      console.log(todaysMonth, lowerBoundMonth);
+      // console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
-      console.log(revenueFinal);
+      // console.log(revenueFinal);
       while (lowerBoundMonth.isBefore(todaysMonth)) {
         var addMonth = lowerBoundMonth.add(1, "month").format("MMM YYYY");
         revenueFinal[addMonth] = 0;
         expensesFinal[addMonth] = 0;
       }
 
-      console.log(revenueFinal); // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
+      // console.log(revenueFinal); // -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
       // console.log(expensesFinal) -> {2021-05: 0, 2021-06: 0, 2021-07: 0, 2021-08: 0, 2021-09: 0, ...}
 
       // populate revenueFinal with the months that have earned revenue
@@ -996,7 +998,7 @@ export default {
           revenueFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
-      console.log("final revenues", revenueFinal);
+      // console.log("final revenues", revenueFinal);
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
@@ -1013,7 +1015,7 @@ export default {
           return acc;
         }, {});
 
-      console.log(expensesTemp);
+      // console.log(expensesTemp);
       var startDate1 = moment(Object.keys(expensesTemp)[0]);
       var endDate1 = moment(
         Object.keys(expensesTemp)[Object.keys(expensesTemp).length - 1]
@@ -1036,7 +1038,7 @@ export default {
           expensesFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
-      console.log("final expenses", expensesFinal);
+      // console.log("final expenses", expensesFinal);
 
       var data = [
         { name: "Revenue", data: revenueFinal },
@@ -1064,7 +1066,7 @@ export default {
           return acc;
         }, {});
 
-      console.log("sorted initialised result:", revenueTemp);
+      // console.log("sorted initialised result:", revenueTemp);
 
       var startDate = moment(Object.keys(revenueTemp)[0]);
       var endDate = moment(
@@ -1092,7 +1094,7 @@ export default {
       // set all other months within minus 11 months of today's month to be 0
       var todaysMonth = moment(); // "2022-04"
       var lowerBoundMonth = moment().subtract(5, "months"); // "2021-05"
-      console.log(todaysMonth, lowerBoundMonth);
+      // console.log(todaysMonth, lowerBoundMonth);
       revenueFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
       expensesFinal[lowerBoundMonth.format("MMM YYYY")] = 0;
 
@@ -1110,7 +1112,7 @@ export default {
           revenueFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
-      console.log("final revenues", revenueFinal);
+      // console.log("final revenues", revenueFinal);
 
       // EXPENSES GRAPH
       let expenses = this.expenses;
@@ -1126,7 +1128,7 @@ export default {
           acc[key] = expensesTemp[key];
           return acc;
         }, {});
-      console.log(expensesTemp);
+      // console.log(expensesTemp);
       var startDate1 = moment(Object.keys(expensesTemp)[0]);
       var endDate1 = moment(
         Object.keys(expensesTemp)[Object.keys(expensesTemp).length - 1]
@@ -1149,7 +1151,7 @@ export default {
           expensesFinal[moment(key).format("MMM YYYY")] += value;
         }
       }
-      console.log("final expenses", expensesFinal);
+      // console.log("final expenses", expensesFinal);
 
       var data = [
         { name: "Revenue", data: revenueFinal },
@@ -1169,7 +1171,7 @@ export default {
       )
         .then((response) => response.text())
         .then((result) => {
-          console.log(result);
+          // console.log(result);
           return JSON.parse(result).results[0];
         })
         .catch((error) => console.log("error", error));
@@ -1230,7 +1232,7 @@ export default {
         { includeMetadataChanges: true },
         (doc) => {
           this.expenses = doc.data().expenses;
-          console.log("expensesss", this.expenses);
+          // console.log("expensesss", this.expenses);
         }
       );
       onSnapshot(
@@ -1238,11 +1240,11 @@ export default {
         { includeMetadataChanges: true },
         (doc) => {
           this.rentals = doc.data().rentals;
-          console.log("rentalsss", this.rentals);
+          // console.log("rentalsss", this.rentals);
         }
       );
     } catch (err) {
-      console.log("created error", err);
+      // console.log("created error", err);
     }
   },
 };
