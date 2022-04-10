@@ -581,7 +581,7 @@ export default {
       for (let address of addressSet) {
         result[address] = 0;
       }
-      for (let expense of this.expenses) {
+      for (let expense of expenses) {
         let fullAddress = expense.address + "#" + expense.unitNumber;
         result[fullAddress] += expense.expenseCost;
       }
