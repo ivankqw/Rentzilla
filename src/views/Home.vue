@@ -590,6 +590,21 @@ export default {
       const filtered = resultAsArray.filter((x) => x[1] > 0);
       result = Object.fromEntries(filtered);
       
+
+      // for address with no unit number, remove the #x from full address
+      const object1 = result;
+      let object2 = {};
+      for (const [key, value] of Object.entries(object1)) {
+        if (key.slice(-2) === "#x") {
+          object2[key.slice(0,-3)] = value;
+        } else {
+          object2[key] = value;
+        }
+        
+      }
+      console.log(object2);
+
+      result = object2;
       // console.log("result from expenses by rental data", result);
       console.log("expenses by rental properties", result);
       console.log("ddd", Number.isNaN(Object.values(result)[0]));
@@ -669,7 +684,21 @@ export default {
           break;
         }
       }
+      // for address with no unit number, remove the #x from full address
+      const object1 = result;
+      let object2 = {};
+      for (const [key, value] of Object.entries(object1)) {
+        if (key.slice(-2) === "#x") {
+          object2[key.slice(0,-3)] = value;
+        } else {
+          object2[key] = value;
+        }
+        
+      }
+      console.log(object2);
 
+      result = object2;
+      
       console.log("re", [result, empty]);
       return [result, empty];
     },
@@ -1284,6 +1313,14 @@ h2 {
   background-color: #e21833 !important;
   border-color: #e21833 !important;
   color: yellow !important;
+}
+/* selected btn css */
+.btn-group-toggle .btn:not(:disabled):not(.disabled).active,
+.btn-group-toggle .btn:not(:disabled):not(.disabled):active,
+.show > .btn.dropdown-toggle {
+  color: #fff;
+  background-color: #2196f3;
+  border-color: #2196f3;
 }
 
 .btn .btn-outline-primary,
