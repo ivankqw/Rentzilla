@@ -22,11 +22,13 @@
       <div class="card-body">
         <div class="tab-content">
           <div class="tab-pane fade show active" id="about">
-            <h2 class="card-title"> <strong> Welcome to Rentzilla! </strong> 🦎🛖</h2>
+            <h2 class="card-title"> <strong> Welcome to Rentzilla! </strong> 🦖🛖</h2>
             <div class="container"> 
             <div class="card-text" style="font-size: 20px">
-              Rentzilla is a super app that will help you manage all your
-              <strong> rental properties 🏠</strong>,
+              <img src="../assets/party_dino.png">
+              <br>
+              Rentzilla is a super app that will help you manage all your <br>
+              <strong> rental properties 🏠</strong>, 
               <strong> expenses 💸</strong>, <strong> rents 🤑</strong>, and
               keep up with the <strong> latest news 📰</strong>! <br /><br />
             </div>
